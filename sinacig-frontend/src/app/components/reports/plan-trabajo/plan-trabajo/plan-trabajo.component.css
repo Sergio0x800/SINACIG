@@ -1,0 +1,29 @@
+.search__container-inputs {
+  display: flex;
+  flex-direction: column;
+  
+}
+.search-container-form-create {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.form-report {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search__container-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.search__btn  {
+  width: 200px;
+}
+
+.search__title {
+  
+}

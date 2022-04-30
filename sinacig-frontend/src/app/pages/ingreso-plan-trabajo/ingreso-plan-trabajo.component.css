@@ -1,0 +1,131 @@
+.btn-terminar-registro {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.btns-ingreso-plan {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-size {
+  width: 200px;
+}
+
+.btn-delete {
+  background-image: url('../../../assets/img/icons/delete.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px;
+  display: block;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.options-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-btn-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-table-coImple {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.container-form-co-re {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 7px;
+  padding: 30px 30px;
+}
+
+.container-inputs-controles {
+  display: flex;
+  justify-content: center;
+}
+
+.container-inputs-textbox {
+  width: 600px;
+}
+
+.container-btn {
+  position: relative;
+}
+
+.btn-float {
+  position: absolute;
+  top: calc(100% - 10px);
+  right: calc(100% - 25px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+
+.font-text-table {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.container-ingreso-plan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 600px;
+}
+
+.container-plan-trabajo{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-ingreso-plan {
+  align-self: flex-start;
+  margin-bottom: 15px;
+}
+
+.container-encabezado-plan {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 50px;
+  align-items: center;
+}
+
+.container-inputs-plan {
+  width: 600px;
+}
+
+.container-controles-imple {
+  display: flex;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.container-imple-tabla-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+}

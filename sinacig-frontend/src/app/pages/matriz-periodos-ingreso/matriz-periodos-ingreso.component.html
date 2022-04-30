@@ -1,0 +1,55 @@
+<div class="container-fluid mt-5">
+  <h1>Nuevo periodo</h1>
+  <form [formGroup]="formCreateMatrizPeriodo" (ngSubmit)="createNewMatrizPeriodo()">
+    <div class="container__unidad-search">
+      <label for="unidadFindRiesgo" class="form-label">Unidad ejecutora:</label>
+      <select formControlName="id_unidad_ejecutora" id="unidadFindRiesgo" name="unidadFindRiesgo" class="form-select">
+        <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
+          {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
+      </select>
+    </div>
+    <div class="container__date-search">
+      <label for="fInicioFindRiesgo" class="form-label">Fecha inicio de periodo:</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="Ingresar fecha" angular-mydatepicker name="fInicioFindRiesgo"
+          id="fInicioFindRiesgo" formControlName="fecha_periodo_inicio" [options]="myDpOptions"
+          #dpfechaInicio="angular-mydatepicker" [locale]="locale" />
+
+        <div class="input-group-append">
+          <button type="button" class="btn btn-secondary" (click)="dpfechaInicio.clearDate()">
+            <i class="fa fa-close"></i>
+          </button>
+        </div>
+        <div class="input-group-append">
+          <button type="button" class="btn btn-secondary" (click)="dpfechaInicio.toggleCalendar()">
+            <i class="fa fa-calendar-o"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="container__date-search">
+      <label for="fFinFindRiesgo" class="form-label">Fecha final de periodo:</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="Ingresar fecha" angular-mydatepicker name="fFinFindRiesgo"
+          id="fFinFindRiesgo" formControlName="fecha_periodo_fin" [options]="myDpOptions"
+          #dpfFinFindRiesgo="angular-mydatepicker" [locale]="locale" />
+        <div class="input-group-append">
+          <button type="button" class="btn btn-secondary" (click)="dpfFinFindRiesgo.clearDate()">
+            <i class="fa fa-close"></i>
+          </button>
+        </div>
+        <div class="input-group-append">
+          <button type="button" class="btn btn-secondary" (click)="dpfFinFindRiesgo.toggleCalendar()">
+            <i class="fa fa-calendar-o"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="container-btn mt-4 mb-5">
+      <button type="button" class="btn btn-danger btn-size" routerLink="/admin/matriz"><i class="fa-solid fa-ban"></i>
+        Cancelar</button>
+      <button [disabled]="formCreateMatrizPeriodo.invalid" type="submit" class="btn btn-primary btn-size"><i
+          class="fa-solid fa-plus"></i> Agregar</button>
+    </div>
+  </form>
+</div>

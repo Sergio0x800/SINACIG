@@ -1,0 +1,102 @@
+.btn-size {
+  width: 200px;
+}
+
+.container-btn {
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+
+.container-btn {
+  position: relative;
+}
+
+.btn-float {
+  position: absolute;
+  top: calc(100% - 10px);
+  right: calc(100% - 25px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+
+.container-btn-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-delete {
+  background-image: url('../../../assets/img/icons/delete.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px;
+  display: block;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.btn-edit {
+  background-image: url('../../../assets/img/icons/editar.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px;
+  display: block;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.btn-delete:hover {
+  transform: scale(1.2);
+}
+
+.options-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container_form_riesgos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.container_form_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.double-inputs-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.inputs-size {
+  width: 100%;
+}
+
+.container__title {
+  align-self: start;
+}
+
+
+.select-control-mitigador {
+  width: 350px;
+}
+

@@ -1,0 +1,74 @@
+/* .search__title {
+  font-size: 22px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.search__anio-periodo {
+  width: 140px;
+}
+
+.search__unidad-ejecutora {
+  width: 310px;
+}
+
+.search__container-inputs {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+}
+
+.search__container-btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+}
+
+.search__btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 15px;
+  padding-top: 30px;
+}
+
+.search__btn {
+  width: 200px;
+} */
+
+.search__container-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  
+}
+.search-container-form-create {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-report {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search__container-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.search__btn  {
+  width: 200px;
+}
+
+.search__title {
+  
+}

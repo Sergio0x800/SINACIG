@@ -1,0 +1,161 @@
+.btn-size {
+  width: 175px;
+}
+
+.btn-size-complement {
+  width: 100px;
+}
+
+.color-tolerable {
+  color: green;
+}
+
+.color-gestionable {
+  color: rgb(231, 231, 0);
+}
+
+.color-no-tolerable {
+  color: red;
+}
+
+.options-icons {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.container-add-plan {
+  width: 100%;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-delete {
+  background-image: url('../../../assets/img/icons/delete.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px;
+  display: block;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.btn-edit {
+  background-image: url('../../../assets/img/icons/editar.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px;
+  display: block;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.btn-table-plan {
+  border: none;
+  background: none;
+  transition: all .1s ease-in-out;
+}
+
+.btn-table-plan:hover {
+  transform: scale(1.1);
+}
+
+.btn-delete:hover {
+  transform: scale(1.2);
+}
+
+.btn-edit:hover {
+  transform: scale(1.2);
+}
+
+.table-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.title-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-table-riesgo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 15px;
+}
+
+.btns-modal {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.btn-modal-plan {
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.btn-plan-search {
+  color: white;
+  font-size: 11px;
+  /* width: 33%; */
+
+  padding: 5px;
+}
+
+.container-btn {
+  position: relative;
+}
+
+.btn-float {
+  position: absolute;
+  top: calc(100% - 10px);
+  right: calc(100% - 25px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+}
+
+h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+}
+
+.descripcion__stl {
+  width: 300px;
+  overflow: hidden;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+
+
+.conatiner-btn-agregar {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}

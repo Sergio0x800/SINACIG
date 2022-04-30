@@ -1,0 +1,207 @@
+<!-- Ingreso de riesgos -->
+<div class="container-encabezado-plan">
+
+  <div class="container-inputs-plan">
+    <h1 class="">Datos del riesgo</h1>
+    <div class="">
+      <label for="inputUnidad" class="form-label">Descripción del riesgo</label>
+      <textarea disabled type="text" class="form-control" [value]="riesgo.descripcion_riesgo"></textarea>
+    </div>
+    <div class="">
+      <label for="inputUnidad" class="form-label">Área evaluada</label>
+      <input disabled type="text" class="form-control" [value]="riesgo.area_evaluada">
+    </div>
+  </div>
+
+</div>
+
+<hr class="mt-5 mb-4" />
+
+<form [formGroup]="formCreatePlanRiesgo" (ngSubmit)="createNewPlanRiesgo()">
+  <div class="container-plan-trabajo mb-5">
+    <div class="container-ingreso-plan mt-5">
+      <div class="title-ingreso-plan">
+        <h1>Ingreso plan de trabajo</h1>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="inputFechaInicio" class="form-label">Fecha inicio:</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="Ingresar fecha" angular-mydatepicker name="inputFechaInicio"
+              id="inputFechaInicio" formControlName="fecha_inicio" [options]="myDpOptions"
+              #deFechaInicio="angular-mydatepicker" [locale]="locale" />
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="deFechaInicio.clearDate()">
+                <i class="fa fa-close"></i>
+              </button>
+            </div>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="deFechaInicio.toggleCalendar()">
+                <i class="fa fa-calendar-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="inputFechaFin" class="form-label">Fecha fin:</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="Ingresar fecha" angular-mydatepicker name="inputFechaFin"
+              id="inputFechaFin" formControlName="fecha_fin" [options]="myDpOptions" #deFechaFin="angular-mydatepicker"
+              [locale]="locale" />
+
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="deFechaFin.clearDate()">
+                <i class="fa fa-close"></i>
+              </button>
+            </div>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="deFechaFin.toggleCalendar()">
+                <i class="fa fa-calendar-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="inputPrioridad" class="form-label">Prioridad</label>
+          <select id="inputPrioridad" name="inputPrioridad" class="form-select" formControlName="id_prioridad">
+
+            <option *ngFor="let prioridad of prioridades" [value]="prioridad.id_prioridad">
+              {{prioridad.descripcion_prioridad}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="inputPuesto" class="form-label">Puesto responsable</label>
+          <select id="inputPuesto" name="inputPuesto" class="form-select" formControlName="id_puesto_responsable">
+            <option *ngFor="let puesto of puestos" [value]="puesto.id_puesto_responsable">
+              {{puesto.descripcion}}</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label for="comentarioTxt" class="form-label">Comentario</label>
+          <textarea formControlName="comentario" id="comentarioTxt" name="comentarioTxt" class="form-control"
+            rows="4"></textarea>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div>
+    <div class="">
+      <div class="row">
+        <div class="">
+          <form [formGroup]="formCreateControlImplementacion" class="container-inputs-controles">
+            <div class="container-inputs-textbox">
+              <h3 class="">Controles para implementación</h3>
+              <div class="">
+                <label for="inputQue" class="form-label">Que:</label>
+                <textarea id="inputQue" name="inputQue" class="form-control" formControlName="que" rows="4"></textarea>
+              </div>
+              <div class="">
+                <div class="container-btn-add">
+                  <label for="inputComo" class="form-label">Como:</label>
+                  <div class="container-btn">
+                    <button [disabled]="formCreateControlImplementacion.invalid" type="button"
+                      (click)="createNewControlToMemory()"
+                      class="btn btn-primary btn-size-complement btn-float">+</button>
+                  </div>
+                </div>
+                <textarea id="inputComo" name="inputComo" class="form-control" formControlName="como"
+                  rows="4"></textarea>
+              </div>
+              <div class="">
+                <label for="inputQuien" class="form-label">Quien:</label>
+                <textarea id="inputQuien" name="inputQuien" class="form-control" formControlName="quien"
+                  rows="4"></textarea>
+              </div>
+              <div class="">
+                <label for="inputCuando" class="form-label">Cuando:</label>
+                <textarea id="inputCuando" name="inputCuando" class="form-control" formControlName="cuando"
+                  rows="4"></textarea>
+              </div>
+              <div *ngIf="controlImplementacionMemory.length > 0" class="container-table-coImple">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Que:</th>
+                        <th scope="col">Como:</th>
+                        <th scope="col">Quien:</th>
+                        <th scope="col">Cuando</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let ctImplementacion of controlImplementacionMemory">
+                        <th scope="row th-display">
+                          <div class="options-icons">
+                            <span
+                              (click)="deleteControlFromMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien,ctImplementacion.cuando)"
+                              class="btn-delete"></span>
+                          </div>
+                        </th>
+                        <td class="pt-3 text-dark font-text-table">{{ctImplementacion.que}}</td>
+                        <td class="pt-3 text-dark font-text-table">{{ctImplementacion.como}}</td>
+                        <td class="pt-3 text-dark font-text-table">{{ctImplementacion.quien}}</td>
+                        <td class="pt-3 text-dark font-text-table">{{ctImplementacion.cuando}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container-form-imple mt-4">
+      <div class="">
+        <h3 class="">Ingreso de Recursos</h3>
+        <div class="">
+          <form [formGroup]="formCreateRecursos">
+            <div class="container-inputs-textbox">
+              <div>
+                <div class="mt-1">
+                  <div class="container-btn-add">
+                    <label for="inputRecurso" class="form-label">Recursos:</label>
+                    <div class="container-btn">
+                      <button [disabled]="formCreateRecursos.invalid" type="button" (click)="createNewRecursoToMemory()"
+                        class="btn btn-primary btn-size-complement btn-float">+</button>
+                    </div>
+                  </div>
+                  <textarea id="inputRecurso" name="inputRecurso" class="form-control" formControlName="descripcion"
+                    rows="4"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div *ngIf="showTableRecursos" class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let recurso of recursosMemory">
+                  <th scope="row th-display">
+                    <div class="options-icons">
+                      <span (click)="deleteRecursoFromMemory(recurso.descripcion)" class="btn-delete"></span>
+                    </div>
+                  </th>
+                  <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="btns-ingreso-plan">
+          <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPlan">Cancelar</button>
+          <button
+            [disabled]="(formCreatePlanRiesgo.invalid || !(controlImplementacionMemory.length > 0)) || !(recursosMemory.length > 0)"
+            type="submit" class="btn btn-primary btn-size">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
