@@ -16,7 +16,8 @@ export const ROUTES: RouteInfo[] = [
 
 export const ROUTES_REPORT: RouteInfo[] = [
   { path: 'evaluacion-riesgo-reporte', title: 'Evaluación Riesgo', icon: '', class: '' },
-  { path: 'plan-trabajo-reporte', title: 'Plan de Trabajo', icon: '', class: '' }
+  { path: 'plan-trabajo-reporte', title: 'Plan de Trabajo', icon: '', class: '' },
+  { path: 'mapa-riesgo', title: 'Mapa de Riesgo', icon: '', class: ''}
 ]
 
 @Component({
