@@ -1,0 +1,37 @@
+<div class="search-container-form-create mt-5">
+    <!-- Formulario de busqueda -->
+    <form [formGroup]="generarReporte" (submit)="descargarReporte()" class="form-report">
+      <!-- titulo form -->
+      <div class="search__box-title">
+        <div class="search__container_title">
+          <h1 class="search__title">Mapa de Riesgo</h1>
+        </div>
+      </div>
+      <!-- inputs del formulario -->
+      <div class="search__container-inputs">
+        <div class="search__unidad-ejecutora">
+          <label for="unidadFindRiesgo" class="form-label">Unidad ejecutora:</label>
+          <select formControlName="unidadEjecutora" id="unidadFindRiesgo" name="unidadFindRiesgo" class="form-select">
+            <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
+              {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
+          </select>
+        </div>
+        <div class="search__anio-periodo">
+          <label for="fInicioFindRiesgo" class="form-label">Año del periodo:</label>
+          <select formControlName="id_periodo" id="periodoAnio" name="periodoAnio" class="form-select">
+            <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
+              {{periodo.anio}}
+            </option>
+          </select>
+        </div>
+        <div class="search__container-btns">
+          <div class="search__btns">
+            <button class="btn btn-primary search__btn" [disabled]="generarReporte.invalid" type="submit">
+              Generar reporte
+            </button>
+  
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
