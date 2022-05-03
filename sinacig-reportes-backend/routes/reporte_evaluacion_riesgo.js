@@ -65,21 +65,21 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     //Encabezado columnas
     ws.cell(16,7, 16,8, true).string("Evaluación").style(estilosReportes.encabezadoTabla)
 
-    ws.cell(17,1).string("Código Unidad Ejecutora").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,2).string("Nombre Unidad Ejecutora").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,3).string("Tipo de Objetivo").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,4).string("Código de Referencia").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,5).string("Área Evaluada").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,6).string("Eventos Identificados").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,7).string("Descripción Riesgo").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,8).string("Probabilidad").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,9).string("Severidad").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,10).string("Riesgo Inherente (RI)").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundRosado);
-    ws.cell(17,11).string("Valor Control Mitigador").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundRosado);
-    ws.cell(17,12).string("Riesgo Residual").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundRosado);
-    ws.cell(17,13).string("Medida Riesgo").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,14).string("Control Interno para Mitigar").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
-    ws.cell(17,15).string("Observaciones").style(estilosReportes.encabezadoTabla).style(estilosReportes.backgroundGris);
+    ws.cell(17,1).string("Código Unidad Ejecutora").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,2).string("Nombre Unidad Ejecutora").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,3).string("Tipo de Objetivo").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,4).string("Código de Referencia").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,5).string("Área Evaluada").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,6).string("Eventos Identificados").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,7).string("Descripción Riesgo").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,8).string("Probabilidad").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,9).string("Severidad").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,10).string("Riesgo Inherente (RI)").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,11).string("Valor Control Mitigador").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,12).string("Riesgo Residual").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,13).string("Medida Riesgo").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,14).string("Control Interno para Mitigar").style(estilosReportes.encabezadoTabla);
+    ws.cell(17,15).string("Observaciones").style(estilosReportes.encabezadoTabla);
 
     //Obtenemos la infomación del reporte
     const resultado = await reporteService.dataReporteEvaluacionRiesgo(
@@ -93,12 +93,12 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
         resultado[0].forEach((item) => {
             let columnIndex = 1;
             Object.keys(item).forEach((colName) => {
-                if(item.registro_residual > 0 && item.registro_residual <= 10){
-                    ws.cell(rowIndex, 12).string(item.registro_residual.toString()).style(estilosReportes.backgroundVerde);
-                }else if(item.registro_residual > 10 && item.registro_residual <= 15 ){
-                    ws.cell(rowIndex, 12).string(item.registro_residual.toString()).style(estilosReportes.backgroundAmarillo);
-                }else if(item.registro_residual > 15){
-                    ws.cell(rowIndex, 12).string(item.registro_residual.toString()).style(estilosReportes.backgroundRojo);
+                if(item.riesgo_residual >= 0 && item.riesgo_residual <= 10){
+                    ws.cell(rowIndex, 12).string(item.riesgo_residual.toString()).style(estilosReportes.backgroundVerde);
+                }else if(item.riesgo_residual > 10 && item.riesgo_residual <= 15 ){
+                    ws.cell(rowIndex, 12).string(item.riesgo_residual.toString()).style(estilosReportes.backgroundAmarillo);
+                }else if(item.riesgo_residual > 15){
+                    ws.cell(rowIndex, 12).string(item.riesgo_residual.toString()).style(estilosReportes.backgroundRojo);
                 }
                 ws.cell(rowIndex, columnIndex++).string(item[colName].toString())
                 

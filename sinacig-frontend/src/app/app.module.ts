@@ -31,6 +31,7 @@ import { MatrizPeriodosIngresoComponent } from './pages/matriz-periodos-ingreso/
 import { RiesgosComponent } from './pages/riesgos/riesgos.component';
 import { IngresoPlanTrabajoComponent } from './pages/ingreso-plan-trabajo/ingreso-plan-trabajo.component';
 import { TableInfoRiesgosComponent } from './components/table-info-riesgos/table-info-riesgos.component';
+import { MapaRiesgoComponent } from './components/reports/mapa-riesgo/mapa-riesgo.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { TableInfoRiesgosComponent } from './components/table-info-riesgos/table
     IngresoPlanTrabajoComponent,
     TableInfoRiesgosComponent,
     EvaluacionRiesgoReporteComponent,
-    PlanTrabajoComponent
+    PlanTrabajoComponent,
+    MapaRiesgoComponent
   ],
   imports: [
     BrowserAnimationsModule,

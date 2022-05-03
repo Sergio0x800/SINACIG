@@ -12,6 +12,7 @@ import { RiesgosComponent } from './pages/riesgos/riesgos.component';
 import { IngresoPlanTrabajoComponent } from './pages/ingreso-plan-trabajo/ingreso-plan-trabajo.component';
 import { EvaluacionRiesgoReporteComponent } from './components/reports/evaluacion-riesgo-reporte/evaluacion-riesgo-reporte.component';
 import { PlanTrabajoComponent } from './components/reports/plan-trabajo/plan-trabajo/plan-trabajo.component';
+import { MapaRiesgoComponent } from './components/reports/mapa-riesgo/mapa-riesgo.component';
 const routes: Routes = [
 
   {
@@ -59,6 +60,10 @@ const routes: Routes = [
       {
         path: 'plan-trabajo-reporte',
         component: PlanTrabajoComponent,
+      },
+      {
+        path: 'mapa-riesgo',
+        component: MapaRiesgoComponent
       }
     ]
   },
