@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const UsuarioService = require('../services/usuario.service')
+const UsuarioService = require('../services/usuario.service');
 
 const usuarioService = new UsuarioService();
 
@@ -8,7 +8,7 @@ router.post('/', async (req, res, next) => {
   try {
     const data = req.body;
     let result = await usuarioService.registrarUsuario(data);
-    res.json(result[0]);
+    res.json(result);
   } catch (error) {
     next(error);
   }

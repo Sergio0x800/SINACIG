@@ -14,6 +14,9 @@ export class CatalogosService {
   getUnidadEjecutora() {
     return this.http.get<any>(this.apiUrl + '/unidad_ejecutora');
   }
+  getRoles() {
+    return this.http.get<any>(this.apiUrl + '/roles');
+  }
   getPeriodos() {
     return this.http.get<any>(this.apiUrl + '/periodos');
   }

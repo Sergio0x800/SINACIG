@@ -17,6 +17,18 @@ class CatalogosService {
     return dataUnidad;
   }
 
+  async findRoles() {
+    const dataRoles = await models.Rol.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+    if (dataRoles.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataRoles;
+  }
+
   async findControlMitigador() {
     const dataControl = await models.ControlMitigador.findAll({
       where: {

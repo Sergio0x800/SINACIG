@@ -57,13 +57,26 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-6">
+
             <div class="form-group">
+              <label for="selectRol" class="form-control-label">Rol<span class="obligatorio">*</span></label>
+              <select [(ngModel)]="id_rol" id="selectRol" name="selectRol"
+                class="form-control form-control-alternative">
+                <option value="-1">- Seleccione una Opción -</option>
+                <option *ngFor="let rol of roles" [value]="rol.id_rol">
+                  {{rol.descripcion}}</option>
+              </select>
+            </div>
+
+            <!-- <div class="form-group">
               <label class="form-control-label">Rol<span class="obligatorio">*</span></label>
               <select [(ngModel)]="id_rol" class="form-control form-control-alternative">
                 <option value="-1">- Seleccione una Opción -</option>
                 <option *ngFor="let r of roles" value="{{ r.id_rol }}">{{ r.nombre }}</option>
               </select>
-            </div>
+            </div> -->
+
+
           </div>
           <div class="col-md-6">
             <div class="form-group">
@@ -132,13 +145,25 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-6">
-            <div class="form-group">
+
+
+            <!-- <div class="form-group">
               <label class="form-control-label">Rol<span class="obligatorio">*</span></label>
-              <select [(ngModel)]="id_rol" class="form-control form-control-alternative">
-                <option value="-1">- Seleccione una Opción -</option>
-                <option *ngFor="let r of roles" value="{{ r.id_rol }}">{{ r.nombre }}</option>
+              <select [(ngModel)]="id_rol" class="form-select">
+                <option *ngFor="let r of roles" [value]="r.id_rol">{{ r.descripcion }}</option>
+              </select>
+            </div> -->
+
+            <div class="form-group">
+              <label for="selectRol" class="form-control-label">Rol<span class="obligatorio">*</span></label>
+              <select [(ngModel)]="id_rol" id="selectRol" name="selectRol"
+                class="form-control form-control-alternative">
+                <option *ngFor="let rol of roles" [value]="rol.id_rol">
+                  {{rol.descripcion}}</option>
               </select>
             </div>
+
+
           </div>
           <div class="col-md-6">
             <div class="form-group">

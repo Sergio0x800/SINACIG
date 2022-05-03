@@ -1,22 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const MatrizService = require('../services/matriz.service');
+const passport = require('passport');
 
 const matrizService = new MatrizService();
 
-router.post('/', async (req, res, next) => {
-  try {
-    const dataMatriz = req.body;
-    // const dataMatrizFixed = {
-    //   ...dataMatriz,
-    //   id_unidad_ejecutora: parseInt(dataMatriz.id_unidad_ejecutora),
-    // };
-    const matrizAdded = await matrizService.createMatriz(dataMatriz);
-    res.json(matrizAdded);
-  } catch (error) {
-    next(error);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const dataMatriz = req.body;
+      // const dataMatrizFixed = {
+      //   ...dataMatriz,
+      //   id_unidad_ejecutora: parseInt(dataMatriz.id_unidad_ejecutora),
+      // };
+      const matrizAdded = await matrizService.createMatriz(dataMatriz);
+      res.json(matrizAdded);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get('/', async (req, res, next) => {
   try {

@@ -13,6 +13,15 @@ router.get('/unidad_ejecutora', async (req, res, next) => {
   }
 });
 
+router.get('/roles', async (req, res, next) => {
+  try {
+    const roles = await catalogosServiceI.findRoles();
+    res.json(roles);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/control_mitigador', async (req, res, next) => {
   try {
     const control = await catalogosServiceI.findControlMitigador();

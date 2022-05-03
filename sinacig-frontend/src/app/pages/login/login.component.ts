@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import Swal from 'sweetalert2'
+import { CatalogosService } from 'src/app/services/catalogos.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   usuario: any = undefined;
   password: any = undefined;
 
+
   constructor(private router: Router, private utilidades: UtilidadesService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
@@ -22,7 +24,6 @@ export class LoginComponent implements OnInit {
   }
 
   async iniciarSesion() {
-    console.log(this.usuario)
     if (!this.usuario) {
       this.utilidades.mostrarError('Debe ingresar el usuario')
       return
@@ -37,8 +38,8 @@ export class LoginComponent implements OnInit {
       password: this.password
     })
 
-    if (RESPONSE_AUTENTICACION.result == "ok") {
-      this.utilidades.mostrarExito(RESPONSE_AUTENTICACION.msg)
+    if (RESPONSE_AUTENTICACION.usuario.id_usuario) {
+      this.utilidades.mostrarExito("Bienvenido al sistema SINACIG")
       this.utilidades.setSessionStorageRol(RESPONSE_AUTENTICACION.id_rol)
       this.utilidades.setSessionStorageIdUsuario(RESPONSE_AUTENTICACION.id_usuario)
       this.utilidades.setSessionStorageUsuario(RESPONSE_AUTENTICACION.usuario)

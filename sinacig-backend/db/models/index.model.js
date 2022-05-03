@@ -19,6 +19,7 @@ const {
   Probabilidad,
   ProbabilidadSchema,
 } = require('./catalogosModels/probabilidad.model');
+const { Rol, RolSchema } = require('./catalogosModels/rol.model');
 const {
   Medida,
   MedidaRiesgoSchema,
@@ -52,6 +53,7 @@ const {
   ControlMitigador,
   ControlMitigadorSchema,
 } = require('./catalogosModels/controlMitigador.model');
+const { Usuario, UsuarioSchema } = require('./usuario.model');
 
 function setupModels(sequelize) {
   Unidad.init(UnidadSchema, Unidad.config(sequelize));
@@ -64,6 +66,7 @@ function setupModels(sequelize) {
   PlanTrabajo.init(PlanTrabajoSchema, PlanTrabajo.config(sequelize));
   Prioridad.init(PrioridadSchema, Prioridad.config(sequelize));
   Periodos.init(PeriodosSchema, Periodos.config(sequelize));
+  Rol.init(RolSchema, Rol.config(sequelize));
   ControlMitigador.init(
     ControlMitigadorSchema,
     ControlMitigador.config(sequelize)
@@ -80,6 +83,7 @@ function setupModels(sequelize) {
   );
   Matriz.init(MatrizSchema, Matriz.config(sequelize));
   Correlativo.init(CorrelativoSchema, Correlativo.config(sequelize));
+  Usuario.init(UsuarioSchema, Usuario.config(sequelize));
 }
 
 module.exports = setupModels;

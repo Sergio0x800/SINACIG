@@ -1,8 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { CatalogosService } from 'src/app/services/catalogos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import Swal from 'sweetalert2';
-
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -16,16 +16,7 @@ export class UsuariosComponent implements OnInit {
 
   RESPONSE_INACTIVAR_USUARIO: any = []
 
-  roles: any = [
-    {
-      id_rol: 1,
-      nombre: 'Administrador'
-    },
-    {
-      id_rol: 2,
-      nombre: 'Digitador'
-    }
-  ]
+  roles: any = [];
 
   id_usuario: any
   id_rol: any = '-1'
@@ -36,10 +27,11 @@ export class UsuariosComponent implements OnInit {
   password: any
   cpassword: any
 
-  constructor(private usuarioService: UsuarioService, private utils: UtilidadesService) { }
+  constructor(private usuarioService: UsuarioService, private utils: UtilidadesService, private catalogosService: CatalogosService) { }
 
   async ngOnInit(): Promise<void> {
     await this.obtenerUsuarios()
+    this.catalogosService.getRoles().subscribe(roles => this.roles = roles)
   }
 
   async obtenerUsuarios() {
@@ -67,7 +59,7 @@ export class UsuariosComponent implements OnInit {
       nombres: this.nombres,
       apellidos: this.apellidos,
       password: this.password,
-      id_usuario_ingreso: this.utils.getSessionStorageIdUsuario()
+      id_usuario_ingreso: 1
     }
 
     const RESPONSE_REGISTRO_USUARIO: any = await this.usuarioService.registrarUsuario(data)
