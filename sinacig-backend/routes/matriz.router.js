@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const MatrizService = require('../services/matriz.service');
-const passport = require('passport');
+// const passport = require('passport');
 
 const matrizService = new MatrizService();
 
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const dataMatriz = req.body;

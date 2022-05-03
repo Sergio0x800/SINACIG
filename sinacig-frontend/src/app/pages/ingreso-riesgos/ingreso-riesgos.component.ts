@@ -65,6 +65,7 @@ export class IngresoRiesgosComponent implements OnInit {
 
   //variable que guarda en memoria los controles internos agregados para luego hacer un sulo insert
   controlInternoMemory: any = []
+  controlInternoMemory2: any = []
   showBtnControlP: boolean = true
   showBtnControlI: boolean = true
 
@@ -126,7 +127,7 @@ export class IngresoRiesgosComponent implements OnInit {
       //Se encuentra el tipo de objetivo seleccionado
       this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
       //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
-      this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
+      this.correlativoService.getCorrelativo({ id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
         if (!maximoEncontrado) {
           const newCorrelativo = {
             id_matriz: this.id_matriz,
@@ -208,12 +209,12 @@ export class IngresoRiesgosComponent implements OnInit {
 
   //metodo para la creacion de nuevos riesgos y nuevos controles internos
   createNewRiesgo() {
-    const dataSearch = {
+    const dataRiesgo = {
       ...this.formCreateRiesgo.value,
       id_matriz: this.id_matriz
     }
     //se crea el riesgo
-    this.riesgosService.createRiesgo(dataSearch).subscribe((value) => {
+    this.riesgosService.createRiesgo(dataRiesgo).subscribe((value) => {
       this.id_riesgo = value;
       //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
       this.controlInternoMemory.map((control: any) => {
@@ -233,26 +234,32 @@ export class IngresoRiesgosComponent implements OnInit {
           usuario_registro: 1,
           correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
         }
-        this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => {
-        })
+        this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => { })
       })
-      Swal.fire({
-        title: '¡El registro se guardo correctamente!',
-        text: "¿Desea agregar un plan de trabajo a este riesgo?",
-        icon: 'success',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, ¡agregar!',
-        cancelButtonText: 'Cancelar'
-      }).then((result: any) => {
-        if (result.isConfirmed) {
-          this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
-        } else {
+      /////////////////////////////////////////////////////////////
 
-          this.router.navigate(['/admin/riesgos/', this.id_matriz]);
-        }
+      Swal.fire({
+        icon: 'success',
+        text: 'El registro se actualizo correctamente!'
       })
+      this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
+      // Swal.fire({
+      //   title: '¡El registro se guardo correctamente!',
+      //   text: "¿Desea agregar un plan de trabajo a este riesgo?",
+      //   icon: 'success',
+      //   showCancelButton: true,
+      //   confirmButtonColor: '#3085d6',
+      //   cancelButtonColor: '#d33',
+      //   confirmButtonText: 'Si, ¡agregar!',
+      //   cancelButtonText: 'Cancelar'
+      // }).then((result: any) => {
+      //   if (result.isConfirmed) {
+      //     this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
+      //   } else {
+
+      //     this.router.navigate(['/admin/riesgos/', this.id_matriz]);
+      //   }
+      // })
     },
       err => {
         Swal.fire({
@@ -264,8 +271,19 @@ export class IngresoRiesgosComponent implements OnInit {
 
   //metodo para ingresar controles internos en memoria
   pushControlInterno() {
-    this.controlInternoMemory.push(this.formCreateControlInterno.value);
-    this.formCreateControlInterno.get('descripcion')?.reset();
+    if (this.controlInternoMemory2.includes(this.formCreateControlInterno.get('descripcion')?.value)) {
+      Swal.fire({
+        icon: 'warning',
+        text: 'Ya existe un registro con esta descrpción!'
+      })
+    } else {
+      this.controlInternoMemory.push(this.formCreateControlInterno.value);
+      this.controlInternoMemory2.push(this.formCreateControlInterno.get('descripcion')?.value);
+      this.controlInternoMemory.map((element: any) => {
+        const indice = this.controlInternoMemory.findIndex((value: any) => value.descripcion === this.formCreateControlInterno.get('descripcion')?.value)
+        this.controlInternoMemory[indice].descripcion = `${indice + 1}.) ${this.formCreateControlInterno.get('descripcion')?.value}`
+      })
+    }
   }
 
   //metodo que elimina controles internos de la memoria
