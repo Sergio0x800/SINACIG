@@ -13,7 +13,7 @@ function checkApiKey(req, res, next) {
 
 function checkAdminRole(req, res, next) {
   const user = req.user;
-  if (user.role === 'admin') {
+  if (user.role == '1') {
     next();
   } else {
     next(boom.unauthorized());

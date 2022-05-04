@@ -74,6 +74,16 @@ class UsuarioService {
     const result = await sequelize.query(`EXEC sp_obtener_usuarios`);
     return result[0];
   }
+
+  async obtenerUsuario(id_usuario) {
+    const result = await models.Usuario.findOne({
+      where: {
+        id_usuario,
+        estado_registro: 1,
+      },
+    });
+    return result.dataValues;
+  }
   ////////prueba auth usuarios
   async autenticarUsuarioPrueba() {}
 }

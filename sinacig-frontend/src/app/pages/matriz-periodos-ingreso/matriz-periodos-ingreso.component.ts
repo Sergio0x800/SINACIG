@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { MatrizService } from 'src/app/services/matriz.service';
@@ -26,6 +27,8 @@ export class MatrizPeriodosIngresoComponent implements OnInit {
   //Inicializando Catalogos
   unidadesEjecutoras: any = [];
 
+  usuario: any = {}
+
   //Forms Control Create Riesgo
   formCreateMatrizPeriodo = new FormGroup({
     id_unidad_ejecutora: new FormControl(0, Validators.required),
@@ -35,11 +38,15 @@ export class MatrizPeriodosIngresoComponent implements OnInit {
 
   constructor(
     private catalogsService: CatalogosService,
-    private matrizService: MatrizService
+    private matrizService: MatrizService,
+    private usuarioService: UsuarioService
   ) { }
 
   ngOnInit(): void {
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+    this.usuarioService.user$.subscribe(user => {
+      this.usuario = user.usuario
+    })
   }
 
   createNewMatrizPeriodo() {

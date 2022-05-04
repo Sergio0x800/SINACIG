@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
+import { TokenService } from './token.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +11,17 @@ import { environment } from 'src/environments/environment';
 export class UsuarioService {
   private apiUrl = `${environment.URL_API}`;
 
-  constructor(private http: HttpClient) { }
+  private user = new BehaviorSubject<any>(null);
+  user$ = this.user.asObservable();
+
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   obtenerUsuarios() {
     return this.http.get(`${this.apiUrl}/usuario`).toPromise();
+  }
+
+  obtenerUsuario() {
+    return this.http.get(`${this.apiUrl}/usuario/profile`);
   }
 
   registrarUsuario(data: any) {
@@ -27,6 +37,10 @@ export class UsuarioService {
   }
 
   autenticarUsuario(data: any) {
-    return this.http.post(this.apiUrl + '/auth/login', data).toPromise();
+    return this.http.post(this.apiUrl + '/auth/login', data)
+    .pipe(
+      tap((response: any) => this.tokenService.saveToken(response.token)),
+      tap((user: any) => this.user.next(user))
+    );
   }
 }

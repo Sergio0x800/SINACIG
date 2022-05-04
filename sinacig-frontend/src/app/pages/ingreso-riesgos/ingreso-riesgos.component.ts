@@ -217,14 +217,19 @@ export class IngresoRiesgosComponent implements OnInit {
     this.riesgosService.createRiesgo(dataRiesgo).subscribe((value) => {
       this.id_riesgo = value;
       //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
+
+
       this.controlInternoMemory.map((control: any) => {
+        const indice = this.controlInternoMemory.indexOf(control);
         const controlInterno = {
           ...control,
+          descripcion: ((indice + 1) + '. ') + control.descripcion,
           id_riesgo: this.id_riesgo
         }
+        console.log(controlInterno);
         this.planService.createControlInterno(controlInterno).subscribe(value => { })
       })
-      //se empieza con el proceso de eliminacion y creacion del antiguo y nuevo correlativo respectivamente 
+      //se empieza con el proceso de eliminacion y creacion del antiguo y nuevo correlativo respectivamente
       this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
         delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
         delete this.maximoCorrelativoEncontrado.fecha_registro
@@ -279,10 +284,6 @@ export class IngresoRiesgosComponent implements OnInit {
     } else {
       this.controlInternoMemory.push(this.formCreateControlInterno.value);
       this.controlInternoMemory2.push(this.formCreateControlInterno.get('descripcion')?.value);
-      this.controlInternoMemory.map((element: any) => {
-        const indice = this.controlInternoMemory.findIndex((value: any) => value.descripcion === this.formCreateControlInterno.get('descripcion')?.value)
-        this.controlInternoMemory[indice].descripcion = `${indice + 1}.) ${this.formCreateControlInterno.get('descripcion')?.value}`
-      })
     }
   }
 

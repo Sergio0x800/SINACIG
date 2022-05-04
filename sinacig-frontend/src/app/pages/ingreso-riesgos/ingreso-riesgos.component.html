@@ -129,7 +129,7 @@
         <div *ngIf="controlInternoMemory.length > 0" class="table-responsive">
           <table class="table">
             <tbody>
-              <tr *ngFor="let controlInt of controlInternoMemory">
+              <tr *ngFor="let controlInt of controlInternoMemory; index as i">
                 <th scope="row th-display">
                   <div class="options-icons">
                     <span (click)="deleteControlInterno(controlInt.descripcion)" class="btn-delete"></span>
@@ -137,7 +137,7 @@
                 </th>
                 <td class="pt-3 text-dark font-text-table">
                   <div class="select-control-mitigador">
-                    {{controlInt.descripcion}}
+                    {{i+1+'. '}}{{controlInt.descripcion}}
                   </div>
                 </td>
               </tr>

@@ -13,6 +13,7 @@ import { IngresoPlanTrabajoComponent } from './pages/ingreso-plan-trabajo/ingres
 import { EvaluacionRiesgoReporteComponent } from './components/reports/evaluacion-riesgo-reporte/evaluacion-riesgo-reporte.component';
 import { PlanTrabajoComponent } from './components/reports/plan-trabajo/plan-trabajo/plan-trabajo.component';
 import { MapaRiesgoComponent } from './components/reports/mapa-riesgo/mapa-riesgo.component';
+import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
 
   {
@@ -26,43 +27,52 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
+        canActivate: [ AuthGuard ],
         component: DashboardComponent
       },
       {
         path: 'matriz',
+        canActivate: [ AuthGuard ],
         component: MatrizPeriodosComponent
       },
       {
         path: 'matriz-periodos-ingreso',
+        canActivate: [ AuthGuard ],
         component: MatrizPeriodosIngresoComponent
       },
       {
         path: 'riesgos/:id_matriz',
+        canActivate: [ AuthGuard ],
         component: RiesgosComponent
       },
       {
         path: 'ingreso-riesgos/:id_matriz',
+        canActivate: [ AuthGuard ],
         component: IngresoRiesgosComponent
       },
       {
         path: 'ingreso-plan-trabajo/:id_riesgo/:id_matriz',
+        canActivate: [ AuthGuard ],
         component: IngresoPlanTrabajoComponent
       },
       {
         path: 'usuarios',
+        canActivate: [ AuthGuard ],
         component: UsuariosComponent
       },
       {
         path: 'evaluacion-riesgo-reporte',
+        canActivate: [ AuthGuard ],
         component: EvaluacionRiesgoReporteComponent
-
       },
       {
         path: 'plan-trabajo-reporte',
+        canActivate: [ AuthGuard ],
         component: PlanTrabajoComponent,
       },
       {
         path: 'mapa-riesgo',
+        canActivate: [ AuthGuard ],
         component: MapaRiesgoComponent
       }
     ]

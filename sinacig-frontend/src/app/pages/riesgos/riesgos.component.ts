@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ActivatedRoute } from '@angular/router';
-import { MatrizService } from 'src/app/services/matriz.service';
 import { RiesgosService } from 'src/app/services/riesgos.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
 
@@ -147,6 +147,7 @@ export class RiesgosComponent implements OnInit {
   medidaRiesgoInput: any = '';
   riesgoEncontrado: any = {};
   validarExistenciaPlan: any = {};
+  usuario: any = {};
 
 
 
@@ -154,10 +155,10 @@ export class RiesgosComponent implements OnInit {
   constructor(
     private riesgoService: RiesgosService,
     private route: ActivatedRoute,
-    private router: Router,
     private catalogsService: CatalogosService,
     private planService: PlanRiesgosService,
-    private correlativoService: CorrelativoService
+    private correlativoService: CorrelativoService,
+    private usuarioService: UsuarioService
 
   ) { }
 
@@ -185,6 +186,7 @@ export class RiesgosComponent implements OnInit {
     this.catalogsService.getSeveridad().subscribe(severidades => this.severidades = severidades);
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.catalogsService.getPuestoResponsable().subscribe(puestos => this.puestos = puestos);
+    this.usuarioService.user$.subscribe(user => this.usuario = user.usuario)
 
 
     ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
@@ -266,61 +268,6 @@ export class RiesgosComponent implements OnInit {
       this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
       this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
     })
-
-    // this.formUpdateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
-    //   if (tipo_objetivo_input == this.riesgoToEdit.id_tipo_objetivo) {
-    //     this.formUpdateRiesgo.patchValue({ codigo_referencia: this.riesgoToEdit.codigo_referencia })
-    //     this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //     console.log(this.formUpdateRiesgo.get('codigo_referencia')?.value)
-    //     console.log("dentro de la condicion iguales")
-    //   } else {
-    //     this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
-    //     this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe((maximo: any) => {
-    //       if (maximo) {
-    //         this.formUpdateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //         this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //         this.maximoCorrelativoEncontrado = maximo
-    //         console.log(this.formUpdateRiesgo.get('codigo_referencia')?.value)
-    //         console.log("dentro de la segunda condicion")
-    //       }
-    //       else {
-    //         const newCorrelativo = {
-    //           id_matriz: this.id_matriz,
-    //           id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //           correlativo_maximo: 1,
-    //           usuario_registro: 1
-    //         }
-    //         this.correlativoService.createCorrelativo(newCorrelativo).subscribe(() => {
-    //           this.formUpdateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + 1 })
-    //           this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //           console.log(this.formUpdateRiesgo.get('codigo_referencia')?.value)
-
-    //         })
-    //       }
-    //     })
-    //   }
-    // })
-
-    // this.formUpdateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
-    //   this.showBtnControlI = false
-    //   this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_probabilidad')?.value * severidad_input })
-    //   this.resultadoRI = this.formUpdateRiesgo.get('riesgo_inherente')?.value
-    // })
-    // this.formUpdateRiesgo.get('id_probabilidad')?.valueChanges.subscribe((probabilidad_input: any) => {
-    //   this.showBtnControlP = false
-    //   this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_severidad')?.value * probabilidad_input })
-    //   this.resultadoRI = this.formUpdateRiesgo.get('riesgo_inherente')?.value
-    // })
-    // this.formUpdateRiesgo.get('id_control_mitigador')?.valueChanges.subscribe((mitigador_input: any) => {
-    //   this.formUpdateRiesgo.patchValue({ riesgo_residual: parseInt(this.formUpdateRiesgo.get('riesgo_inherente')?.value) / parseInt(mitigador_input) })
-    //   this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
-    //   this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
-    //     if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-    //       return medida
-    //     }
-    //   })
-    //   this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
-    // })
   }
 
   //Eliminacion y Actualizacion de Riesgos
@@ -332,7 +279,8 @@ export class RiesgosComponent implements OnInit {
         codigo_referencia: this.riesgoEncontrado.codigo_referencia,
         riesgo_inherente: this.resultadoRI,
         riesgo_residual: this.resultadoRR,
-        id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo
+        id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
+        usuario_registro: this.usuario.id_usuario
       }
     } else {
       updateRiesgo = {
@@ -340,7 +288,8 @@ export class RiesgosComponent implements OnInit {
         codigo_referencia: this.codigoReferenciaToInput,
         riesgo_inherente: this.resultadoRI,
         riesgo_residual: this.resultadoRR,
-        id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo
+        id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
+        usuario_registro: this.usuario.id_usuario
       }
     }
     this.riesgoService.updateRiesgo(this.id_riesgo_from_table, updateRiesgo).subscribe((value) => {
@@ -348,7 +297,8 @@ export class RiesgosComponent implements OnInit {
       this.internosMemory.map((control: any) => {
         const newController = {
           ...control,
-          id_riesgo: this.id_riesgo_for_control_interno
+          id_riesgo: this.id_riesgo_for_control_interno,
+          usuario_registro: this.usuario.id_usuario
         }
         this.planService.createControlInterno(newController).subscribe((value) => {
           //obtener
@@ -370,12 +320,7 @@ export class RiesgosComponent implements OnInit {
         icon: 'success',
         text: 'El registro se actualizo correctamente!'
       })
-
-
-
-
       if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-
       } else {
         this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
           delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
@@ -383,7 +328,7 @@ export class RiesgosComponent implements OnInit {
           delete this.maximoCorrelativoEncontrado.usuario_registro
           const newCorrelativo = {
             ...this.maximoCorrelativoEncontrado,
-            usuario_registro: 1,
+            usuario_registro: this.usuario.id_usuario,
             correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
           }
           this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => {
@@ -393,7 +338,7 @@ export class RiesgosComponent implements OnInit {
             id_matriz: this.id_matriz,
             id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
             correlativo_maximo: 1,
-            usuario_registro: 1
+            usuario_registro: this.usuario.id_usuario
           }
           this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
           })
@@ -451,7 +396,8 @@ export class RiesgosComponent implements OnInit {
       this.controlesMemory.map((control: any) => {
         const newController = {
           ...control,
-          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo
+          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
+          usuario_registro: this.usuario.id_usuario
         }
         this.planService.createControlImplementacion(newController).subscribe((value) => {
           //obtener
@@ -472,7 +418,8 @@ export class RiesgosComponent implements OnInit {
       this.recursosMemory.map((recurso: any) => {
         const newRecurso = {
           ...recurso,
-          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo
+          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
+          usuario_registro: this.usuario.id_usuario
         }
         this.planService.createRecurso(newRecurso).subscribe((value) => {
           this.planService.getRecursosByIdRiesgo(this.id_riesgo_from_table).subscribe(recursosObt => {

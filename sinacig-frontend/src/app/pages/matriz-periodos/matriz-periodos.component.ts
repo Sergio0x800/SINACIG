@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 import { CatalogosService } from 'src/app/services/catalogos.service';
-import { RiesgosService } from 'src/app/services/riesgos.service';
-
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { MatrizService } from 'src/app/services/matriz.service';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import Swal from 'sweetalert2'
@@ -14,7 +13,8 @@ import Swal from 'sweetalert2'
   styleUrls: ['./matriz-periodos.component.css']
 })
 export class MatrizPeriodosComponent implements OnInit {
-
+  //Datos usuario
+  usuario: any = {}
   //Configuracion mydatepicker
   myDpOptions: IAngularMyDpOptions = {
     dateRange: false,
@@ -40,19 +40,21 @@ export class MatrizPeriodosComponent implements OnInit {
 
   constructor(
     private catalogsService: CatalogosService,
-    private riesgosService: RiesgosService,
-    private matrizService: MatrizService
+    private matrizService: MatrizService,
+    private usuarioService: UsuarioService,
   ) { }
 
   ngOnInit(): void {
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
+    this.usuarioService.user$.subscribe(usuario => this.usuario = usuario)
   }
 
   createNewMatrizPeriodo() {
     const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
     const dataSearch = {
       ...this.formSearchCreateMatrizPeriodo.value,
+      usuario_registro: this.usuario.id_usuario,
       fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
       fecha_periodo_fin: periodoSeleccionado.fecha_fin
     }

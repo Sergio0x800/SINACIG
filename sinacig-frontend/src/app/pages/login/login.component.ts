@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   usuario: any = undefined;
   password: any = undefined;
+  token: any = '';
 
 
   constructor(private router: Router, private utilidades: UtilidadesService, private usuarioService: UsuarioService) { }
@@ -33,20 +34,22 @@ export class LoginComponent implements OnInit {
       return
     }
 
-    const RESPONSE_AUTENTICACION: any = await this.usuarioService.autenticarUsuario({
+    this.usuarioService.autenticarUsuario({
       usuario: this.usuario,
       password: this.password
+    }).subscribe((usuarioAuth: any) => {
+      this.token = usuarioAuth.token
+      if (this.token) {
+        this.utilidades.mostrarExito("Bienvenido al sistema SINACIG")
+        this.utilidades.setSessionStorageRol(usuarioAuth.id_rol)
+        this.utilidades.setSessionStorageIdUsuario(usuarioAuth.id_usuario)
+        this.utilidades.setSessionStorageUsuario(usuarioAuth.usuario)
+        this.router.navigate(['/admin']); //redirigimos
+      } else {
+        this.utilidades.mostrarError(usuarioAuth.msg)
+      }
     })
 
-    if (RESPONSE_AUTENTICACION.usuario.id_usuario) {
-      this.utilidades.mostrarExito("Bienvenido al sistema SINACIG")
-      this.utilidades.setSessionStorageRol(RESPONSE_AUTENTICACION.id_rol)
-      this.utilidades.setSessionStorageIdUsuario(RESPONSE_AUTENTICACION.id_usuario)
-      this.utilidades.setSessionStorageUsuario(RESPONSE_AUTENTICACION.usuario)
-      this.router.navigate(['/admin']); //redirigimos
-    } else {
-      this.utilidades.mostrarError(RESPONSE_AUTENTICACION.msg)
-    }
   }
 
 }

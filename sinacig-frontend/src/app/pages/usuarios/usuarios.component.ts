@@ -26,12 +26,16 @@ export class UsuariosComponent implements OnInit {
   apellidos: any
   password: any
   cpassword: any
+  usuarioEncontrado: any = {}
 
   constructor(private usuarioService: UsuarioService, private utils: UtilidadesService, private catalogosService: CatalogosService) { }
 
   async ngOnInit(): Promise<void> {
     await this.obtenerUsuarios()
     this.catalogosService.getRoles().subscribe(roles => this.roles = roles)
+    this.usuarioService.user$.subscribe(user => {
+      this.usuarioEncontrado = user.usuario
+    })
   }
 
   async obtenerUsuarios() {
@@ -59,7 +63,7 @@ export class UsuariosComponent implements OnInit {
       nombres: this.nombres,
       apellidos: this.apellidos,
       password: this.password,
-      id_usuario_ingreso: 1
+      id_usuario_ingreso: this.usuario.id_usuario
     }
 
     const RESPONSE_REGISTRO_USUARIO: any = await this.usuarioService.registrarUsuario(data)
@@ -191,7 +195,7 @@ export class UsuariosComponent implements OnInit {
       nombres: this.nombres,
       apellidos: this.apellidos,
       password: this.password,
-      id_usuario_ingreso: this.utils.getSessionStorageIdUsuario()
+      id_usuario_ingreso: this.usuario.id_usuario
     }
 
     const RESPONSE_ACTUALIZAR_USUARIO: any = await this.usuarioService.actualizarUsuario(data)

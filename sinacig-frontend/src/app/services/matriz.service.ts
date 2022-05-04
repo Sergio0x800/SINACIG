@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,7 +12,14 @@ export class MatrizService {
   constructor(private http: HttpClient) { }
 
   createMatriz(data: any) {
-    return this.http.post(this.apiUrl, data);
+    // const headers = new HttpHeaders();
+    // headers.set('Authorization', `Bearer ${data.token}`)
+    return this.http.post(this.apiUrl, {
+      ...data,
+      headers: {
+
+      }
+    });
   }
 
   getMatrizByParams(data: any) {

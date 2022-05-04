@@ -32,6 +32,7 @@ import { RiesgosComponent } from './pages/riesgos/riesgos.component';
 import { IngresoPlanTrabajoComponent } from './pages/ingreso-plan-trabajo/ingreso-plan-trabajo.component';
 import { TableInfoRiesgosComponent } from './components/table-info-riesgos/table-info-riesgos.component';
 import { MapaRiesgoComponent } from './components/reports/mapa-riesgo/mapa-riesgo.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { MapaRiesgoComponent } from './components/reports/mapa-riesgo/mapa-riesg
     NgxMaskModule.forRoot(),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
