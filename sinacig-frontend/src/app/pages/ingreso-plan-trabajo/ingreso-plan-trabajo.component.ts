@@ -7,6 +7,7 @@ import { RiesgosService } from 'src/app/services/riesgos.service';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 
 import Swal from 'sweetalert2';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   id_plan_trabajoControlInt: any = 0;
   id_plan_trabajoControlImple: any = 0;
 
+  usuario: any = {}
 
   linkPlan: string = '';
   showBtn: boolean = true;
@@ -83,7 +85,8 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     private catalogosService: CatalogosService,
     private riesgosService: RiesgosService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private usuarioService: UsuarioService
   ) { }
 
   ngOnInit(): void {
@@ -97,22 +100,44 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     })
     this.catalogosService.getPrioridad().subscribe(prioridad => this.prioridades = prioridad)
     this.catalogosService.getPuestoResponsable().subscribe(puesto => this.puestos = puesto)
+    this.usuarioService.user$.subscribe((user: any) => this.usuario = user.usuario)
   }
 
   createNewPlanRiesgo() {
-    // this.formCreatePlanRiesgo.valueChanges.subscribe((value) => {
-    //   parseInt(value.id_prioridad)
-    //   parseInt(value.id_puesto_responsable)
-    //   parseInt(value.usuario_registro)
-    // })
     const newRiesgoPlan = {
       ...this.formCreatePlanRiesgo.value,
       id_riesgo: this.id_riesgo,
       fecha_inicio: this.formCreatePlanRiesgo.value.fecha_inicio.singleDate.formatted,
-      fecha_fin: this.formCreatePlanRiesgo.value.fecha_fin.singleDate.formatted
+      fecha_fin: this.formCreatePlanRiesgo.value.fecha_fin.singleDate.formatted,
+      usuario_registro: this.usuario.id_usuario
     }
     this.planRiesgoService.createPlanRiesgo(newRiesgoPlan).subscribe((value) => {
       this.id_riesgo_plan_trabajo = value;
+      this.recursosMemory.map((recursosObt: any) => {
+        const indice = this.recursosMemory.indexOf(recursosObt);
+        const recursos = {
+          ...recursosObt,
+          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
+          usuario_registro: this.usuario.id_usuario,
+          descripcion: ((indice + 1) + '. ') + recursosObt.descripcion
+        }
+        this.planRiesgoService.createRecurso(recursos).subscribe(value => {
+        })
+      })
+      this.controlImplementacionMemory.map((controlObt: any) => {
+        const indice = this.controlImplementacionMemory.indexOf(controlObt);
+        const newControlesImp = {
+          ...controlObt,
+          que: ((indice + 1) + '. ') + controlObt.que,
+          como: ((indice + 1) + '. ') + controlObt.como,
+          quien: ((indice + 1) + '. ') + controlObt.quien,
+          cuando: ((indice + 1) + '. ') + controlObt.cuando,
+          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
+          usuario_registro: this.usuario.id_usuario
+        }
+        this.planRiesgoService.createControlImplementacion(newControlesImp).subscribe(value => {
+        })
+      })
       Swal.fire({
         title: '¡El registro se guardo correctamente!',
         icon: 'success',
@@ -120,22 +145,6 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         confirmButtonText: 'OK!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.recursosMemory.map((recursosObt: any) => {
-            const recursos = {
-              ...recursosObt,
-              id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo
-            }
-            this.planRiesgoService.createRecurso(recursos).subscribe(value => {
-            })
-          })
-          this.controlImplementacionMemory.map((controlObt: any) => {
-            const newControlesImp = {
-              ...controlObt,
-              id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo
-            }
-            this.planRiesgoService.createControlImplementacion(newControlesImp).subscribe(value => {
-            })
-          })
           this.router.navigate(['/admin/riesgos/', this.id_matriz]);
         }
       })

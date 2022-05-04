@@ -13,7 +13,6 @@ class EvaluacionRiesgoReporteService{
             `);
             return dataReporte;
         } catch (error) {
-            console.log(error.message);
             throw `${error}`;
         }
     }

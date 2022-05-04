@@ -97,6 +97,7 @@ export class RiesgosComponent implements OnInit {
   recursosMemoryDelete: any = [];
   internosMemory: any = [];
   internosMemoryDelete: any = [];
+  countIndice: any = 0;
 
 
   //Formularios reactivos para riesgo, plan, control, recursos
@@ -158,7 +159,8 @@ export class RiesgosComponent implements OnInit {
     private catalogsService: CatalogosService,
     private planService: PlanRiesgosService,
     private correlativoService: CorrelativoService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private router: Router
 
   ) { }
 
@@ -272,6 +274,7 @@ export class RiesgosComponent implements OnInit {
 
   //Eliminacion y Actualizacion de Riesgos
   updateRiesgo() {
+    // this.countIndice = this.controlesInternosObtenidos.length
     let updateRiesgo = {}
     if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
       updateRiesgo = {
@@ -297,25 +300,23 @@ export class RiesgosComponent implements OnInit {
       this.internosMemory.map((control: any) => {
         const newController = {
           ...control,
+          // descripcion: ((this.countIndice += 1) + '. ') + control.descripcion,
           id_riesgo: this.id_riesgo_for_control_interno,
           usuario_registro: this.usuario.id_usuario
         }
-        this.planService.createControlInterno(newController).subscribe((value) => {
-          //obtener
-          this.planService.getControlInterno(this.id_riesgo_from_table).subscribe((value: any) => {
-            this.controlesInternosObtenidos = value;
-            this.internosMemory = []
-            this.showInputsModalInterno = false
-          }, err => {
-            this.tableModalInterno = false
-          })
-
-        })
+        this.planService.createControlInterno(newController).subscribe((value) => { })
       })
+      this.internosMemory = []
       //eliminar
       this.internosMemoryDelete.map((id_control: any) => {
         this.planService.deleteControlInterno(id_control).subscribe((value) => { })
       })
+
+
+
+
+
+      this.internosMemoryDelete = []
       Swal.fire({
         icon: 'success',
         text: 'El registro se actualizo correctamente!'
@@ -357,6 +358,7 @@ export class RiesgosComponent implements OnInit {
         })
       })
   }
+
   deleteRiesgo(id_riesgo: any) {
     Swal.fire({
       title: 'Estas seguro de eliminar este registro?',
@@ -394,8 +396,10 @@ export class RiesgosComponent implements OnInit {
     this.planService.updatePlan(this.id_riesgo_plan_trabajo, this.formUpdatePlan.value).subscribe((planObtenido) => {
       //crear
       this.controlesMemory.map((control: any) => {
+        const indice = this.controlesMemory.indexOf(control);
         const newController = {
           ...control,
+          descripcion: ((indice + 1) + '. ') + control.descripcion,
           id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
           usuario_registro: this.usuario.id_usuario
         }
@@ -457,10 +461,13 @@ export class RiesgosComponent implements OnInit {
 
       this.planService.getControlInterno(id_riesgo).subscribe(controlInterno => {
         this.controlesInternosObtenidos = controlInterno;
+        console.log(this.controlesInternosObtenidos)
         this.tableModalInterno = true
       })
     })
   }
+
+
   editPlanTrabajoControlesRecursos(id_riesgo: any) {
     this.id_riesgo_from_table = id_riesgo
     this.linkPlanTrabajo = `/admin/ingreso-plan-trabajo/${id_riesgo}/${this.id_matriz}`
@@ -490,18 +497,17 @@ export class RiesgosComponent implements OnInit {
     if (dataFormControl.descripcion) {
       this.internosMemory.push(dataFormControl);
       this.formUpdateControlInterno.reset()
-      console.log(this.internosMemory)
     }
   }
   deleteInternoInMemory(descripcion: any) {
     const indice = this.internosMemory.findIndex((value: any) => value.descripcion == descripcion)
     this.internosMemory.splice(indice, 1)
-    console.log(this.internosMemory)
   }
   deleteInternoInMemoryTablaGet(id_control: any) {
-    const indice = this.controlesInternosObtenidos.findIndex((value: any) => value.id_implementacion == id_control);
+    const indice = this.controlesInternosObtenidos.findIndex((value: any) => value.id_riesgo_control_interno == id_control);
     this.controlesInternosObtenidos.splice(indice, 1);
     this.internosMemoryDelete.push(id_control);
+    console.log(this.controlesInternosObtenidos)
   }
 
 
@@ -553,4 +559,18 @@ export class RiesgosComponent implements OnInit {
     this.showInputsModalInterno = !this.showInputsModalInterno
   }
 
+  cancelarUpdate() {
+    this.internosMemoryDelete = []
+  }
+
+  verificarPlanes() {
+    this.planService.getExistenciaPlanTrabajo(this.id_matriz).subscribe((result: any) => {
+      Swal.fire({
+        icon: 'warning',
+        text: `¡Para ingresar un nuevo riesgo debe de asignar un plan de trabajo a todos los riesgos del periodo actual!`
+      })
+    }, err => {
+      this.router.navigate(['/admin/ingreso-riesgos/', this.id_matriz])
+    })
+  }
 }

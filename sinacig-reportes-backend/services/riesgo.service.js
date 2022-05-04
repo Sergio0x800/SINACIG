@@ -70,7 +70,6 @@ class RiesgoService {
       });
       return updatedRiesgo;
     } catch (error) {
-      console.log(error);
       throw boom.internal('Error al actualizar el registro');
     }
   }

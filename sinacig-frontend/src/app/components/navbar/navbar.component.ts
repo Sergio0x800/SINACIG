@@ -25,13 +25,12 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.usuarioService.user$.subscribe((usuario: any) => {
-      console.log(usuario)
       this.usuario = usuario.usuario;
     })
     this.listTitles = ROUTES.filter(listTitle => listTitle);
   }
 
-  getTitle(){
+  getTitle() {
     // var titlee = this.location.prepareExternalUrl(this.location.path());
     // return titlee.split('/')[titlee.split('/').length - 1].toUpperCase()
     return 'Ministerio de Salud Pública y Asistencia Social -MSPAS-'

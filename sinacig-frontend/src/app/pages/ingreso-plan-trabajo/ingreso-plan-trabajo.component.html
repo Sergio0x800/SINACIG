@@ -126,6 +126,7 @@
                     <thead>
                       <tr>
                         <th scope="col"></th>
+                        <th scope="col">No.</th>
                         <th scope="col">Que:</th>
                         <th scope="col">Como:</th>
                         <th scope="col">Quien:</th>
@@ -133,7 +134,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let ctImplementacion of controlImplementacionMemory">
+                      <tr *ngFor="let ctImplementacion of controlImplementacionMemory; index as i">
                         <th scope="row th-display">
                           <div class="options-icons">
                             <span
@@ -141,6 +142,7 @@
                               class="btn-delete"></span>
                           </div>
                         </th>
+                        <td class="pt-3 text-dark font-text-table">{{i+1+'. '}}</td>
                         <td class="pt-3 text-dark font-text-table">{{ctImplementacion.que}}</td>
                         <td class="pt-3 text-dark font-text-table">{{ctImplementacion.como}}</td>
                         <td class="pt-3 text-dark font-text-table">{{ctImplementacion.quien}}</td>
@@ -179,13 +181,13 @@
           <div *ngIf="showTableRecursos" class="table-responsive">
             <table class="table">
               <tbody>
-                <tr *ngFor="let recurso of recursosMemory">
+                <tr *ngFor="let recurso of recursosMemory; index as i">
                   <th scope="row th-display">
                     <div class="options-icons">
                       <span (click)="deleteRecursoFromMemory(recurso.descripcion)" class="btn-delete"></span>
                     </div>
                   </th>
-                  <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
+                  <td class="pt-3 text-dark font-text-table">{{i+1+'. '}}{{recurso.descripcion}}</td>
                 </tr>
               </tbody>
             </table>

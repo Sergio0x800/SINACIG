@@ -27,6 +27,17 @@ class RiesgoPlanTrabajoService {
     return dataPlanes[0];
   }
 
+  async findExistenciaPlanTrabajo(id_matriz) {
+    const result = await sequelize.query(
+      `EXEC sp_get_existencia_plan
+    @id_matriz = ${id_matriz}`
+    );
+    if (result[0].length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return result[0];
+  }
+
   async findPlanTrabajoByIdSP(id_plan) {
     const dataPlanes = await sequelize.query(
       `EXEC sp_get_planes_trabajo_by_id

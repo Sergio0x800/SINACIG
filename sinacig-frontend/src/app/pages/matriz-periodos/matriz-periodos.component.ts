@@ -54,7 +54,6 @@ export class MatrizPeriodosComponent implements OnInit {
     const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
     const dataSearch = {
       ...this.formSearchCreateMatrizPeriodo.value,
-      usuario_registro: this.usuario.id_usuario,
       fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
       fecha_periodo_fin: periodoSeleccionado.fecha_fin
     }

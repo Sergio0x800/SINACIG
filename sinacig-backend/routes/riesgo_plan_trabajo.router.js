@@ -16,6 +16,17 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.get('/existencia_plan/:id_matriz', async (req, res, next) => {
+  try {
+    const { id_matriz } = req.params;
+    const result = await riesgoPlanTrabajoService.findExistenciaPlanTrabajo(
+      id_matriz
+    );
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
 router.get('/update/:id_plan', async (req, res, next) => {
   try {
     const { id_plan } = req.params;

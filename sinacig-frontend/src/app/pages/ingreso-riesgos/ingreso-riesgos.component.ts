@@ -10,6 +10,7 @@ import { CorrelativoService } from 'src/app/services/correlativo.service';
 
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import Swal from 'sweetalert2'
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-ingreso-riesgos',
@@ -91,7 +92,7 @@ export class IngresoRiesgosComponent implements OnInit {
     descripcion: new FormControl('', Validators.required),
     usuario_registro: new FormControl('1', Validators.required),
   })
-
+  usuario: any = {};
   constructor(
     private catalogsService: CatalogosService,
     private riesgosService: RiesgosService,
@@ -99,9 +100,9 @@ export class IngresoRiesgosComponent implements OnInit {
     private matrizService: MatrizService,
     private router: Router,
     private planService: PlanRiesgosService,
-    private correlativoService: CorrelativoService
+    private correlativoService: CorrelativoService,
+    private usuarioService: UsuarioService
   ) { }
-
   ngOnInit(): void {
     this.route.paramMap.subscribe((param: any) => {
       this.id_matriz = param.get('id_matriz');
@@ -112,7 +113,6 @@ export class IngresoRiesgosComponent implements OnInit {
           this.matrizEncontrada.nombre_unidad
       })
     })
-
     //llamado a catalogos
     this.catalogsService.getTipoObjetivo().subscribe(obj => this.tipoObjetivos = obj);
     this.catalogsService.getAreaEvaluada().subscribe(areas => this.areas_evaluadas = areas);
@@ -121,7 +121,7 @@ export class IngresoRiesgosComponent implements OnInit {
     this.catalogsService.getControlMitigador().subscribe(controlM => this.control_mitigador = controlM)
     this.catalogsService.getMedidaRiesgo().subscribe(medidas => this.medidasRiesgo = medidas);
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
-
+    this.usuarioService.user$.subscribe((user: any) => this.usuario = user.usuario)
     ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
     this.formCreateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
       //Se encuentra el tipo de objetivo seleccionado
@@ -154,7 +154,6 @@ export class IngresoRiesgosComponent implements OnInit {
         }
       })
     })
-
     this.formCreateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
       this.showBtnControlI = false
       this.formCreateRiesgo.patchValue({ riesgo_inherente: this.formCreateRiesgo.get('id_probabilidad')?.value * severidad_input })
@@ -165,7 +164,6 @@ export class IngresoRiesgosComponent implements OnInit {
         this.resultadoRR = this.formCreateRiesgo.get('riesgo_residual')?.value
         this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
           if (this.formCreateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-            console.log(medida)
             return medida
           }
         })
@@ -183,7 +181,6 @@ export class IngresoRiesgosComponent implements OnInit {
         this.resultadoRR = this.formCreateRiesgo.get('riesgo_residual')?.value
         this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
           if (this.formCreateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-            console.log(medida)
             return medida
           }
         })
@@ -191,42 +188,38 @@ export class IngresoRiesgosComponent implements OnInit {
         this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
       }
     })
-
     this.formCreateRiesgo.get('id_control_mitigador')?.valueChanges.subscribe((mitigador_input: any) => {
       this.formCreateRiesgo.patchValue({ riesgo_residual: this.formCreateRiesgo.get('riesgo_inherente')?.value / mitigador_input })
       this.resultadoRR = this.formCreateRiesgo.get('riesgo_residual')?.value
       this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
         if (this.formCreateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-          console.log(medida)
           return medida
         }
       })
       this.formCreateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
       this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
-      console.log(this.medidaRiesgoInput)
     })
   }
-
   //metodo para la creacion de nuevos riesgos y nuevos controles internos
   createNewRiesgo() {
     const dataRiesgo = {
       ...this.formCreateRiesgo.value,
-      id_matriz: this.id_matriz
+      id_matriz: this.id_matriz,
+      usuario_registro: this.usuario.id_usuario
     }
     //se crea el riesgo
     this.riesgosService.createRiesgo(dataRiesgo).subscribe((value) => {
       this.id_riesgo = value;
       //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
-
-
       this.controlInternoMemory.map((control: any) => {
         const indice = this.controlInternoMemory.indexOf(control);
         const controlInterno = {
           ...control,
           descripcion: ((indice + 1) + '. ') + control.descripcion,
-          id_riesgo: this.id_riesgo
+          id_riesgo: this.id_riesgo,
+          usuario_registro: this.usuario.id_usuario
+
         }
-        console.log(controlInterno);
         this.planService.createControlInterno(controlInterno).subscribe(value => { })
       })
       //se empieza con el proceso de eliminacion y creacion del antiguo y nuevo correlativo respectivamente
@@ -236,35 +229,16 @@ export class IngresoRiesgosComponent implements OnInit {
         delete this.maximoCorrelativoEncontrado.usuario_registro
         const newCorrelativo = {
           ...this.maximoCorrelativoEncontrado,
-          usuario_registro: 1,
+          usuario_registro: this.usuario.id_usuario,
           correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
         }
         this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => { })
       })
-      /////////////////////////////////////////////////////////////
-
       Swal.fire({
         icon: 'success',
         text: 'El registro se actualizo correctamente!'
       })
       this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
-      // Swal.fire({
-      //   title: '¡El registro se guardo correctamente!',
-      //   text: "¿Desea agregar un plan de trabajo a este riesgo?",
-      //   icon: 'success',
-      //   showCancelButton: true,
-      //   confirmButtonColor: '#3085d6',
-      //   cancelButtonColor: '#d33',
-      //   confirmButtonText: 'Si, ¡agregar!',
-      //   cancelButtonText: 'Cancelar'
-      // }).then((result: any) => {
-      //   if (result.isConfirmed) {
-      //     this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
-      //   } else {
-
-      //     this.router.navigate(['/admin/riesgos/', this.id_matriz]);
-      //   }
-      // })
     },
       err => {
         Swal.fire({

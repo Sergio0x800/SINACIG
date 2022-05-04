@@ -15,10 +15,7 @@ export class MatrizService {
     // const headers = new HttpHeaders();
     // headers.set('Authorization', `Bearer ${data.token}`)
     return this.http.post(this.apiUrl, {
-      ...data,
-      headers: {
-
-      }
+      ...data
     });
   }
 

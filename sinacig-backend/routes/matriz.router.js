@@ -7,8 +7,8 @@ const matrizService = new MatrizService();
 
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  // passport.authenticate('jwt', { session: false }),
+  // checkRoles('1', '2'),
   async (req, res, next) => {
     try {
       const dataMatriz = req.body;

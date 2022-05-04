@@ -34,7 +34,6 @@ class CorrelativoService {
   }
 
   async deleteCorrelativo(id_correlativo_maximo, changes) {
-    // console.log(id_correlativo_maximo);
     const correlativoEncontrado = await models.Correlativo.findOne({
       where: {
         id_correlativo_maximo: id_correlativo_maximo,
