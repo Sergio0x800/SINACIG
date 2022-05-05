@@ -20,12 +20,16 @@ export class UsuarioService {
     return this.http.get(`${this.apiUrl}/usuario`).toPromise();
   }
 
+  obtenerUsuariosByCui(cui: any) {
+    return this.http.get(`${this.apiUrl}/usuario/verifica/${cui}`);
+  }
+
   obtenerUsuario() {
     return this.http.get(`${this.apiUrl}/usuario/profile`);
   }
 
   registrarUsuario(data: any) {
-    return this.http.post(`${this.apiUrl}/usuario`, data).toPromise();
+    return this.http.post(`${this.apiUrl}/usuario`, data);
   }
 
   inactivarUsuario(idUsuario: any) {
@@ -38,9 +42,9 @@ export class UsuarioService {
 
   autenticarUsuario(data: any) {
     return this.http.post(this.apiUrl + '/auth/login', data)
-    .pipe(
-      tap((response: any) => this.tokenService.saveToken(response.token)),
-      tap((user: any) => this.user.next(user))
-    );
+      .pipe(
+        tap((response: any) => this.tokenService.saveToken(response.token)),
+        tap((user: any) => this.user.next(user))
+      );
   }
 }

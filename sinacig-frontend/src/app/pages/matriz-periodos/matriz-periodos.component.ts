@@ -48,7 +48,7 @@ export class MatrizPeriodosComponent implements OnInit {
   ngOnInit(): void {
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
-    this.usuarioService.user$.subscribe(usuario => this.usuario = usuario)
+    this.usuarioService.user$.subscribe(usuario => this.usuario = usuario.usuario)
   }
 
   createNewMatrizPeriodo() {
@@ -66,7 +66,11 @@ export class MatrizPeriodosComponent implements OnInit {
       })
 
     }, err => {
-      this.matrizService.createMatriz(dataSearch).subscribe(() => {
+      const newPeriodo = {
+        ...dataSearch,
+        usuario_registro: this.usuario.id_usuario
+      }
+      this.matrizService.createMatriz(newPeriodo).subscribe(() => {
         Swal.fire({
           icon: 'success',
           text: 'El registro se agrego correctamente!'

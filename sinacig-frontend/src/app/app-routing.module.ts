@@ -27,52 +27,52 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: DashboardComponent
       },
       {
         path: 'matriz',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: MatrizPeriodosComponent
       },
       {
         path: 'matriz-periodos-ingreso',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: MatrizPeriodosIngresoComponent
       },
       {
         path: 'riesgos/:id_matriz',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: RiesgosComponent
       },
       {
         path: 'ingreso-riesgos/:id_matriz',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: IngresoRiesgosComponent
       },
       {
         path: 'ingreso-plan-trabajo/:id_riesgo/:id_matriz',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: IngresoPlanTrabajoComponent
       },
       {
         path: 'usuarios',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: UsuariosComponent
       },
       {
         path: 'evaluacion-riesgo-reporte',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: EvaluacionRiesgoReporteComponent
       },
       {
         path: 'plan-trabajo-reporte',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: PlanTrabajoComponent,
       },
       {
         path: 'mapa-riesgo',
-        canActivate: [ AuthGuard ],
+        canActivate: [AuthGuard],
         component: MapaRiesgoComponent
       }
     ]

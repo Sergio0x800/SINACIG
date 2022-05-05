@@ -467,7 +467,6 @@ export class RiesgosComponent implements OnInit {
 
       this.planService.getControlInterno(id_riesgo).subscribe(controlInterno => {
         this.controlesInternosObtenidos = controlInterno;
-        console.log(this.controlesInternosObtenidos)
         this.tableModalInterno = true
       })
     })
@@ -513,7 +512,6 @@ export class RiesgosComponent implements OnInit {
     const indice = this.controlesInternosObtenidos.findIndex((value: any) => value.id_riesgo_control_interno == id_control);
     this.controlesInternosObtenidos.splice(indice, 1);
     this.internosMemoryDelete.push(id_control);
-    console.log(this.controlesInternosObtenidos)
   }
 
 
@@ -589,7 +587,7 @@ export class RiesgosComponent implements OnInit {
     const countRiesgos = this.riesgos.length
     this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
       this.riesgos = riesgos;
-      if(countRiesgos == riesgos.length){
+      if (countRiesgos == riesgos.length) {
         this.showBtnOffset = false;
         Swal.fire({
           icon: 'warning',

@@ -69,6 +69,12 @@
   gap: 30px;
 
 }
+.container-add-plan {
+  width: 100%;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+}
 .search-container-form-create {
   width: 100%;
   display: flex;

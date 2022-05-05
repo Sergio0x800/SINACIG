@@ -66,16 +66,24 @@ export class UsuariosComponent implements OnInit {
       id_usuario_ingreso: this.usuario.id_usuario
     }
 
-    const RESPONSE_REGISTRO_USUARIO: any = await this.usuarioService.registrarUsuario(data)
+    this.usuarioService.obtenerUsuariosByCui(data.cui).subscribe((usuario: any) => {
+      Swal.fire({
+        icon: 'warning',
+        text: `¡El CUI ingresado ya existe en los registros!`
+      })
+    }, err => {
+      this.usuarioService.registrarUsuario(data).subscribe((result: any) => {
+        this.utils.mostrarExito("Usuario ingresado exitosamente!")
+        document.getElementById("ingresoUsuarioCloseButton")?.click();
+        this.limpiarCampos()
+        this.obtenerUsuarios()
+      }, err => {
+        this.utils.mostrarError("Error al ingresar el usuario")
+      })
+    })
 
-    if (RESPONSE_REGISTRO_USUARIO.result = 'ok') {
-      this.utils.mostrarExito(RESPONSE_REGISTRO_USUARIO.msg)
-      document.getElementById("ingresoUsuarioCloseButton")?.click();
-      this.limpiarCampos()
-      this.obtenerUsuarios()
-    } else {
-      this.utils.mostrarError(RESPONSE_REGISTRO_USUARIO.msg)
-    }
+    // const RESPONSE_REGISTRO_USUARIO: any = await this.usuarioService.registrarUsuario(data)
+
   }
 
   camposValidosNuevoUsuario() {
@@ -176,9 +184,12 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarUsuarioParaActualizar(usuario: any) {
+    console.log(usuario)
     this.id_usuario = usuario.id_usuario
+    console.log(this.id_usuario)
     this.id_rol = usuario.id_rol
     this.usuario = usuario.usuario
+    console.log(this.usuario)
     this.cui = usuario.cui
     this.nombres = usuario.nombres
     this.apellidos = usuario.apellidos

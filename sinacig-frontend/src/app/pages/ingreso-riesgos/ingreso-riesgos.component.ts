@@ -30,7 +30,7 @@ export class IngresoRiesgosComponent implements OnInit {
 
   //variables con string para agregar a los imputs
   routerLinkRiesgo: any = ''
-  codigoReferenciaToInput: any;
+  codigoReferenciaToInput: any = '';
   concatCodigoUnidad: any = ''
 
   //variables que almacenan el tipo de objetivo y medida riesgo encontrado al hacer calculos para el codigo_referencia y la media riesgo
@@ -122,38 +122,75 @@ export class IngresoRiesgosComponent implements OnInit {
     this.catalogsService.getMedidaRiesgo().subscribe(medidas => this.medidasRiesgo = medidas);
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.usuarioService.user$.subscribe((user: any) => this.usuario = user.usuario)
-    ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
-    this.formCreateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
-      //Se encuentra el tipo de objetivo seleccionado
-      this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
-      //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
-      this.correlativoService.getCorrelativo({ id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
-        if (!maximoEncontrado) {
-          const newCorrelativo = {
-            id_matriz: this.id_matriz,
-            id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-            correlativo_maximo: 0,
-            usuario_registro: 1
-          }
-          this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-            //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
-            this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-              this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-              this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
-              //este atributo sirve para al momento de crear el nuevo correlativo
-              this.maximoCorrelativoEncontrado = maximo
-            })
-          })
-        } else {
-          //si el correlativo ya esta inicializado, solo aumenta a 1 el correlativo maximo
-          this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-            this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-            this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
-            this.maximoCorrelativoEncontrado = maximo
-          })
-        }
-      })
-    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
+    // this.formCreateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
+    //   //Se encuentra el tipo de objetivo seleccionado
+    //   this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
+    //   //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
+    //   this.correlativoService.getCorrelativo({ id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
+    //     if (!maximoEncontrado) {
+    //       const newCorrelativo = {
+    //         id_matriz: this.id_matriz,
+    //         id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
+    //         correlativo_maximo: 0,
+    //         usuario_registro: 1
+    //       }
+    //       this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
+    //         //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
+    //         this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
+    //           this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
+    //           this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
+    //           //este atributo sirve para al momento de crear el nuevo correlativo
+    //           this.maximoCorrelativoEncontrado = maximo
+    //         })
+    //       })
+    //     } else {
+    //       //si el correlativo ya esta inicializado, solo aumenta a 1 el correlativo maximo
+    //       this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
+    //         this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
+    //         this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
+    //         this.maximoCorrelativoEncontrado = maximo
+    //       })
+    //     }
+    //   })
+    // })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     this.formCreateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
       this.showBtnControlI = false
       this.formCreateRiesgo.patchValue({ riesgo_inherente: this.formCreateRiesgo.get('id_probabilidad')?.value * severidad_input })
@@ -202,46 +239,119 @@ export class IngresoRiesgosComponent implements OnInit {
   }
   //metodo para la creacion de nuevos riesgos y nuevos controles internos
   createNewRiesgo() {
-    const dataRiesgo = {
-      ...this.formCreateRiesgo.value,
-      id_matriz: this.id_matriz,
-      usuario_registro: this.usuario.id_usuario
-    }
-    //se crea el riesgo
-    this.riesgosService.createRiesgo(dataRiesgo).subscribe((value) => {
-      this.id_riesgo = value;
-      //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
-      this.controlInternoMemory.map((control: any) => {
-        // const indice = this.controlInternoMemory.indexOf(control);
-        const controlInterno = {
-          ...control,
-          // descripcion: ((indice + 1) + '. ') + control.descripcion,
-          id_riesgo: this.id_riesgo,
-          usuario_registro: this.usuario.id_usuario
 
-        }
-        this.planService.createControlInterno(controlInterno).subscribe(value => { })
-      })
-      //se empieza con el proceso de eliminacion y creacion del antiguo y nuevo correlativo respectivamente
-      this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
-        delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
-        delete this.maximoCorrelativoEncontrado.fecha_registro
-        delete this.maximoCorrelativoEncontrado.usuario_registro
+    ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
+
+    let tipo_objetivo_input = this.formCreateRiesgo.get('id_tipo_objetivo')?.value
+    //Se encuentra el tipo de objetivo seleccionado
+    this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
+    //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
+    this.correlativoService.getCorrelativo({ id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
+      if (!maximoEncontrado) {
         const newCorrelativo = {
-          ...this.maximoCorrelativoEncontrado,
-          usuario_registro: this.usuario.id_usuario,
-          correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
+          id_matriz: this.id_matriz,
+          id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
+          correlativo_maximo: 0,
+          usuario_registro: 1
         }
-        this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => { })
-      })
-      this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
-    },
-      err => {
-        Swal.fire({
-          icon: 'error',
-          text: 'Error al ingresar el registro!'
+        this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
+          //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
+          this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
+            this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
+            this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
+            //este atributo sirve para al momento de crear el nuevo correlativo
+            this.maximoCorrelativoEncontrado = maximo
+            const dataRiesgo = {
+              ...this.formCreateRiesgo.value,
+              id_matriz: this.id_matriz,
+              usuario_registro: this.usuario.id_usuario
+            }
+            //se crea el riesgo
+            this.riesgosService.createRiesgo(dataRiesgo).subscribe((value) => {
+              this.id_riesgo = value;
+              //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
+              this.controlInternoMemory.map((control: any) => {
+                // const indice = this.controlInternoMemory.indexOf(control);
+                const controlInterno = {
+                  ...control,
+                  // descripcion: ((indice + 1) + '. ') + control.descripcion,
+                  id_riesgo: this.id_riesgo,
+                  usuario_registro: this.usuario.id_usuario
+
+                }
+                this.planService.createControlInterno(controlInterno).subscribe(value => { })
+              })
+              //se empieza con el proceso de eliminacion y creacion del antiguo y nuevo correlativo respectivamente
+              this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
+                delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
+                delete this.maximoCorrelativoEncontrado.fecha_registro
+                delete this.maximoCorrelativoEncontrado.usuario_registro
+                const newCorrelativo = {
+                  ...this.maximoCorrelativoEncontrado,
+                  usuario_registro: this.usuario.id_usuario,
+                  correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
+                }
+                this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => { })
+              })
+              this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
+            },
+              err => {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Error al ingresar el registro!'
+                })
+              })
+          })
         })
-      })
+      } else {
+        //si el correlativo ya esta inicializado, solo aumenta a 1 el correlativo maximo
+        this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
+          this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
+          this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
+          this.maximoCorrelativoEncontrado = maximo
+          const dataRiesgo = {
+            ...this.formCreateRiesgo.value,
+            id_matriz: this.id_matriz,
+            usuario_registro: this.usuario.id_usuario
+          }
+          //se crea el riesgo
+          this.riesgosService.createRiesgo(dataRiesgo).subscribe((value) => {
+            this.id_riesgo = value;
+            //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
+            this.controlInternoMemory.map((control: any) => {
+              // const indice = this.controlInternoMemory.indexOf(control);
+              const controlInterno = {
+                ...control,
+                // descripcion: ((indice + 1) + '. ') + control.descripcion,
+                id_riesgo: this.id_riesgo,
+                usuario_registro: this.usuario.id_usuario
+
+              }
+              this.planService.createControlInterno(controlInterno).subscribe(value => { })
+            })
+            //se empieza con el proceso de eliminacion y creacion del antiguo y nuevo correlativo respectivamente
+            this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
+              delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
+              delete this.maximoCorrelativoEncontrado.fecha_registro
+              delete this.maximoCorrelativoEncontrado.usuario_registro
+              const newCorrelativo = {
+                ...this.maximoCorrelativoEncontrado,
+                usuario_registro: this.usuario.id_usuario,
+                correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
+              }
+              this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => { })
+            })
+            this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
+          },
+            err => {
+              Swal.fire({
+                icon: 'error',
+                text: 'Error al ingresar el registro!'
+              })
+            })
+        })
+      }
+    })
   }
 
   //metodo para ingresar controles internos en memoria
@@ -255,6 +365,7 @@ export class IngresoRiesgosComponent implements OnInit {
       this.controlInternoMemory.push(this.formCreateControlInterno.value);
       this.controlInternoMemory2.push(this.formCreateControlInterno.get('descripcion')?.value);
     }
+    this.formCreateControlInterno.get('descripcion')?.reset();
   }
 
   //metodo que elimina controles internos de la memoria

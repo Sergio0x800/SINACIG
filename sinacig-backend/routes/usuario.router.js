@@ -47,6 +47,16 @@ router.get(
   }
 );
 
+router.get('/verifica/:cui', async (req, res, next) => {
+  try {
+    const { cui } = req.params;
+    const result = await usuarioService.obtenerUsuariosByCui(cui);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.delete('/:id_usuario', async (req, res, next) => {
   try {
     const { id_usuario } = req.params;

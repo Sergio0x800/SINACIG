@@ -26,7 +26,7 @@
     <h2 class="container__title mb-3">Ingreso de riesgo:</h2>
     <div class="row justify-content-center">
 
-      <div class="col-12 double-inputs-form mt-1">
+      <div class="col-6 double-inputs-form mt-1">
         <div class="inputs-size">
           <label for="inputTipoObjetivo" class="form-label">Tipo de objetivo</label>
           <select id="inputTipoObjetivo" name="inputTipoObjetivo" class="form-select"
@@ -35,13 +35,13 @@
               {{tipoObjetivo.descripcion}}</option>
           </select>
         </div>
-        <div class="inputs-size">
+        <!-- <div class="inputs-size">
           <label for="inputReferencia" class="form-label">Codigo de referencia</label>
           <input [disabled]="true" id="inputReferencia" name="inputReferencia" class="form-control" type="text"
-            formControlName="codigo_referencia" [value]="codigoReferenciaToInput">
-        </div>
+            [value]="codigoReferenciaToInput">
+        </div> -->
       </div>
-      <div class="col-12 mt-4">
+      <div class="col-6 mt-1">
         <label for="inputArea" class="form-label">Área evaluada</label>
         <select id="inputArea" name="inputArea" class="form-select" formControlName="id_area_evaluada">
           <option *ngFor="let area of areas_evaluadas" [value]="area.id_area_evaluada">
@@ -77,8 +77,8 @@
         </div>
         <div class="inputs-size">
           <label for="riesgoRI" class="form-label">Riesgo Inherente (RI)</label>
-          <input [disabled]="true" formControlName="riesgo_inherente" id="riesgoRI" name="riesgoRI" type="number"
-            class="form-control" [value]="resultadoRI">
+          <input [disabled]="true" id="riesgoRI" name="riesgoRI" type="number" class="form-control"
+            [value]="resultadoRI">
         </div>
       </div>
       <div class="col-12 mt-4 double-inputs-form">
@@ -99,8 +99,8 @@
         </div>
         <div class="inputs-size">
           <label for="riesgoRR" class="form-label">Riesgo Residual (RR)</label>
-          <input [disabled]="true" formControlName="riesgo_residual" id="riesgoRR" name="riesgoRR" type="number"
-            class="form-control" [value]="resultadoRR">
+          <input [disabled]="true" id="riesgoRR" name="riesgoRR" type="number" class="form-control"
+            [value]="resultadoRR">
         </div>
         <div class="inputs-size">
           <label for="inputMedida" class="form-label">Medida de Riesgo</label>

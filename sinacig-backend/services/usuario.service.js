@@ -75,6 +75,19 @@ class UsuarioService {
     return result[0];
   }
 
+  async obtenerUsuariosByCui(cui) {
+    const result = await models.Usuario.findOne({
+      where: {
+        cui,
+        estado_registro: 1,
+      },
+    });
+    if (!result) {
+      throw boom.notFound('No se encontro el registro solicitado');
+    }
+    return result;
+  }
+
   async obtenerUsuario(id_usuario) {
     const result = await models.Usuario.findOne({
       where: {
