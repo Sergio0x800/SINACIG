@@ -48,10 +48,10 @@ router.get('/search/:id_riesgo', async (req, res, next) => {
   }
 });
 
-router.get('/:id_matriz', async (req, res, next) => {
+router.get('/:id_matriz/:offset', async (req, res, next) => {
   try {
-    const { id_matriz } = req.params;
-    const riesgo = await riesgoService.findRiesgoByIdMatriz(id_matriz);
+    const { id_matriz, offset } = req.params;
+    const riesgo = await riesgoService.findRiesgoByIdMatriz(id_matriz, offset);
     res.json(riesgo);
   } catch (error) {
     next(error);

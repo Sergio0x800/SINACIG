@@ -1,9 +1,11 @@
 <div class="title-btns mt-5">
   <h1>Matriz evaluación de riesgos</h1>
   <div class="btn-table-riesgo">
-    <button class="btn btn-danger mt-3" routerLink="/admin/matriz"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+    <button class="btn btn-danger btn-size mt-3" routerLink="/admin/matriz"><i class="fa fa-arrow-left"
+        aria-hidden="true"></i>
       Regresar</button>
-    <button class="btn btn-success mt-3" (click)="verificarPlanes()"><i class="fa fa-plus" aria-hidden="true"></i>
+    <button class="btn btn-success btn-size mt-3" (click)="verificarPlanes()"><i class="fa fa-plus"
+        aria-hidden="true"></i>
       Nuevo
       riesgo</button>
   </div>
@@ -49,6 +51,9 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="btn-offset" *ngIf="showBtnOffset">
+  <button class="btn btn-outline-success btn-lg btn-block" (click)="aumentarOffset()">Cargar mas</button>
 </div>
 
 
@@ -252,7 +257,7 @@
 
           <div class="btns-modal mt-5">
             <div>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+              <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
                 (click)="cancelarUpdate()">Cancelar</button>
               <button [disabled]="formUpdateRiesgo.invalid" type="submit" class="btn btn-primary btn-size"
                 (click)="updateRiesgo()" data-bs-dismiss="modal">Actualizar</button>
@@ -274,6 +279,8 @@
         <h2 class="modal-title" id="exampleModalLabel">Plan de trabajo, controles y recursos</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
+
       <div class="modal-body mb-5">
         <div *ngIf="validarExistenciaPlan.id_prioridad; else ingresarPlanTrabajo">
           <!-- ------Planes------------- -->
@@ -532,25 +539,32 @@
 
           <div class="btns-modal">
             <div>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
+                (click)="resetVariables()">Cancelar</button>
               <button (click)="updatePlanTrabajoControlesRecursos()" type="button" class="btn btn-primary btn-size"
                 data-bs-dismiss="modal">Actualizar</button>
             </div>
           </div>
         </div>
       </div>
+
+
       <ng-template #ingresarPlanTrabajo>
         <div class="alert alert-dark" role="alert">
           Este riesgo no cuenta con un plan de trabajo actualmente, seleccione agregar para ingresar un nuevo plan!
         </div>
         <div class="btns-modal">
           <div class="mt-5">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
+              (click)="resetVariables()">Cancelar</button>
             <button data-bs-dismiss="modal" [routerLink]="linkPlanTrabajo"
               class="btn btn-primary btn-size">Agregar</button>
           </div>
         </div>
       </ng-template>
+
+
+
     </div>
   </div>
 </div>

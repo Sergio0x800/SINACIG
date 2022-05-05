@@ -1,37 +1,40 @@
-<div *ngIf="showTable">
+<div>
   <div class="container-fluid mt-6">
-    <div class="table-responsive">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col"><span class="center-style">Acciones</span></th>
-            <th scope="col"><span class="center-style">Unidad ejecutora</span></th>
-            <th scope="col"><span class="center-style">Fecha periodo de inicio</span></th>
-            <th scope="col"><span class="center-style">Fecha periodo final</span></th>
-            <th scope="col"><span class="center-style">Riesgos</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let matriz of matriz_periodos">
-            <th scope="row th-display">
-              <div class="options-icons">
-                <span (click)="deletePeriodoMatriz(matriz.id_matriz)" class="btn-delete"></span>
-              </div>
-            </th>
-            <td class="pt-3">
+
+    <table class="mt-3 table table-striped table-bordered table-sm">
+      <thead>
+        <tr>
+          <th scope="col"><span class="center-style">Acciones</span></th>
+          <th scope="col"><span class="center-style">Unidad ejecutora</span></th>
+          <th scope="col"><span class="center-style">Fecha periodo de inicio</span></th>
+          <th scope="col"><span class="center-style">Fecha periodo final</span></th>
+          <th scope="col"><span class="center-style">Riesgos</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let matriz of matriz_periodos">
+          <th scope="row th-display">
+            <div class="options-icons">
+              <span (click)="deletePeriodoMatriz(matriz.id_matriz)" class="btn-delete"></span>
+            </div>
+          </th>
+          <td class="pt-3">
+            <div class="containe-unidad">
               <span class="center-style">{{matriz.codigo_unidad_ejecutora+' -'+matriz.unidad_ejecutora}}</span>
-            </td>
-            <td class="pt-3"><span class="center-style">{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span></td>
-            <td class="pt-3"><span class="center-style">{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span></td>
-            <td>
-              <div class="container-add-plan">
-                <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
-                  [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
-                  riesgos</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </div>
+          </td>
+          <td class="pt-3"><span class="center-style">{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span></td>
+          <td class="pt-3"><span class="center-style">{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span></td>
+          <td>
+            <div class="container-add-plan">
+              <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
+                [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
+                riesgos</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
+</div>

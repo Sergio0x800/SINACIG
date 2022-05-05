@@ -114,24 +114,24 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     this.planRiesgoService.createPlanRiesgo(newRiesgoPlan).subscribe((value) => {
       this.id_riesgo_plan_trabajo = value;
       this.recursosMemory.map((recursosObt: any) => {
-        const indice = this.recursosMemory.indexOf(recursosObt);
+        // const indice = this.recursosMemory.indexOf(recursosObt);
         const recursos = {
           ...recursosObt,
           id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
           usuario_registro: this.usuario.id_usuario,
-          descripcion: ((indice + 1) + '. ') + recursosObt.descripcion
+          // descripcion: ((indice + 1) + '. ') + recursosObt.descripcion
         }
         this.planRiesgoService.createRecurso(recursos).subscribe(value => {
         })
       })
       this.controlImplementacionMemory.map((controlObt: any) => {
-        const indice = this.controlImplementacionMemory.indexOf(controlObt);
+        // const indice = this.controlImplementacionMemory.indexOf(controlObt);
         const newControlesImp = {
           ...controlObt,
-          que: ((indice + 1) + '. ') + controlObt.que,
-          como: ((indice + 1) + '. ') + controlObt.como,
-          quien: ((indice + 1) + '. ') + controlObt.quien,
-          cuando: ((indice + 1) + '. ') + controlObt.cuando,
+          // que: ((indice + 1) + '. ') + controlObt.que,
+          // como: ((indice + 1) + '. ') + controlObt.como,
+          // quien: ((indice + 1) + '. ') + controlObt.quien,
+          // cuando: ((indice + 1) + '. ') + controlObt.cuando,
           id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
           usuario_registro: this.usuario.id_usuario
         }

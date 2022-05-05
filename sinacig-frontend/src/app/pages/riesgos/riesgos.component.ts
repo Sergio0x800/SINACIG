@@ -22,6 +22,7 @@ export class RiesgosComponent implements OnInit {
 
   //mostrar tabla
   showTablePlanesTrabajo = true;
+  showBtnOffset: boolean = false;
   //config fecha
   myDpOptions: IAngularMyDpOptions = {
     dateRange: false,
@@ -76,6 +77,7 @@ export class RiesgosComponent implements OnInit {
   id_riesgo_from_table: any = 0;
   id_riesgo_plan_trabajo: any = 0;
   id_riesgo_for_control_interno: any = 0;
+  offset: number = 10;
 
   //variables para colocar en los value de los inputs
   codigoReferenciaToInput: any = '';
@@ -170,14 +172,16 @@ export class RiesgosComponent implements OnInit {
       this.linkMatrizPeriodos = `/admin/ingreso-riesgos/${this.id_matriz}`
     })
 
-    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz).subscribe(riesgos => {
+    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
       this.riesgos = riesgos;
+      this.showBtnOffset = true;
     }, err => {
       Swal.fire({
         icon: 'warning',
         text: '¡No existen registros para mostrar!'
       })
       this.showTablePlanesTrabajo = false
+      this.showBtnOffset = false;
     })
 
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
@@ -347,7 +351,7 @@ export class RiesgosComponent implements OnInit {
       }
 
 
-      this.riesgoService.getRiesgoByIdMatriz(this.id_matriz).subscribe(riesgo => {
+      this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
         this.riesgos = riesgo
       })
     },
@@ -376,7 +380,7 @@ export class RiesgosComponent implements OnInit {
             icon: 'success',
             text: 'El registro se elimino correctamente!'
           });
-          this.riesgoService.getRiesgoByIdMatriz(this.id_matriz).subscribe(riesgos => {
+          this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
             this.riesgos = riesgos
           }, err => {
             this.showTablePlanesTrabajo = false
@@ -442,11 +446,13 @@ export class RiesgosComponent implements OnInit {
         icon: 'success',
         text: 'El registro se actualizo correctamente!'
       })
+      this.resetVariables()
     }, err => {
       Swal.fire({
         icon: 'error',
         text: 'Error al actualizar el registro!'
       })
+      this.resetVariables()
     })
   }
 
@@ -567,10 +573,29 @@ export class RiesgosComponent implements OnInit {
     this.planService.getExistenciaPlanTrabajo(this.id_matriz).subscribe((result: any) => {
       Swal.fire({
         icon: 'warning',
-        text: `¡Para ingresar un nuevo riesgo debe de asignar un plan de trabajo a todos los riesgos del periodo actual!`
+        text: `¡Planes de trabajo pedientes de ingresar!`
       })
     }, err => {
       this.router.navigate(['/admin/ingreso-riesgos/', this.id_matriz])
+    })
+  }
+
+  resetVariables() {
+    this.validarExistenciaPlan = {}
+  }
+
+  aumentarOffset() {
+    this.offset += 10;
+    const countRiesgos = this.riesgos.length
+    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
+      this.riesgos = riesgos;
+      if(countRiesgos == riesgos.length){
+        this.showBtnOffset = false;
+        Swal.fire({
+          icon: 'warning',
+          text: 'Se han cargado todos los registros!'
+        })
+      }
     })
   }
 }

@@ -212,10 +212,10 @@ export class IngresoRiesgosComponent implements OnInit {
       this.id_riesgo = value;
       //si el riesgo se crea correctamente se ingresan los controles internos que estan en memoria
       this.controlInternoMemory.map((control: any) => {
-        const indice = this.controlInternoMemory.indexOf(control);
+        // const indice = this.controlInternoMemory.indexOf(control);
         const controlInterno = {
           ...control,
-          descripcion: ((indice + 1) + '. ') + control.descripcion,
+          // descripcion: ((indice + 1) + '. ') + control.descripcion,
           id_riesgo: this.id_riesgo,
           usuario_registro: this.usuario.id_usuario
 
@@ -233,10 +233,6 @@ export class IngresoRiesgosComponent implements OnInit {
           correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
         }
         this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => { })
-      })
-      Swal.fire({
-        icon: 'success',
-        text: 'El registro se actualizo correctamente!'
       })
       this.router.navigate(['/admin/ingreso-plan-trabajo', this.id_riesgo, this.id_matriz]);
     },

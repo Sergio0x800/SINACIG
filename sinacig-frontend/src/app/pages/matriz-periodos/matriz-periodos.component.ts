@@ -28,6 +28,7 @@ export class MatrizPeriodosComponent implements OnInit {
   unidadesEjecutoras: any = [];
   periodos: any = [];
   showTablePeriodos: boolean = false;
+  routeIngresoRiesgos: any = '/admin/riesgos/'
 
   //array que almacena matriz periodos encontrados
   matrizPeriodosEncontrados: any = []
@@ -70,6 +71,10 @@ export class MatrizPeriodosComponent implements OnInit {
           icon: 'success',
           text: 'El registro se agrego correctamente!'
         })
+        this.matrizService.getMatrizByParams(dataSearch).subscribe((value: any) => {
+          this.showTablePeriodos = true;
+          this.matrizPeriodosEncontrados = value;
+        })
       },
         err => {
           Swal.fire({
@@ -108,7 +113,7 @@ export class MatrizPeriodosComponent implements OnInit {
         })
   }
 
-  deleteMatrizPeriodo(id_matriz: any) {
+  deletePeriodoMatriz(id_matriz: any) {
     Swal.fire({
       title: '¿Estás seguro de eliminar este registro?',
       text: "¡No podrás revertir este cambio!",
@@ -126,6 +131,15 @@ export class MatrizPeriodosComponent implements OnInit {
             text: '¡El registro se eliminó correctamente!'
           });
           this.showTablePeriodos = false
+          // const dataSearch = {
+          //   ...this.searchParams.value,
+          //   fecha_periodo_inicio: this.searchParams.value.fecha_periodo_inicio,
+          //   fecha_periodo_fin: this.searchParams.value.fecha_periodo_fin
+          // }
+          // this.matrizService.getMatrizByParams(dataSearch)
+          //   .subscribe(matriz => {
+          //     this.matriz_periodos = matriz;
+          //   })
         }, err => {
           Swal.fire({
             icon: 'error',
@@ -135,5 +149,33 @@ export class MatrizPeriodosComponent implements OnInit {
       }
     })
   }
+  // deleteMatrizPeriodo(showTable: any) {
+  //   this.showTablePeriodos = false
+  //   // Swal.fire({
+  //   //   title: '¿Estás seguro de eliminar este registro?',
+  //   //   text: "¡No podrás revertir este cambio!",
+  //   //   icon: 'warning',
+  //   //   showCancelButton: true,
+  //   //   confirmButtonColor: '#3085d6',
+  //   //   cancelButtonColor: '#d33',
+  //   //   confirmButtonText: 'Si, ¡eliminarlo!',
+  //   //   cancelButtonText: 'Cancelar'
+  //   // }).then((result) => {
+  //   //   if (result.isConfirmed) {
+  //   //     this.matrizService.deleteMatriz(id_matriz).subscribe(() => {
+  //   //       Swal.fire({
+  //   //         icon: 'success',
+  //   //         text: '¡El registro se eliminó correctamente!'
+  //   //       });
+  //   //       this.showTablePeriodos = false
+  //   //     }, err => {
+  //   //       Swal.fire({
+  //   //         icon: 'error',
+  //   //         text: '¡No se pudo eliminar el registro!'
+  //   //       })
+  //   //     });
+  //   //   }
+  //   // })
+  // }
 
 }

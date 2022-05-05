@@ -47,10 +47,11 @@ class RiesgoService {
     return dataRiesgosEncontrados[0];
   }
 
-  async findRiesgoByIdMatriz(id_matriz) {
+  async findRiesgoByIdMatriz(id_matriz, offset) {
     const dataRiesgosEncontrados = await sequelize.query(
       `EXEC sp_get_riesgos_by_id_matriz
-    @id_matriz = ${id_matriz}`
+    @id_matriz = ${id_matriz},
+    @next = ${offset}`
     );
     if (dataRiesgosEncontrados[0].length === 0) {
       throw boom.notFound('No hay registros');

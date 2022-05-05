@@ -129,7 +129,7 @@
         <div *ngIf="controlInternoMemory.length > 0" class="table-responsive">
           <table class="table">
             <tbody>
-              <tr *ngFor="let controlInt of controlInternoMemory; index as i">
+              <tr *ngFor="let controlInt of controlInternoMemory">
                 <th scope="row th-display">
                   <div class="options-icons">
                     <span (click)="deleteControlInterno(controlInt.descripcion)" class="btn-delete"></span>
@@ -137,7 +137,7 @@
                 </th>
                 <td class="pt-3 text-dark font-text-table">
                   <div class="select-control-mitigador">
-                    {{i+1+'. '}}{{controlInt.descripcion}}
+                    {{controlInt.descripcion}}
                   </div>
                 </td>
               </tr>
@@ -154,9 +154,11 @@
       </div>
     </div>
     <div class="container-btn mt-5 mb-5">
-      <button type="button" class="btn btn-danger btn-size" [routerLink]="routerLinkRiesgo">Cancelar</button>
+      <button type="button" class="btn btn-danger btn-size" [routerLink]="routerLinkRiesgo"><i class="fa fa-ban"
+          aria-hidden="true"></i> Cancelar</button>
       <button [disabled]="formCreateRiesgo.invalid || !(controlInternoMemory.length > 0)" type="submit"
-        class="btn btn-primary btn-size">Agregar</button>
+        class="btn btn-primary btn-size"><i class="fa fa-arrow-right" aria-hidden="true"></i> Plan de
+        trabajo</button>
     </div>
   </form>
 </div>

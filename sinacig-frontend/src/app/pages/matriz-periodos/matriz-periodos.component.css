@@ -39,12 +39,35 @@
 .search__btn {
   width: 200px;
 } */
-
+.btn-delete {
+  background-image: url('../../../assets/img/icons/delete.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px;
+  display: block;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+.btn-plan-search {
+  color: white;
+}
+.btn-delete:hover {
+  transform: scale(1.2);
+}
+.options-icons {
+  width: 100%;
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 .search__container-inputs {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  
+
 }
 .search-container-form-create {
   width: 100%;
@@ -70,5 +93,5 @@
 }
 
 .search__title {
-  
+
 }

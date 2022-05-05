@@ -92,31 +92,32 @@
       <div class="row">
         <div class="">
           <form [formGroup]="formCreateControlImplementacion" class="container-inputs-controles">
-            <div class="container-inputs-textbox">
-              <h3 class="">Controles para implementación</h3>
+            <div class="container-inputs-textbox-controles shadow">
+              <div class="container-btn-add">
+                <h3 class="">Controles para implementación</h3>
+                <div class="container-btn">
+                  <button [disabled]="formCreateControlImplementacion.invalid" type="button"
+                    (click)="createNewControlToMemory()"
+                    class="btn btn-primary btn-size-complement btn-float-controles">+</button>
+                </div>
+              </div>
               <div class="">
-                <label for="inputQue" class="form-label">Que:</label>
+                <label for="inputQue" class="form-label">¿Qué?</label>
                 <textarea id="inputQue" name="inputQue" class="form-control" formControlName="que" rows="4"></textarea>
               </div>
               <div class="">
-                <div class="container-btn-add">
-                  <label for="inputComo" class="form-label">Como:</label>
-                  <div class="container-btn">
-                    <button [disabled]="formCreateControlImplementacion.invalid" type="button"
-                      (click)="createNewControlToMemory()"
-                      class="btn btn-primary btn-size-complement btn-float">+</button>
-                  </div>
-                </div>
+                <label for="inputComo" class="form-label">¿Cómo?</label>
+
                 <textarea id="inputComo" name="inputComo" class="form-control" formControlName="como"
                   rows="4"></textarea>
               </div>
               <div class="">
-                <label for="inputQuien" class="form-label">Quien:</label>
+                <label for="inputQuien" class="form-label">¿Quién?</label>
                 <textarea id="inputQuien" name="inputQuien" class="form-control" formControlName="quien"
                   rows="4"></textarea>
               </div>
               <div class="">
-                <label for="inputCuando" class="form-label">Cuando:</label>
+                <label for="inputCuando" class="form-label">¿Cuándo?</label>
                 <textarea id="inputCuando" name="inputCuando" class="form-control" formControlName="cuando"
                   rows="4"></textarea>
               </div>
@@ -126,7 +127,6 @@
                     <thead>
                       <tr>
                         <th scope="col"></th>
-                        <th scope="col">No.</th>
                         <th scope="col">Que:</th>
                         <th scope="col">Como:</th>
                         <th scope="col">Quien:</th>
@@ -134,7 +134,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let ctImplementacion of controlImplementacionMemory; index as i">
+                      <tr *ngFor="let ctImplementacion of controlImplementacionMemory">
                         <th scope="row th-display">
                           <div class="options-icons">
                             <span
@@ -142,7 +142,6 @@
                               class="btn-delete"></span>
                           </div>
                         </th>
-                        <td class="pt-3 text-dark font-text-table">{{i+1+'. '}}</td>
                         <td class="pt-3 text-dark font-text-table">{{ctImplementacion.que}}</td>
                         <td class="pt-3 text-dark font-text-table">{{ctImplementacion.como}}</td>
                         <td class="pt-3 text-dark font-text-table">{{ctImplementacion.quien}}</td>
@@ -157,45 +156,54 @@
         </div>
       </div>
     </div>
-    <div class="container-form-imple mt-4">
+
+
+    <div class="mt-4">
       <div class="">
-        <h3 class="">Ingreso de Recursos</h3>
-        <div class="">
-          <form [formGroup]="formCreateRecursos">
-            <div class="container-inputs-textbox">
-              <div>
-                <div class="mt-1">
-                  <div class="container-btn-add">
-                    <label for="inputRecurso" class="form-label">Recursos:</label>
-                    <div class="container-btn">
-                      <button [disabled]="formCreateRecursos.invalid" type="button" (click)="createNewRecursoToMemory()"
-                        class="btn btn-primary btn-size-complement btn-float">+</button>
+        <div class="row">
+          <div class="">
+            <form [formGroup]="formCreateRecursos" class="container-inputs-controles">
+              <div class="container-inputs-textbox">
+                <h3 class="">Ingreso de Recursos</h3>
+                <div>
+                  <div class="">
+                    <div class="container-btn-add">
+                      <label for="inputRecurso" class="form-label">Recursos:</label>
+                      <div class="container-btn">
+                        <button [disabled]="formCreateRecursos.invalid" type="button"
+                          (click)="createNewRecursoToMemory()"
+                          class="btn btn-primary btn-size-complement btn-float">+</button>
+                      </div>
+                    </div>
+                    <textarea id="inputRecurso" name="inputRecurso" class="form-control" formControlName="descripcion"
+                      rows="4"></textarea>
+                  </div>
+                  <div class="container-table-coImple">
+                    <div *ngIf="showTableRecursos" class="table-responsive">
+                      <table class="table">
+                        <tbody>
+                          <tr *ngFor="let recurso of recursosMemory">
+                            <th scope="row th-display">
+                              <div class="options-icons">
+                                <span (click)="deleteRecursoFromMemory(recurso.descripcion)" class="btn-delete"></span>
+                              </div>
+                            </th>
+                            <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                  <textarea id="inputRecurso" name="inputRecurso" class="form-control" formControlName="descripcion"
-                    rows="4"></textarea>
                 </div>
               </div>
-            </div>
-          </form>
-          <div *ngIf="showTableRecursos" class="table-responsive">
-            <table class="table">
-              <tbody>
-                <tr *ngFor="let recurso of recursosMemory; index as i">
-                  <th scope="row th-display">
-                    <div class="options-icons">
-                      <span (click)="deleteRecursoFromMemory(recurso.descripcion)" class="btn-delete"></span>
-                    </div>
-                  </th>
-                  <td class="pt-3 text-dark font-text-table">{{i+1+'. '}}{{recurso.descripcion}}</td>
-                </tr>
-              </tbody>
-            </table>
+            </form>
           </div>
         </div>
       </div>
     </div>
-    <div class="row mt-4">
+
+
+    <!-- <div class="row mt-4">
       <div class="col-12">
         <div class="btns-ingreso-plan">
           <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPlan">Cancelar</button>
@@ -204,6 +212,14 @@
             type="submit" class="btn btn-primary btn-size">Agregar</button>
         </div>
       </div>
+    </div> -->
+    <div class="container-btn-agregar mt-5 mb-5">
+      <!-- <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPlan">Cancelar</button> -->
+      <button
+        [disabled]="(formCreatePlanRiesgo.invalid || !(controlImplementacionMemory.length > 0)) || !(recursosMemory.length > 0)"
+        type="submit" class="btn btn-primary btn-size">Finalizar registro</button>
     </div>
+
+
   </div>
 </form>
