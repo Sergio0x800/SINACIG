@@ -1,14 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const RiesgoPlanTrabajoService = require('../services/riesgo_plan_trabajo.service');
+const moment = require('moment');
 
 const riesgoPlanTrabajoService = new RiesgoPlanTrabajoService();
 
 router.post('/', async (req, res, next) => {
   try {
-    const dataRiesgoPlanTrabajo = req.body;
+    const data = req.body;
+    const fecha_inicio = moment(data.fecha_inicio, 'DD/MM/YYYY').format(
+      'YYYY-MM-DD'
+    );
+    const fecha_fin = moment(data.fecha_fin, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    const newPlan = {
+      ...data,
+      fecha_inicio,
+      fecha_fin,
+    };
     const planCreated = await riesgoPlanTrabajoService.createRiesgoPlanTrabajo(
-      dataRiesgoPlanTrabajo
+      newPlan
     );
     res.json(planCreated.id_riesgo_plan_trabajo);
   } catch (error) {
