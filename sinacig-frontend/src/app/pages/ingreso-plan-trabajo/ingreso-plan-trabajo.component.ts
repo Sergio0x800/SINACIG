@@ -4,7 +4,7 @@ import { CatalogosService } from 'src/app/services/catalogos.service';
 import { PlanRiesgosService } from 'src/app/services/plan-riesgos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RiesgosService } from 'src/app/services/riesgos.service';
-import { IAngularMyDpOptions } from 'angular-mydatepicker';
+import { DATES, IAngularMyDpOptions } from 'angular-mydatepicker';
 
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -23,7 +23,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   //configuracion de mydatepicker
   myDpOptions: IAngularMyDpOptions = {
     dateRange: false,
-    dateFormat: 'yyyy-mm-dd'
+    dateFormat: 'dd/mm/yyyy',
   };
   myDateInit: boolean = true;
   model: any = null;
@@ -139,7 +139,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         })
       })
       Swal.fire({
-        title: '¡El registro se guardo correctamente!',
+        title: '¡El registro se guardó correctamente!',
         icon: 'success',
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'OK!',

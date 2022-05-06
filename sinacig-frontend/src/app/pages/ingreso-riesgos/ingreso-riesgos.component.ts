@@ -125,18 +125,6 @@ export class IngresoRiesgosComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     // ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
     // this.formCreateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
     //   //Se encuentra el tipo de objetivo seleccionado
@@ -169,26 +157,6 @@ export class IngresoRiesgosComponent implements OnInit {
     //     }
     //   })
     // })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     this.formCreateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
@@ -256,7 +224,7 @@ export class IngresoRiesgosComponent implements OnInit {
         }
         this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
           //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
-          this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
+          this.correlativoService.getCorrelativo({ id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
             this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
             this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
             //este atributo sirve para al momento de crear el nuevo correlativo
