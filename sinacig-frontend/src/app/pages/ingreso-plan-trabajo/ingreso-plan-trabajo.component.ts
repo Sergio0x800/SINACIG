@@ -64,11 +64,11 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     usuario_registro: new FormControl('1', Validators.required),
   })
   formCreateControlImplementacion = new FormGroup({
-    que: new FormControl(''),
-    como: new FormControl(''),
-    quien: new FormControl(''),
-    cuando: new FormControl(''),
-    usuario_registro: new FormControl('1', Validators.required),
+    que: new FormControl('', Validators.required),
+    como: new FormControl('', Validators.required),
+    quien: new FormControl('', Validators.required),
+    cuando: new FormControl('', Validators.required),
+    usuario_registro: new FormControl(''),
   })
   formCreateRecursos = new FormGroup({
     descripcion: new FormControl('', Validators.required),

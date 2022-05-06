@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const sequelize = require('../libs/sequelize');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const { models } = require('../libs/sequelize');
 const CryptoJS = require('crypto-js');
 const boom = require('@hapi/boom');
@@ -75,17 +77,26 @@ class UsuarioService {
     return result[0];
   }
 
-  async obtenerUsuariosByCui(cui) {
+  async obtenerUsuariosByCui(cui, usuario) {
     const result = await models.Usuario.findOne({
       where: {
-        cui,
-        estado_registro: 1,
+        [Op.or]: {
+          cui,
+          usuario,
+        },
+        [Op.and]: {
+          estado_registro: 1,
+        },
       },
     });
     if (!result) {
       throw boom.notFound('No se encontro el registro solicitado');
     }
-    return result;
+    const newResult = {
+      usuario: result.usuario,
+      cui: result.cui,
+    };
+    return newResult;
   }
 
   async obtenerUsuario(id_usuario) {

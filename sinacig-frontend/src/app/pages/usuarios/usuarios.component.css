@@ -1,3 +1,23 @@
 .obligatorio {
     color: red;
 }
+.title-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-table-riesgo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 15px;
+}
+
+.btn-size {
+  width: 200px;
+}
+
+.btn-editar:hover {
+  cursor: pointer;
+}

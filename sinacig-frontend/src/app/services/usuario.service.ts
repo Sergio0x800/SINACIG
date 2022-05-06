@@ -20,8 +20,10 @@ export class UsuarioService {
     return this.http.get(`${this.apiUrl}/usuario`).toPromise();
   }
 
-  obtenerUsuariosByCui(cui: any) {
-    return this.http.get(`${this.apiUrl}/usuario/verifica/${cui}`);
+  obtenerUsuariosByCui(data: any) {
+    return this.http.get(`${this.apiUrl}/usuario/verifica`, {
+      params: data
+    });
   }
 
   obtenerUsuario() {

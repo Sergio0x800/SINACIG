@@ -1,18 +1,26 @@
-<div class="row">
-  <div class="col-auto">
-    <h1 class="display-3">Administración de Usuarios</h1>
-  </div>
-  <div class="col-auto mt-1">
-    <div (click)="limpiarCampos()" class="icon icon-shape bg-primary text-white rounded-circle shadow"
-      data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
-      <i class="fas fa-plus"></i>
-    </div>
+<div class="title-btns mt-5">
+  <h1>Administración de Usuarios</h1>
+  <div class="btn-table-riesgo">
+    <button class="btn btn-success btn-size mt-3" (click)="limpiarCampos()" data-bs-toggle="modal"
+      data-bs-target="#nuevoUsuarioModal"><i class="fa fa-plus" aria-hidden="true"></i>
+      Nuevo
+      usuario</button>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
 <div class="row">
   <ng-container *ngFor="let u of usuarios">
     <div class="col-sm-4">
-      <div class="card card-stats mb-4 mb-lg-0">
+      <div class="card card-stats mb-4 mb-lg-0 shadow">
         <div class="card-body">
           <div class="row">
             <div class="col">
@@ -26,13 +34,13 @@
           <br>
           <div class="row">
             <div class="col-auto">
-              <div class="icon icon-shape bg-warning text-white rounded-circle shadow"
+              <div class="icon icon-shape bg-warning text-white rounded-circle shadow btn-editar"
                 (click)="buscarUsuarioParaActualizar(u)">
                 <i class="fas fa-pencil"></i>
               </div>
             </div>
             <div class="col-auto">
-              <div class="icon icon-shape bg-danger text-white rounded-circle shadow"
+              <div class="icon icon-shape bg-danger text-white rounded-circle shadow btn-editar"
                 (click)="eliminarUsuario(u.id_usuario)">
                 <i class="fas fa-trash"></i>
               </div>

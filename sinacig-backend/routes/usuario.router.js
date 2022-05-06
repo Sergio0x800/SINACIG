@@ -47,10 +47,10 @@ router.get(
   }
 );
 
-router.get('/verifica/:cui', async (req, res, next) => {
+router.get('/verifica', async (req, res, next) => {
   try {
-    const { cui } = req.params;
-    const result = await usuarioService.obtenerUsuariosByCui(cui);
+    const { cui, user } = req.query;
+    const result = await usuarioService.obtenerUsuariosByCui(cui, user);
     res.json(result);
   } catch (error) {
     next(error);

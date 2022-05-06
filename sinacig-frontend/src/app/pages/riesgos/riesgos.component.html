@@ -27,7 +27,7 @@
       <tr *ngFor="let riesgo of riesgos">
         <th scope="row th-display">
           <div class="options-icons">
-            <span (click)="deleteRiesgo(riesgo.id_riesgo)" class="btn-delete"></span>
+            <!-- <span (click)="deleteRiesgo(riesgo.id_riesgo)" class="btn-delete"></span> -->
             <span (click)="editRiesgo(riesgo.id_riesgo)" class="btn-edit" data-bs-toggle="modal"
               data-bs-target="#riesgoModal"></span>
           </div>
@@ -52,7 +52,7 @@
     </tbody>
   </table>
 </div>
-<div class="btn-offset" *ngIf="showBtnOffset">
+<div class="btn-offset" *ngIf="showBtnOffset && riesgos.length >= 10">
   <button class="btn btn-outline-success btn-lg btn-block" (click)="aumentarOffset()">Cargar mas</button>
 </div>
 
@@ -79,7 +79,7 @@
                 </select>
               </div>
 
-              <div
+              <!-- <div
                 *ngIf="tipoObjetivoEncontrado.id_tipo_objetivo === riesgoEncontrado.id_tipo_objetivo; else elseCodigoReferencia"
                 class="inputs-size mt-3">
                 <label for="inputReferenciaShow" class="form-label">Codigo de referencia</label>
@@ -92,7 +92,7 @@
                   <input [disabled]="true" id="inputReferencia" name="inputReferencia" class="form-control" type="text"
                     formControlName="codigo_referencia" [value]="codigoReferenciaToInput">
                 </div>
-              </ng-template>
+              </ng-template> -->
             </div>
             <div class="col-12 mt-4">
               <label for="inputArea" class="form-label">Área evaluada</label>
@@ -277,7 +277,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" id="exampleModalLabel">Plan de trabajo, controles y recursos</h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button (click)="resetVariables()" type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
       </div>
 
 
