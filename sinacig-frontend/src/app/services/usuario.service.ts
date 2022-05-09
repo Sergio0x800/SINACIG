@@ -27,7 +27,10 @@ export class UsuarioService {
   }
 
   obtenerUsuario() {
-    return this.http.get(`${this.apiUrl}/usuario/profile`);
+    return this.http.get(`${this.apiUrl}/usuario/profile`)
+    .pipe(
+      tap((user: any) => this.user.next(user))
+    );
   }
 
   registrarUsuario(data: any) {

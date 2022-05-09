@@ -1,0 +1,64 @@
+.obligatorio {
+    color: red;
+}
+
+.usuario__title {
+  font-family: "Poppins", sans-serif;
+}
+
+.title-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-table-riesgo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 15px;
+}
+
+.btn-size {
+  width: 200px;
+}
+
+.btn-editar:hover {
+  cursor: pointer;
+}
+
+.container-cards-user-title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px 30px;
+}
+
+.container-cards-user {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+}
+
+.card-user {
+  width: 350px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
+.card-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.container-btns-cards {
+  display: flex;
+  gap: 25px;
+  margin-top: 15px;
+}

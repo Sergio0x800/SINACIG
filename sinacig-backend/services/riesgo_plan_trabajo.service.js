@@ -57,7 +57,10 @@ class RiesgoPlanTrabajoService {
     return dataPlanes;
   }
 
-  async deletePlan(id_plan, changes) {
+  async updatePlan(id_plan, changes) {
+    const planAntes = await models.PlanTrabajo.findOne({
+      where: { id_riesgo_plan_trabajo: id_plan },
+    });
     const planEncontrado = await models.PlanTrabajo.findOne({
       where: { id_riesgo_plan_trabajo: id_plan },
     });
@@ -65,12 +68,17 @@ class RiesgoPlanTrabajoService {
       throw boom.notFound('No hay registros');
     }
     try {
-      const updatedPlan = await models.PlanTrabajo.update(changes, {
+      const updatedPlan = await planEncontrado.update(changes, {
         where: {
           id_riesgo_plan_trabajo: id_plan,
         },
       });
-      return updatedPlan;
+      return {
+        tabla: 'tt_riesgo_plan_trabajo',
+        id_registro: updatedPlan.id_riesgo_plan_trabajo,
+        antes: planAntes,
+        despues: updatedPlan,
+      };
     } catch (error) {
       throw boom.internal('Error al actualizar el registro');
     }

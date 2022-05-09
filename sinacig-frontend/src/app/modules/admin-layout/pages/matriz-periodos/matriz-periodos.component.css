@@ -1,0 +1,60 @@
+.container-matriz {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.matriz-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  padding-top: 50px;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+}
+
+.btn-size {
+  width: 245px;
+}
+
+.container-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-plan-search {
+  color: white;
+}
+
+.btn-delete {
+  /* background-image: url('../../../../../assets/img/icons/delete.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 27px;
+  height: 27px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.options-icons {
+  width: 100%;
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.container-add-plan {
+  width: 100%;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+}

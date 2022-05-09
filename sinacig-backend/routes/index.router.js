@@ -9,6 +9,7 @@ const usuarioRouter = require('./usuario.router');
 const matrizRouter = require('./matriz.router');
 const correlativoRouter = require('./correlativo.router');
 const authRouter = require('./auth.router');
+const logRouter = require('./logs.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -23,6 +24,7 @@ function routerApi(app) {
   router.use('/matriz', matrizRouter);
   router.use('/correlativo', correlativoRouter);
   router.use('/auth', authRouter);
+  router.use('/log', logRouter);
 }
 
 module.exports = routerApi;

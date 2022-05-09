@@ -78,15 +78,9 @@ router.patch('/:id_riesgo', async (req, res, next) => {
 router.patch('/update/:id_riesgo', async (req, res, next) => {
   try {
     const { id_riesgo } = req.params;
-    const dataRiesgo = req.body;
-    const updatedRiesgo = await riesgoService.updateRiesgo(
-      id_riesgo,
-      dataRiesgo
-    );
-    res.json({
-      message: 'Riesgo actualizado correctamente',
-      registro: updatedRiesgo,
-    });
+    const data = req.body;
+    const result = await riesgoService.updateRiesgo(id_riesgo, data);
+    res.json(result);
   } catch (error) {
     next(error);
   }

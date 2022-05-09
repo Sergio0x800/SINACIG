@@ -3,6 +3,7 @@ const {
   TipoObjetivo,
   TipoObjetivoSchema,
 } = require('./catalogosModels/tipoObjetivos.model');
+const { Log, LogSchema } = require('./log.model');
 const {
   Periodos,
   PeriodosSchema,
@@ -84,6 +85,7 @@ function setupModels(sequelize) {
   Matriz.init(MatrizSchema, Matriz.config(sequelize));
   Correlativo.init(CorrelativoSchema, Correlativo.config(sequelize));
   Usuario.init(UsuarioSchema, Usuario.config(sequelize));
+  Log.init(LogSchema, Log.config(sequelize));
 }
 
 module.exports = setupModels;

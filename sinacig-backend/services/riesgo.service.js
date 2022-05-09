@@ -14,32 +14,11 @@ class RiesgoService {
     }
   }
 
-  // async findRiesgos() {
-  //   const dataRiesgos = await sequelize.query(`EXEC sp_get_all_riesgos`);
-  //   if (dataRiesgos.length === 0) {
-  //     throw boom.notFound('No hay registros');
-  //   }
-  //   return dataRiesgos;
-  // }
-
-  // async findRiesgosByUnidadFecha(unidad, fechaI, fechaF) {
-  //   const dataRiesgosEncontrados = await sequelize.query(
-  //     `EXEC sp_get_riesgos_by_fecha
-  //   @Unidad_Ejecutora = ${unidad},
-  //   @FechaI = "${fechaI}",
-  //   @FechaF = "${fechaF}"`
-  //   );
-
-  //   if (dataRiesgosEncontrados[0].length === 0) {
-  //     throw boom.notFound('No hay registros');
-  //   }
-  //   return dataRiesgosEncontrados[0];
-  // }
-
-  async findRiesgoById(id_riesgo) {
+  async findRiesgoByIdMatriz(id_matriz, offset) {
     const dataRiesgosEncontrados = await sequelize.query(
-      `EXEC sp_get_riesgos_by_id_riesgo
-    @id_riesgo = ${id_riesgo}`
+      `EXEC sp_get_riesgos_by_id_matriz
+    @id_matriz = ${id_matriz},
+    @next = ${offset}`
     );
     if (dataRiesgosEncontrados[0].length === 0) {
       throw boom.notFound('No hay registros');
@@ -47,11 +26,10 @@ class RiesgoService {
     return dataRiesgosEncontrados[0];
   }
 
-  async findRiesgoByIdMatriz(id_matriz, offset) {
+  async findRiesgoById(id_riesgo) {
     const dataRiesgosEncontrados = await sequelize.query(
-      `EXEC sp_get_riesgos_by_id_matriz
-    @id_matriz = ${id_matriz},
-    @next = ${offset}`
+      `EXEC sp_get_riesgos_by_id_riesgo
+    @id_riesgo = ${id_riesgo}`
     );
     if (dataRiesgosEncontrados[0].length === 0) {
       throw boom.notFound('No hay registros');
@@ -85,7 +63,11 @@ class RiesgoService {
       throw boom.internal('Error al actualizar el registro');
     }
   }
+
   async updateRiesgo(id_riesgo, changes) {
+    const riesgoAntes = await models.Riesgo.findOne({
+      where: { id_riesgo: id_riesgo },
+    });
     const riesgoEncontrado = await models.Riesgo.findOne({
       where: { id_riesgo: id_riesgo },
     });
@@ -93,12 +75,17 @@ class RiesgoService {
       throw boom.notFound('No hay registros');
     }
     try {
-      const updatedRiesgo = await models.Riesgo.update(changes, {
+      const updatedRiesgo = await riesgoEncontrado.update(changes, {
         where: {
           id_riesgo: id_riesgo,
         },
       });
-      return updatedRiesgo;
+      return {
+        tabla: 'tt_riesgo',
+        id_registro: updatedRiesgo.id_riesgo,
+        antes: riesgoAntes,
+        despues: updatedRiesgo,
+      };
     } catch (error) {
       throw boom.internal('Error al actualizar el registro');
     }

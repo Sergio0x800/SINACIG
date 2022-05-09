@@ -63,13 +63,8 @@ router.patch('/:id_plan', async (req, res, next) => {
   try {
     const { id_plan } = req.params;
     const dataPlan = req.body;
-    const updatedPlan = await riesgoPlanTrabajoService.deletePlan(
-      id_plan,
-      dataPlan
-    );
-    res.json({
-      updatedPlan,
-    });
+    const result = await riesgoPlanTrabajoService.updatePlan(id_plan, dataPlan);
+    res.json(result);
   } catch (error) {
     next(error);
   }
