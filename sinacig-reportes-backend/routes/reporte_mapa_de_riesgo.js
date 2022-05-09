@@ -77,7 +77,6 @@ router.post('/mapa_riesgo', async (req, res, next) => {
         ws.row(20).setHeight(110);
     
         let dataReporte = await mapaRiesgoService.dataReporteMapariesgo(unidadEjecutoraData[0].codigo, fechaInicio, fechaFin);
-        console.log(dataReporte);
 
         // Le damos color a la tabla de mapa de riesgo
         let fila = 16
