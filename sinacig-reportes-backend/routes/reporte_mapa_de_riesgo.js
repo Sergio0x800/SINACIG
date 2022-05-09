@@ -77,10 +77,11 @@ router.post('/mapa_riesgo', async (req, res, next) => {
         ws.row(20).setHeight(110);
     
         let dataReporte = await mapaRiesgoService.dataReporteMapariesgo(unidadEjecutoraData[0].codigo, fechaInicio, fechaFin);
-        
+        console.log(dataReporte);
 
         // Le damos color a la tabla de mapa de riesgo
         let fila = 16
+        //variable i es la probabilidad, variable j es la severidad
         for (let i = 0; i < 5; i++) {
             let columna = 3
             for (let j = 0; j < 5; j++) {
@@ -91,7 +92,7 @@ router.post('/mapa_riesgo', async (req, res, next) => {
                 }else if(i == 2 && j == 3){
                     datosAmarillo(3, 4, fila, columna);
                 }else if(i == 2 && j == 4){
-                    datosAmarillo(4, 5, fila, columna);
+                    datosAmarillo(3, 5, fila, columna);
                 }else if(i == 0 && j == 3){
                     datosRojo(1, 4, fila, columna);
                 }else if(i == 0 && j == 4){
