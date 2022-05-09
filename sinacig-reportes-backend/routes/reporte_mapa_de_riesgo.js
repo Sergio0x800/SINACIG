@@ -23,11 +23,11 @@ router.post('/mapa_riesgo', async (req, res, next) => {
         //Damos el ancho a las columnas especificando el numero de columna ws.column(1)
         ws.column(1).setWidth(30);
         ws.column(2).setWidth(15);
-        ws.column(3).setWidth(20);
-        ws.column(4).setWidth(20);
-        ws.column(5).setWidth(20);
-        ws.column(6).setWidth(20);
-        ws.column(7).setWidth(20);
+        ws.column(3).setWidth(30);
+        ws.column(4).setWidth(30);
+        ws.column(5).setWidth(30);
+        ws.column(6).setWidth(30);
+        ws.column(7).setWidth(30);
         ws.column(8).setWidth(20);
         ws.column(9).setWidth(20);
         ws.column(10).setWidth(30);
@@ -69,6 +69,12 @@ router.post('/mapa_riesgo', async (req, res, next) => {
         ws.cell(21,5).number(3)
         ws.cell(21,6).number(4)
         ws.cell(21,7).number(5)
+
+        ws.row(16).setHeight(110);
+        ws.row(17).setHeight(110);
+        ws.row(18).setHeight(110);
+        ws.row(19).setHeight(110);
+        ws.row(20).setHeight(110);
     
         let dataReporte = await mapaRiesgoService.dataReporteMapariesgo(unidadEjecutoraData[0].codigo, fechaInicio, fechaFin);
         
@@ -140,7 +146,7 @@ router.post('/mapa_riesgo', async (req, res, next) => {
             dataReporte.find(element => {
                 if(element.Probabilidad == pro && element.Severidad == sev){
                     data.push(`(${element.Riesgo}), `)
-                    celda = ws.cell(fila, columna).string(data).style(estilosReportes.backgroundAmarillo);  
+                    celda = ws.cell(fila, columna).string(data).style(estilosReportes.backgroundAmarillo)
                 }else{
                     celda = ws.cell(fila, columna).style(estilosReportes.backgroundAmarillo);
                 }
