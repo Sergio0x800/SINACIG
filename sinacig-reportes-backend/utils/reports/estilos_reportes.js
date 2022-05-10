@@ -34,7 +34,11 @@ const estilosReportes = {
             patternType: 'solid',
             bgColor: '#FFFF00',
             fgColor: '#FFFF00',
-          }
+          },
+        alignment: { 
+            shrinkToFit: true, 
+            wrapText: true
+        }
     }),
     backgroundRojo: wb.createStyle({
         fill: {
@@ -42,7 +46,11 @@ const estilosReportes = {
             patternType: 'solid',
             bgColor: '#D11003',
             fgColor: '#D11003',
-          }
+          },
+          alignment: { 
+            shrinkToFit: true, 
+            wrapText: true
+        }
     }),
     backgroundVerde: wb.createStyle({
         fill: {
@@ -50,7 +58,11 @@ const estilosReportes = {
             patternType: 'solid',
             bgColor: '#14BE00',
             fgColor: '#14BE00',
-          }
+          },
+        alignment: { 
+            shrinkToFit: true, 
+            wrapText: true
+        }
     }),
     backgroundGris: wb.createStyle({
         fill: {
