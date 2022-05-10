@@ -66,15 +66,15 @@ export class UsuariosComponent implements OnInit {
       id_usuario_ingreso: this.usuario.id_usuario
     }
 
-    this.usuarioService.obtenerUsuariosByCui({cui: data.cui, user: data.usuario}).subscribe((usuario: any) => {
+    this.usuarioService.obtenerUsuariosByCui({ cui: data.cui, user: data.usuario }).subscribe((usuario: any) => {
       let dataUsuario = data.usuario.toLowerCase();
       let getUsuario = usuario.usuario.toLowerCase();
-      if(getUsuario == dataUsuario){
+      if (getUsuario == dataUsuario) {
         Swal.fire({
           icon: 'warning',
           text: `¡El nombre de usuario ingresado ya existe en los registros!`
         })
-      }else{
+      } else {
         Swal.fire({
           icon: 'warning',
           text: `¡El CUI ingresado ya existe en los registros!`
@@ -193,12 +193,9 @@ export class UsuariosComponent implements OnInit {
   }
 
   buscarUsuarioParaActualizar(usuario: any) {
-    console.log(usuario)
     this.id_usuario = usuario.id_usuario
-    console.log(this.id_usuario)
     this.id_rol = usuario.id_rol
     this.usuario = usuario.usuario
-    console.log(this.usuario)
     this.cui = usuario.cui
     this.nombres = usuario.nombres
     this.apellidos = usuario.apellidos

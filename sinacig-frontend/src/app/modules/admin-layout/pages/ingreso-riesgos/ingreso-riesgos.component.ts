@@ -339,6 +339,8 @@ export class IngresoRiesgosComponent implements OnInit {
   //metodo que elimina controles internos de la memoria
   deleteControlInterno(descripcion: any) {
     const id = this.controlInternoMemory.findIndex((control: any) => control.descripcion === descripcion)
+    const idMemory2 = this.controlInternoMemory2.findIndex((control: any) => control === descripcion)
     this.controlInternoMemory.splice(id, 1)
+    this.controlInternoMemory2.splice(idMemory2, 1)
   }
 }
