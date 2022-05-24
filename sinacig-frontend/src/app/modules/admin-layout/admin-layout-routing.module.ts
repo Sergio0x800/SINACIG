@@ -35,13 +35,13 @@ const routes: Routes = [
       {
         path: 'ingreso-riesgos/:id_matriz',
         canActivate: [AuthGuard],
-        canDeactivate: [ExitGuard],
+        // canDeactivate: [ExitGuard],
         component: IngresoRiesgosComponent
       },
       {
         path: 'ingreso-plan-trabajo/:id_riesgo/:id_matriz',
         canActivate: [AuthGuard],
-        canDeactivate: [ExitGuard],
+        // canDeactivate: [ExitGuard],
         component: IngresoPlanTrabajoComponent
       },
       {

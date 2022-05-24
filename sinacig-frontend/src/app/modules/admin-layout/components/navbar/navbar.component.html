@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active">{{getTitle()}}</a>
     <div class="container-profile">
-      <ul class="navbar-nav pr-lg-2 align-items-center d-none d-md-flex">
+      <ul class="navbar-nav pr-lg-3 align-items-center d-none d-md-flex">
         <li class="nav-item" ngbDropdown placement="bottom-right">
           <a class="nav-link pr-0" role="button" ngbDropdownToggle>
             <div class="media align-items-center">
@@ -16,14 +16,14 @@
               <h6 class="text-overflow m-0">Bienvenido!</h6>
             </div>
             <div class="dropdown-divider"></div>
-            <a (click)="logOut()" class="dropdown-item">
+            <a (click)="logOut()" class="dropdown-item btn-close-sesion">
               <i class="ni ni-user-run"></i>
               <span>Cerrar Sesión</span>
             </a>
           </div>
         </li>
       </ul>
-      <span class="h5 mb-0 text-white text-uppercase">
+      <span class="h5 pr-lg-5 mb-0 text-white text-uppercase">
         {{usuario.nombres + ' ' +usuario.apellidos}}
       </span>
     </div>

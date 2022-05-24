@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PlanRiesgosService } from 'src/app/services/plan-riesgos.service';
 import { CorrelativoService } from 'src/app/services/correlativo.service';
 import { LogsService } from 'src/app/services/logs.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 
 @Component({
@@ -138,11 +139,11 @@ export class RiesgosComponent implements OnInit {
     como: new FormControl('', Validators.required),
     quien: new FormControl('', Validators.required),
     cuando: new FormControl('', Validators.required),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl(''),
   })
   formUpdateRecursos = new FormGroup({
     descripcion: new FormControl('', Validators.required),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl(''),
   })
 
   medidaRiesgoInput: any = '';
@@ -158,7 +159,8 @@ export class RiesgosComponent implements OnInit {
     private correlativoService: CorrelativoService,
     private usuarioService: UsuarioService,
     private router: Router,
-    private logService: LogsService
+    private logService: LogsService,
+    private utilidades: UtilidadesService
 
   ) { }
 
@@ -451,7 +453,7 @@ export class RiesgosComponent implements OnInit {
 
 
             //Llenar tabla log
-            this.logService.createLog(resultRiesgoUpdated).subscribe((result: any) => {})
+            this.logService.createLog(resultRiesgoUpdated).subscribe((result: any) => { })
 
 
             this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
@@ -628,7 +630,7 @@ export class RiesgosComponent implements OnInit {
       this.recursosMemoryDelete.map((id_recurso: any) => {
         this.planService.deleteRecursos(id_recurso).subscribe((value) => { })
       })
-      this.logService.createLog(planObtenido).subscribe((value: any) => {})
+      this.logService.createLog(planObtenido).subscribe((value: any) => { })
       Swal.fire({
         icon: 'success',
         text: 'El registro se actualizo correctamente!'
@@ -649,9 +651,7 @@ export class RiesgosComponent implements OnInit {
     this.riesgoService.getRiesgoToEdit(id_riesgo).subscribe(riesgo => {
       this.formUpdateRiesgo.patchValue(riesgo)
       this.id_riesgo_for_control_interno = riesgo.id_riesgo
-
       this.riesgoEncontrado = riesgo
-
       this.planService.getControlInterno(id_riesgo).subscribe(controlInterno => {
         this.controlesInternosObtenidos = controlInterno;
         this.tableModalInterno = true
@@ -703,10 +703,14 @@ export class RiesgosComponent implements OnInit {
 
   //Controles Memory
   addControlInMemory() {
-    const dataFormControl = this.formUpdateControlImplementacion.value;
-    if (dataFormControl.que || dataFormControl.como || dataFormControl.quien || dataFormControl.cuando) {
-      this.controlesMemory.push(dataFormControl);
-      this.formUpdateControlImplementacion.reset()
+    if (this.formUpdateControlImplementacion.invalid) {
+      this.utilidades.mostrarError('Debe de llenar todos los campos obligatorios!')
+    } else {
+      const dataFormControl = this.formUpdateControlImplementacion.value;
+      if (dataFormControl.que || dataFormControl.como || dataFormControl.quien || dataFormControl.cuando) {
+        this.controlesMemory.push(dataFormControl);
+        this.formUpdateControlImplementacion.reset()
+      }
     }
   }
   deleteControlInMemory(que: any, como: any, quien: any, cuando: any) {
@@ -721,10 +725,14 @@ export class RiesgosComponent implements OnInit {
 
   //Memory Recursos
   addRecursoMemory() {
-    const dataFormControl = this.formUpdateRecursos.value;
-    if (dataFormControl.descripcion) {
-      this.recursosMemory.push(dataFormControl);
-      this.formUpdateRecursos.reset()
+    if (this.formUpdateRecursos.invalid) {
+      this.utilidades.mostrarError('Debe de llenar los campos obligatorios!')
+    } else {
+      const dataFormControl = this.formUpdateRecursos.value;
+      if (dataFormControl.descripcion) {
+        this.recursosMemory.push(dataFormControl);
+        this.formUpdateRecursos.reset()
+      }
     }
   }
   deleteRecursoMemory(descripcion: any) {

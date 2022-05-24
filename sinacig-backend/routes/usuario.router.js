@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) => {
 router.get(
   '/profile',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  // checkRoles(1, 2),
   async (req, res, next) => {
     const user = req.user;
     try {

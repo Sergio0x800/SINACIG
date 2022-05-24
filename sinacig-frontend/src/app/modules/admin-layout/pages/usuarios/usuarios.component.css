@@ -4,6 +4,7 @@
 
 .usuario__title {
   font-family: "Poppins", sans-serif;
+  margin: 0;
 }
 
 .title-btns {
@@ -12,16 +13,22 @@
   align-items: center;
   flex-wrap: wrap;
 }
-
+.btn-size {
+  width: 245px;
+}
 .btn-table-riesgo {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   gap: 15px;
 }
-
-.btn-size {
-  width: 200px;
+.btns-modal {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 55px;
 }
 
 .btn-editar:hover {
@@ -33,14 +40,18 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 50px 30px;
+  padding: 50px;
 }
 
 .container-cards-user {
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(auto, 1fr);
+  row-gap: 20px; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 50px;
+  justify-content: flex-start;
+  gap: 64px;
 }
 
 .card-user {
@@ -61,4 +72,33 @@
   display: flex;
   gap: 25px;
   margin-top: 15px;
+}
+
+@media only screen and (max-width: 2560px) {
+  .container-cards-user {
+    gap: 30px;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  .container-cards-user {
+    gap: 40px;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .container-cards-user {
+    justify-content: center;
+  }
+  .btns-modal-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+  }
+}
+@media only screen and (max-width: 840px) {
+  .title-btns {
+    gap: 10px;
+    justify-content: center;
+  }
 }

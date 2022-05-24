@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { RiesgosService } from 'src/app/services/riesgos.service';
 import { MatrizService } from 'src/app/services/matriz.service';
@@ -79,18 +79,18 @@ export class IngresoRiesgosComponent implements OnInit {
     id_severidad: new FormControl(0, Validators.required),
     id_control_mitigador: new FormControl(0, Validators.required),
     id_medida_riesgo: new FormControl(0, Validators.required),
-    id_matriz: new FormControl(0, Validators.required),
+    id_matriz: new FormControl(0),
     codigo_referencia: new FormControl(0, Validators.required),
     descripcion_riesgo: new FormControl('', Validators.required),
     riesgo_inherente: new FormControl(0, Validators.required),
     riesgo_residual: new FormControl(0, Validators.required),
     observaciones: new FormControl(''),
-    usuario_registro: new FormControl('1'),
+    usuario_registro: new FormControl(''),
   })
   formCreateControlInterno = new FormGroup({
     id_riesgo: new FormControl(''),
     descripcion: new FormControl('', Validators.required),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl(''),
   })
   usuario: any = {};
   constructor(
@@ -101,7 +101,8 @@ export class IngresoRiesgosComponent implements OnInit {
     private router: Router,
     private planService: PlanRiesgosService,
     private correlativoService: CorrelativoService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private utilidades: UtilidadesService
   ) { }
   ngOnInit(): void {
     this.route.paramMap.subscribe((param: any) => {
@@ -207,9 +208,7 @@ export class IngresoRiesgosComponent implements OnInit {
   }
   //metodo para la creacion de nuevos riesgos y nuevos controles internos
   createNewRiesgo() {
-
     ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
-
     let tipo_objetivo_input = this.formCreateRiesgo.get('id_tipo_objetivo')?.value
     //Se encuentra el tipo de objetivo seleccionado
     this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
@@ -322,12 +321,20 @@ export class IngresoRiesgosComponent implements OnInit {
     })
   }
 
+  validarFormularioRiesgo() {
+    if (this.controlInternoMemory.length < 1 || this.formCreateRiesgo.invalid) {
+      this.utilidades.mostrarError("Debe de llenar todos los campos obligatorios!")
+    } else {
+      this.createNewRiesgo()
+    }
+  }
+
   //metodo para ingresar controles internos en memoria
   pushControlInterno() {
     if (this.controlInternoMemory2.includes(this.formCreateControlInterno.get('descripcion')?.value)) {
       Swal.fire({
         icon: 'warning',
-        text: 'Ya existe un registro con esta descrpción!'
+        text: 'Ya existe un registro con esta descripción!'
       })
     } else {
       this.controlInternoMemory.push(this.formCreateControlInterno.value);

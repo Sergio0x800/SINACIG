@@ -33,8 +33,8 @@ export class UsuariosComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.obtenerUsuarios()
     this.catalogosService.getRoles().subscribe(roles => this.roles = roles)
-    this.usuarioService.user$.subscribe(user => {
-      this.usuarioEncontrado = user.usuario
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
+      this.usuarioEncontrado = result
     })
   }
 
@@ -63,7 +63,7 @@ export class UsuariosComponent implements OnInit {
       nombres: this.nombres,
       apellidos: this.apellidos,
       password: this.password,
-      id_usuario_ingreso: this.usuario.id_usuario
+      id_usuario_ingreso: this.usuarioEncontrado.id_usuario
     }
 
     this.usuarioService.obtenerUsuariosByCui({ cui: data.cui, user: data.usuario }).subscribe((usuario: any) => {
@@ -212,7 +212,7 @@ export class UsuariosComponent implements OnInit {
       nombres: this.nombres,
       apellidos: this.apellidos,
       password: this.password,
-      id_usuario_ingreso: this.usuario.id_usuario
+      id_usuario_ingreso: this.usuarioEncontrado.id_usuario
     }
 
     const RESPONSE_ACTUALIZAR_USUARIO: any = await this.usuarioService.actualizarUsuario(data)

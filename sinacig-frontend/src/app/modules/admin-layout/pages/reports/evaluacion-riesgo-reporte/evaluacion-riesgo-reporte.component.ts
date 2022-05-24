@@ -4,6 +4,7 @@ import { CatalogosService } from 'src/app/services/catalogos.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2'
 import { EvaluacionRiesgoReporteService } from '../services/evaluacion-riesgo/evaluacion-riesgo-reporte.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 @Component({
   selector: 'app-evaluacion-riesgo-reporte',
   templateUrl: './evaluacion-riesgo-reporte.component.html',
@@ -22,6 +23,7 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
   constructor(
     private catalogsService: CatalogosService,
     private reporteService: EvaluacionRiesgoReporteService,
+    private utilidades: UtilidadesService
   ) { }
 
   //fechas
@@ -67,6 +69,16 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
         document.body.appendChild(downloadlink)
         downloadlink.click();
       });
+    }
+  }
+
+  validarFormSearch() {
+    if (this.generarReporte.get('unidadEjecutora')?.invalid) {
+      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
+    } else if (this.generarReporte.get('id_periodo')?.invalid) {
+      this.utilidades.mostrarError('Selecciona un periodo')
+    } else {
+      this.descargarReporte()
     }
   }
 

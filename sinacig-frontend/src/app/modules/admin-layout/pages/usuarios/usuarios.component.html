@@ -10,8 +10,6 @@
   </div>
 
   <div class="container-cards-user">
-
-
     <div class="card card-stats card-user" *ngFor="let u of usuarios">
       <div class="card-body">
         <div class="">
@@ -35,8 +33,6 @@
         </div>
       </div>
     </div>
-
-
   </div>
 
   <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-labelledby="nuevoUsuarioModalLabel"
@@ -44,18 +40,16 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title" id="nuevoUsuarioModalLabel">Nuevo Usuario</h2>
+          <h2 class="usuario__title" id="nuevoUsuarioModalLabel">Nuevo usuario</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             id="ingresoUsuarioCloseButton"></button>
         </div>
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-
               <div class="form-group">
-                <label for="selectRol" class="form-control-label">Rol<span class="obligatorio">*</span></label>
-                <select [(ngModel)]="id_rol" id="selectRol" name="selectRol"
-                  class="form-control form-control-alternative">
+                <label for="selectRol" class="form-label">Rol<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_rol" id="selectRol" name="selectRol" class="form-select">
                   <option value="-1">- Seleccione una Opción -</option>
                   <option *ngFor="let rol of roles" [value]="rol.id_rol">
                     {{rol.descripcion}}</option>
@@ -64,53 +58,62 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Usuario<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="usuario" type="text" class="form-control form-control-alternative"
-                  placeholder="Usuario" mask="S*">
+                <label class="form-label">Usuario<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="usuario" type="text" class="form-control" placeholder="Usuario" mask="S*">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Contraseña<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="password" type="password" class="form-control form-control-alternative"
-                  placeholder="Contraseña">
+                <label class="form-label">Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="password" type="password" class="form-control" placeholder="Contraseña">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Confirmar Contraseña<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="cpassword" type="password" class="form-control form-control-alternative"
-                  placeholder="Confirmar Contraseña">
+                <label class="form-label">Confirmar Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cpassword" type="password" class="form-control" placeholder="Confirmar Contraseña">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Nombres<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="nombres" type="text" class="form-control form-control-alternative"
-                  placeholder="Usuario" [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+                <label class="form-label">Nombres<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="nombres" type="text" class="form-control" placeholder="Usuario"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Apellidos<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="apellidos" type="text" class="form-control form-control-alternative"
-                  placeholder="Apellidos" [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+                <label class="form-label">Apellidos<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="apellidos" type="text" class="form-control" placeholder="Apellidos"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
-                <label class="form-control-label">CUI/DPI<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="cui" type="text" class="form-control form-control-alternative" placeholder="CUI/DPI"
-                  mask="0{13}">
+                <label class="form-label">CUI/DPI<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cui" type="text" class="form-control" placeholder="CUI/DPI" mask="0{13}">
               </div>
             </div>
-            <div class="col-md-6">
+
+            <!-- <div class="col-md-6">
               <button type="submit" class="btn btn-primary btn-block" (click)="nuevoUsuario()"> Registrar Usuario
               </button>
             </div>
             <div class="col-md-6">
               <button type="submit" class="btn btn-danger btn-block" data-bs-dismiss="modal"> Regresar </button>
+            </div> -->
+
+            <div class="btns-modal mt-5">
+              <div class="btns-modal-container">
+                <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"><i class="fa fa-ban"
+                    aria-hidden="true"></i> Cancelar</button>
+                <button type="button" class="btn btn-primary btn-size" (click)="nuevoUsuario()"><i class="fa fa-plus"
+                    aria-hidden="true"></i>
+                  Agregar</button>
+              </div>
             </div>
+
+
           </div>
         </div>
       </div>
@@ -124,7 +127,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title" id="editarUsuarioModalLabel">Editar Usuario</h2>
+          <h2 class="usuario__title" id="editarUsuarioModalLabel">Editar usuario</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             id="editarUsuarioCloseButton"></button>
         </div>
@@ -132,9 +135,8 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="selectRol" class="form-control-label">Rol<span class="obligatorio">*</span></label>
-                <select [(ngModel)]="id_rol" id="selectRol" name="selectRol"
-                  class="form-control form-control-alternative">
+                <label for="selectRol" class="form-label">Rol<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_rol" id="selectRol" name="selectRol" class="form-select">
                   <option *ngFor="let rol of roles" [value]="rol.id_rol">
                     {{rol.descripcion}}</option>
                 </select>
@@ -142,53 +144,62 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Usuario<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="usuario" type="text" class="form-control form-control-alternative"
-                  placeholder="Usuario" mask="S*" disabled>
+                <label class="form-label">Usuario<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="usuario" type="text" class="form-control" placeholder="Usuario" mask="S*" disabled>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Contraseña<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="password" type="password" class="form-control form-control-alternative"
-                  placeholder="***********">
+                <label class="form-label">Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="password" type="password" class="form-control" placeholder="***********">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Confirmar Contraseña<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="cpassword" type="password" class="form-control form-control-alternative"
-                  placeholder="***********">
+                <label class="form-label">Confirmar Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cpassword" type="password" class="form-control" placeholder="***********">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Nombres<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="nombres" type="text" class="form-control form-control-alternative"
-                  placeholder="Usuario" [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+                <label class="form-label">Nombres<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="nombres" type="text" class="form-control" placeholder="Usuario"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-control-label">Apellidos<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="apellidos" type="text" class="form-control form-control-alternative"
-                  placeholder="Apellidos" [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+                <label class="form-label">Apellidos<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="apellidos" type="text" class="form-control" placeholder="Apellidos"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
-                <label class="form-control-label">CUI/DPI<span class="obligatorio">*</span></label>
-                <input [(ngModel)]="cui" type="text" class="form-control form-control-alternative" placeholder="CUI/DPI"
-                  mask="0{13}">
+                <label class="form-label">CUI/DPI<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cui" type="text" class="form-control" placeholder="CUI/DPI" mask="0{13}">
               </div>
             </div>
-            <div class="col-md-6">
-              <button type="submit" class="btn btn-primary btn-block" (click)="actualizarUsuario()"> Actualizar Usuario
+
+
+            <div class="btns-modal mt-5">
+              <div class="btns-modal-container">
+                <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"><i class="fa fa-ban"
+                    aria-hidden="true"></i> Cancelar</button>
+                <button type="button" class="btn btn-primary btn-size" (click)="actualizarUsuario()"><i
+                    class="fa fa-pencil" aria-hidden="true"></i>
+                  Actualizar</button>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-md-6">
+              <button type="button" class="btn btn-primary btn-block" (click)="actualizarUsuario()"> Actualizar Usuario
               </button>
             </div>
             <div class="col-md-6">
-              <button type="submit" class="btn btn-danger btn-block" data-bs-dismiss="modal"> Regresar </button>
-            </div>
+              <button type="button" class="btn btn-danger btn-block" data-bs-dismiss="modal"> Regresar </button>
+            </div> -->
           </div>
         </div>
       </div>

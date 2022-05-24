@@ -1,5 +1,5 @@
 .btn-size {
-  width: 200px;
+  width: 245px;
 }
 
 .btn-size-complement {
@@ -23,6 +23,12 @@
   color: red;
 }
 
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .options-icons {
 
   display: flex;
@@ -39,27 +45,16 @@
 }
 
 .btn-delete {
-  background-image: url('../../../../../assets/img/icons/delete.png');
+  /* background-image: url('../../../../../assets/img/icons/delete.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   width: 27px;
-  height: 27px;
-  display: block;
-  cursor: pointer;
-  transition: all .1s ease-in-out;
-}
-
-.btn-edit {
-  background-image: url('../../../../../assets/img/icons/editar.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 27px;
-  height: 27px;
-  display: block;
-  cursor: pointer;
-  transition: all .1s ease-in-out;
+  height: 27px; */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-table-plan {
@@ -72,9 +67,7 @@
   transform: scale(1.1);
 }
 
-.btn-delete:hover {
-  transform: scale(1.2);
-}
+
 
 .btn-edit:hover {
   transform: scale(1.2);
@@ -94,7 +87,9 @@
   align-items: center;
   flex-wrap: wrap;
 }
-
+.obligatorio {
+  color: red;
+}
 .btn-table-riesgo {
   display: flex;
   gap: 15px;
@@ -103,10 +98,18 @@
 .btns-modal {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 25px;
+  margin-top: 55px;
+}
+
+.btns-modal > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
 }
 
 .btn-modal-plan {
@@ -166,4 +169,29 @@ h2 {
 
 .container-riego-table {
   padding: 50px 30px;
+}
+
+@media only screen and (max-width: 1090px) {
+  .title-btns {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .btns-modal-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .title-btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .btn-table-riesgo {
+    flex-direction: column;
+    margin-top: 15px;
+  }
 }

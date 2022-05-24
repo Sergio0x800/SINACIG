@@ -31,6 +31,9 @@ export class RiesgosService {
   deleteRiesgo(id_riesgo: any) {
     return this.http.patch<any>(`${this.apiUrl}/${id_riesgo}`, { estado_registro: 0 });
   }
+  deleteRiesgoByIdMatriz(id_matriz: any) {
+    return this.http.patch<any>(`${this.apiUrl}/matriz/${id_matriz}`, { estado_registro: 0 });
+  }
   ///update service riesgo
   updateRiesgo(id_riesgo: any, data: any) {
     return this.http.patch<any>(`${this.apiUrl}/update/${id_riesgo}`, data);

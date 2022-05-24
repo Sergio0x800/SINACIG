@@ -1,16 +1,55 @@
-.btn-size {
-  width: 200px;
-}
-
-.container-btn {
+/*Encabezado periodo*/
+.container-info-periodo {
+  width: 100%;
   display: flex;
-  justify-content: end;
-  flex-wrap: wrap;
-  gap: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 100px;
+}
+
+.inputs-perido {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.inputs_unidad {
+  width: 60%;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  align-self: flex-start;
+}
+
+.title-position {
+  align-self: flex-start;
+}
+
+.btn-size {
+  width: 245px;
+  margin: 0;
+}
+
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
-.container-btn {
+.container-btn-ingreso {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+
+.container-btn-plus {
   position: relative;
 }
 
@@ -24,6 +63,10 @@
 
 }
 
+.obligatorio {
+  color: red;
+}
+
 .container-btn-add {
   display: flex;
   justify-content: space-between;
@@ -31,33 +74,17 @@
 }
 
 .btn-delete {
-  background-image: url('../../../../../assets/img/icons/delete.png');
+  /* background-image: url('../../../../../assets/img/icons/delete.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   width: 27px;
-  height: 27px;
-  display: block;
-  cursor: pointer;
-  transition: all .1s ease-in-out;
+  height: 27px; */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.btn-edit {
-  background-image: url('../../../../../assets/img/icons/editar.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 27px;
-  height: 27px;
-  display: block;
-  cursor: pointer;
-  transition: all .1s ease-in-out;
-}
-
-.btn-delete:hover {
-  transform: scale(1.2);
-}
-
 .options-icons {
   display: flex;
   justify-content: center;

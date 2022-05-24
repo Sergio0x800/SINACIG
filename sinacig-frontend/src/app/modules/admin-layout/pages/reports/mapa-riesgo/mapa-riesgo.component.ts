@@ -3,6 +3,7 @@ import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MapaRiesgoService } from '../services/mapa-riesgo/mapa-riesgo.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-mapa-riesgo',
@@ -28,6 +29,7 @@ export class MapaRiesgoComponent implements OnInit {
   constructor(
     private catalogsService: CatalogosService,
     private reporteService: MapaRiesgoService,
+    private utilidades: UtilidadesService
   ) { }
 
   ngOnInit(): void {
@@ -55,7 +57,17 @@ export class MapaRiesgoComponent implements OnInit {
       document.body.appendChild(downloadlink)
       downloadlink.click();
     });
-    
+
+  }
+
+  validarFormSearch() {
+    if (this.generarReporte.get('unidadEjecutora')?.invalid) {
+      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
+    } else if (this.generarReporte.get('id_periodo')?.invalid) {
+      this.utilidades.mostrarError('Selecciona un periodo')
+    } else {
+      this.descargarReporte()
+    }
   }
 
 }

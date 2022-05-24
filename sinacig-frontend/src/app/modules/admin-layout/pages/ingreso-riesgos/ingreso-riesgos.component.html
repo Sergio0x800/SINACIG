@@ -1,66 +1,68 @@
-<!-- Ingreso de riesgos -->
-<div class="container-fluid mt-5">
-  <div class="row">
-    <h1 class="col-12">Periodo evaluado</h1>
-    <div class="row">
-      <div class="col-6">
-        <label for="inputUnidad" class="form-label">Unidad Ejecutora</label>
-        <input [disabled]="true" type="text" class="form-control" [value]="concatCodigoUnidad">
-      </div>
-      <div class="col-3">
-        <label for="inputUnidad" class="form-label">Fecha inicio</label>
-        <input [disabled]="true" type="text" class="form-control"
-          [value]="matrizEncontrada.fecha_periodo_inicio | date: 'dd/MM/yyyy'">
-      </div>
-      <div class="col-3">
-        <label for="inputUnidad" class="form-label">Fecha fin</label>
-        <input [disabled]="true" type="text" class="form-control"
-          [value]="matrizEncontrada.fecha_periodo_fin | date: 'dd/MM/yyyy'">
-      </div>
+<div class="container-info-periodo">
+  <!-- TITULO -->
+  <div class="title-position">
+    <h2 class="matriz-form__title">Periodo evaluado</h2>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="inputs-perido">
+    <!-- unidad ejecutora -->
+    <div class="inputs_unidad">
+      <label for="inputUnidad" class="form-label">Unidad Ejecutora</label>
+      <input [disabled]="true" type="text" class="form-control input_unidad_w" [value]="concatCodigoUnidad">
+    </div>
+    <!-- fechas -->
+    <div class="inputs_date1">
+      <label for="inputUnidad" class="form-label">Fecha inicio</label>
+      <input [disabled]="true" type="text" class="form-control"
+        [value]="matrizEncontrada.fecha_periodo_inicio | date: 'dd/MM/yyyy'">
+    </div>
+    <div class="inputs_date2">
+      <label for="inputUnidad" class="form-label">Fecha fin</label>
+      <input [disabled]="true" type="text" class="form-control"
+        [value]="matrizEncontrada.fecha_periodo_fin | date: 'dd/MM/yyyy'">
     </div>
   </div>
 </div>
-<hr class="mt-5 mb-4" />
-<div class="container_form_riesgos mt-5">
-  <form class="container_form_form" [formGroup]="formCreateRiesgo" (ngSubmit)="createNewRiesgo()">
-    <h2 class="container__title mb-3">Ingreso de riesgo:</h2>
-    <div class="row justify-content-center">
 
+<hr class="mb-4" />
+<div class="container_form_riesgos ">
+  <form class="container_form_form" [formGroup]="formCreateRiesgo">
+    <h2 class="matriz-form__title mb-3">Ingreso de riesgo:</h2>
+    <div class="row justify-content-center">
       <div class="col-6 double-inputs-form mt-1">
         <div class="inputs-size">
-          <label for="inputTipoObjetivo" class="form-label">Tipo de objetivo</label>
+          <label for="inputTipoObjetivo" class="form-label">Tipo de objetivo<span class="obligatorio">*</span></label>
           <select id="inputTipoObjetivo" name="inputTipoObjetivo" class="form-select"
             formControlName="id_tipo_objetivo">
             <option *ngFor="let tipoObjetivo of tipoObjetivos" [value]="tipoObjetivo.id_tipo_objetivo">
               {{tipoObjetivo.descripcion}}</option>
           </select>
         </div>
-        <!-- <div class="inputs-size">
-          <label for="inputReferencia" class="form-label">Codigo de referencia</label>
-          <input [disabled]="true" id="inputReferencia" name="inputReferencia" class="form-control" type="text"
-            [value]="codigoReferenciaToInput">
-        </div> -->
       </div>
       <div class="col-6 mt-1">
-        <label for="inputArea" class="form-label">Área evaluada</label>
+        <label for="inputArea" class="form-label">Área evaluada<span class="obligatorio">*</span></label>
         <select id="inputArea" name="inputArea" class="form-select" formControlName="id_area_evaluada">
           <option *ngFor="let area of areas_evaluadas" [value]="area.id_area_evaluada">
             {{area.descripcion}}</option>
         </select>
       </div>
+
+
       <div class="col-12 mt-4">
-        <label for="inputEventos" class="form-label">Eventos identificados</label>
+        <label for="inputEventos" class="form-label">Eventos identificados<span class="obligatorio">*</span></label>
         <textarea id="inputEventos" name="inputEventos" class="form-control" rows="4"
           formControlName="id_eventos_identificados"></textarea>
       </div>
       <div class="col-12 mt-4">
-        <label for="descripcionRiesgo" class="form-label">Descripción de riesgo</label>
+        <label for="descripcionRiesgo" class="form-label">Descripción de riesgo<span
+            class="obligatorio">*</span></label>
         <textarea formControlName="descripcion_riesgo" id="descripcionRiesgo" name="descripcionRiesgo"
           class="form-control" rows="4"></textarea>
       </div>
       <div class="col-12 mt-4 double-inputs-form">
         <div class="inputs-size">
-          <label for="inputProbabilidad" class="form-label">Probabilidad</label>
+          <label for="inputProbabilidad" class="form-label">Probabilidad<span class="obligatorio">*</span></label>
           <select id="inputProbabilidad" name="inputProbabilidad" class="form-select" formControlName="id_probabilidad">
 
             <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
@@ -68,7 +70,7 @@
           </select>
         </div>
         <div class="inputs-size">
-          <label for="inputSeveridad" class="form-label">Severidad</label>
+          <label for="inputSeveridad" class="form-label">Severidad<span class="obligatorio">*</span></label>
           <select id="inputSeveridad" name="inputSeveridad" class="form-select" formControlName="id_severidad">
 
             <option *ngFor="let severidad of severidades" [value]="severidad.id_severidad">
@@ -83,7 +85,7 @@
       </div>
       <div class="col-12 mt-4 double-inputs-form">
         <div class="inputs-size">
-          <label for="valorMitigador" class="form-label">Control Mitigador</label>
+          <label for="valorMitigador" class="form-label">Control Mitigador<span class="obligatorio">*</span></label>
           <select *ngIf="showBtnControlP || showBtnControlI; else elseIfSelect" [disabled]="true" id="valorMitigador"
             name="valorMitigador" class="form-select" formControlName="id_control_mitigador">
             <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
@@ -103,7 +105,7 @@
             [value]="resultadoRR">
         </div>
         <div class="inputs-size">
-          <label for="inputMedida" class="form-label">Medida de Riesgo</label>
+          <label for="inputMedida" class="form-label">Medida de Riesgo<span class="obligatorio">*</span></label>
           <input [disabled]="true" id="inputMedida" name="inputMedida" class="form-control btn-medida" type="text"
             [value]="medidaRiesgoInput">
         </div>
@@ -113,8 +115,9 @@
           <div>
             <div class="mt-1">
               <div class="container-btn-add">
-                <label for="inputDescripcionInterno" class="form-label">Controles internos para mitigar:</label>
-                <div class="container-btn">
+                <label for="inputDescripcionInterno" class="form-label">Controles internos para mitigar<span
+                    class="obligatorio">*</span></label>
+                <div class="container-btn-plus">
                   <button [disabled]="formCreateControlInterno.invalid" type="button"
                     class="btn btn-primary btn-size-complement btn-float" (click)="pushControlInterno()">+</button>
                 </div>
@@ -124,15 +127,16 @@
             </div>
           </div>
         </form>
-
-
         <div *ngIf="controlInternoMemory.length > 0" class="table-responsive">
           <table class="table">
             <tbody>
               <tr *ngFor="let controlInt of controlInternoMemory">
                 <th scope="row th-display">
-                  <div class="options-icons">
-                    <span (click)="deleteControlInterno(controlInt.descripcion)" class="btn-delete"></span>
+                  <div class="btn-delete">
+                    <button class="btn btn-sm btn-danger btn-size-card"
+                      (click)="deleteControlInterno(controlInt.descripcion)">
+                      <i class="fas fa-trash"></i>
+                    </button>
                   </div>
                 </th>
                 <td class="pt-3 text-dark font-text-table">
@@ -144,8 +148,6 @@
             </tbody>
           </table>
         </div>
-
-
       </div>
       <div class="col-12 mt-4">
         <label for="txt_observaciones" class="form-label">Observaciones</label>
@@ -153,11 +155,11 @@
           rows="4"></textarea>
       </div>
     </div>
-    <div class="container-btn mt-5 mb-5">
+    <div class="container-btn-ingreso mt-5">
       <button type="button" class="btn btn-danger btn-size" [routerLink]="routerLinkRiesgo"><i class="fa fa-ban"
           aria-hidden="true"></i> Cancelar</button>
-      <button [disabled]="formCreateRiesgo.invalid || !(controlInternoMemory.length > 0)" type="submit"
-        class="btn btn-primary btn-size"><i class="fa fa-arrow-right" aria-hidden="true"></i> Plan de
+      <button (click)="validarFormularioRiesgo()" type="button" class="btn btn-primary btn-size"><i
+          class="fa fa-arrow-right" aria-hidden="true"></i> Plan de
         trabajo</button>
     </div>
   </form>

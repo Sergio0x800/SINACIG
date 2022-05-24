@@ -1,37 +1,31 @@
-<div class="search-container-form-create mt-5">
-    <!-- Formulario de busqueda -->
-    <form [formGroup]="generarReporte" (submit)="descargarReporte()" class="form-report">
-      <!-- titulo form -->
-      <div class="search__box-title">
-        <div class="search__container_title">
-          <h1 class="search__title">Mapa de Riesgo</h1>
-        </div>
+<div class="container-matriz mb-5">
+  <form [formGroup]="generarReporte" class="matriz-form">
+    <div>
+      <h2 class="matriz-form__title">Mapa de Riesgo</h2>
+    </div>
+    <div>
+      <div class="mb-3">
+        <label for="unidadFindRiesgo" class="form-label">Unidad ejecutora:</label>
+        <select formControlName="unidadEjecutora" id="unidadFindRiesgo" name="unidadFindRiesgo"
+          class="form-select inputs-select-styles">
+          <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
+            {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
+        </select>
       </div>
-      <!-- inputs del formulario -->
-      <div class="search__container-inputs">
-        <div class="search__unidad-ejecutora">
-          <label for="unidadFindRiesgo" class="form-label">Unidad ejecutora:</label>
-          <select formControlName="unidadEjecutora" id="unidadFindRiesgo" name="unidadFindRiesgo" class="form-select">
-            <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
-              {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
-          </select>
-        </div>
-        <div class="search__anio-periodo">
-          <label for="fInicioFindRiesgo" class="form-label">Año del periodo:</label>
-          <select formControlName="id_periodo" id="periodoAnio" name="periodoAnio" class="form-select">
-            <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
-              {{periodo.anio}}
-            </option>
-          </select>
-        </div>
-        <div class="search__container-btns">
-          <div class="search__btns">
-            <button class="btn btn-primary search__btn" [disabled]="generarReporte.invalid" type="submit">
-              Generar reporte
-            </button>
-  
-          </div>
-        </div>
+      <div class="mb-5">
+        <label for="fInicioFindRiesgo" class="form-label">Año del periodo:</label>
+        <select formControlName="id_periodo" id="periodoAnio" name="periodoAnio"
+          class="form-select inputs-select-styles">
+          <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
+            {{periodo.anio}}
+          </option>
+        </select>
       </div>
-    </form>
-  </div>
+      <div class="container-btn">
+        <button class="btn btn-primary btn-size" (click)="validarFormSearch()" type="button">
+          <i class="fa fa-line-chart" aria-hidden="true"></i> Generar reporte
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

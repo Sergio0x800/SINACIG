@@ -4,14 +4,14 @@
       <h2 class="matriz-form__title">Matriz de riesgos</h2>
     </div>
     <div>
-      <div class="mb-3">
+      <div class="mb-3 inputs-select-styles">
         <label class="form-label" for="unidadFindRiesgo">Unidad ejecutora:</label>
         <select class="form-select" formControlName="id_unidad_ejecutora" id="unidadFindRiesgo" name="unidadFindRiesgo">
           <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
             {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
         </select>
       </div>
-      <div class="mb-5">
+      <div class="mb-5 inputs-select-styles">
         <label class="form-label" for="fInicioFindRiesgo">Año del periodo:</label>
         <select class="form-select" formControlName="id_periodo" id="periodoAnio" name="periodoAnio">
           <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
@@ -20,12 +20,12 @@
       </div>
       <div>
         <div class="container-btn">
-          <button class="btn btn-primary btn-size" [disabled]="formSearchCreateMatrizPeriodo.invalid" type="button"
-            (click)="findMatrizPeriodo()"><i class="fa fa-search" aria-hidden="true"></i>
+          <button class="btn btn-primary btn-size" type="button" (click)="validarFormBusqueda()"><i class="fa fa-search"
+              aria-hidden="true"></i>
             Buscar
           </button>
-          <button class="btn btn-success btn-size" (click)="createNewMatrizPeriodo()" type="button"><i
-              class="fa fa-plus" aria-hidden="true"></i>
+          <button class="btn btn-success btn-size" (click)="validarFormMatriz()" type="button"><i class="fa fa-plus"
+              aria-hidden="true"></i>
             Agregar periodo
           </button>
         </div>
@@ -55,9 +55,6 @@
                     <i class="fas fa-trash"></i>
                   </button>
                 </div>
-                <!-- <div class="options-icons">
-                  <span (click)="deletePeriodoMatriz(matriz.id_matriz)" class="btn-delete"></span>
-                </div> -->
               </th>
               <td class="pt-3">
                 <div class="containe-unidad">

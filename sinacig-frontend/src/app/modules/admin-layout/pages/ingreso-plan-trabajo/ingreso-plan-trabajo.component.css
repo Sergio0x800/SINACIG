@@ -1,3 +1,39 @@
+/*Encabezado*/
+.container-info-periodo {
+  width: 100%;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+}
+.title-inputs-periodo {
+  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  align-self: flex-start;
+}
+.inputs-perido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: start;
+  gap: 30px;
+}
+.input-unidad {
+  width: 600px;
+}
+.obligatorio {
+  color: red;
+}
+
+
+.btn-size {
+  width: 245px;
+}
+
 .btn-terminar-registro {
   width: 100%;
   display: flex;
@@ -13,20 +49,23 @@
   gap: 15px;
 }
 
-.btn-size {
-  width: 200px;
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+
 .btn-delete {
-  background-image: url('../../../../../assets/img/icons/delete.png');
+  /* background-image: url('../../../../../assets/img/icons/delete.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   width: 27px;
-  height: 27px;
-  display: block;
-  cursor: pointer;
-  transition: all .1s ease-in-out;
+  height: 27px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .options-icons {
@@ -63,10 +102,10 @@
 }
 
 .container-inputs-textbox {
-  width: 600px;
+  width: 800px;
 }
 .container-inputs-textbox-controles {
-  width: 600px;
+  width: 800px;
   background: white;
   padding: 5px;
   border-radius: 0.375rem;
@@ -111,7 +150,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 600px;
+  width: 800px;
 }
 
 .container-plan-trabajo{
@@ -126,13 +165,6 @@
   margin-bottom: 15px;
 }
 
-.container-encabezado-plan {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 50px;
-  align-items: center;
-}
 
 .container-inputs-plan {
   width: 600px;

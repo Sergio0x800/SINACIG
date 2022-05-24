@@ -8,6 +8,7 @@ import { DATES, IAngularMyDpOptions } from 'angular-mydatepicker';
 
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 
 @Component({
@@ -86,7 +87,8 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     private riesgosService: RiesgosService,
     private route: ActivatedRoute,
     private router: Router,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private utilidades: UtilidadesService
   ) { }
 
   ngOnInit(): void {
@@ -138,6 +140,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         this.planRiesgoService.createControlImplementacion(newControlesImp).subscribe(value => {
         })
       })
+      this.router.navigate(['/admin/riesgos/', this.id_matriz]);
       Swal.fire({
         title: '¡El registro se guardó correctamente!',
         icon: 'success',
@@ -145,10 +148,18 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         confirmButtonText: 'OK!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.router.navigate(['/admin/riesgos/', this.id_matriz]);
+
         }
       })
     })
+  }
+
+  validarFormPlanRiesgo() {
+    if ((this.formCreatePlanRiesgo.invalid || !(this.controlImplementacionMemory.length > 0)) || !(this.recursosMemory.length > 0)) {
+      this.utilidades.mostrarError("Debe de llenar todos los campos obligatorios!")
+    } else {
+      this.createNewPlanRiesgo()
+    }
   }
 
   createNewControlToMemory() {

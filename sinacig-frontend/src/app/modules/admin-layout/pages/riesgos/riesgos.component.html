@@ -34,10 +34,8 @@
             </div>
           </th>
           <td class="pt-3">{{riesgo.codigo_referencia}}</td>
-          <td class="">
-            <div class="descripcion__stl">
-              {{riesgo.descripcion_riesgo}}
-            </div>
+          <td>
+            {{riesgo.descripcion_riesgo}}
           </td>
           <td class="pt-3">{{riesgo.riesgo_inherente}}</td>
           <td class="pt-3">{{riesgo.riesgo_residual}}</td>
@@ -80,21 +78,6 @@
                     {{tipoObjetivo.descripcion}}</option>
                 </select>
               </div>
-
-              <!-- <div
-                *ngIf="tipoObjetivoEncontrado.id_tipo_objetivo === riesgoEncontrado.id_tipo_objetivo; else elseCodigoReferencia"
-                class="inputs-size mt-3">
-                <label for="inputReferenciaShow" class="form-label">Codigo de referencia</label>
-                <input [disabled]="true" id="inputReferenciaShow" name="inputReferenciaShow" class="form-control"
-                  type="text" [value]="riesgoEncontrado.codigo_referencia">
-              </div>
-              <ng-template #elseCodigoReferencia>
-                <div class="inputs-size mt-3">
-                  <label for="inputReferencia" class="form-label">Codigo de referencia</label>
-                  <input [disabled]="true" id="inputReferencia" name="inputReferencia" class="form-control" type="text"
-                    formControlName="codigo_referencia" [value]="codigoReferenciaToInput">
-                </div>
-              </ng-template> -->
             </div>
             <div class="col-12 mt-4">
               <label for="inputArea" class="form-label">Área evaluada</label>
@@ -118,7 +101,6 @@
                 <label for="inputProbabilidad" class="form-label">Probabilidad</label>
                 <select id="inputProbabilidad" name="inputProbabilidad" class="form-select"
                   formControlName="id_probabilidad">
-
                   <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
                     {{probabilidad.nivel_probabilidad}}</option>
                 </select>
@@ -126,7 +108,6 @@
               <div class="inputs-size">
                 <label for="inputSeveridad" class="form-label">Severidad</label>
                 <select id="inputSeveridad" name="inputSeveridad" class="form-select" formControlName="id_severidad">
-
                   <option *ngFor="let severidad of severidades" [value]="severidad.id_severidad">
                     {{severidad.nivel_severidad}}</option>
                 </select>
@@ -177,7 +158,7 @@
 
 
 
-            <div class="col-12 mt-4">
+            <div class="col-12 mt-5">
               <h3>Controles internos para mitigar</h3>
               <form [formGroup]="formUpdateControlInterno">
                 <div class="row justify-content-center">
@@ -199,9 +180,11 @@
                         <tbody>
                           <tr *ngFor="let internos of controlesInternosObtenidos">
                             <th scope="row th-display">
-                              <div class="options-icons">
-                                <span (click)="deleteInternoInMemoryTablaGet(internos.id_riesgo_control_interno)"
-                                  class="btn-delete"></span>
+                              <div class="btn-delete">
+                                <button class="btn btn-sm btn-danger btn-size-card"
+                                  (click)="deleteInternoInMemoryTablaGet(internos.id_riesgo_control_interno)">
+                                  <i class="fas fa-trash"></i>
+                                </button>
                               </div>
                             </th>
                             <td class="pt-3 text-dark font-text-table">{{internos.descripcion}}</td>
@@ -209,14 +192,17 @@
                         </tbody>
                       </table>
                     </div>
-                    <div *ngIf="internosMemory.length > 0" class="table-responsive">
+                    <div *ngIf="internosMemory.length > 0" class="table-responsive mt-3">
                       <h5>Nuevos controles para agregar:</h5>
                       <table class="table">
                         <tbody>
                           <tr *ngFor="let internosM of internosMemory">
                             <th scope="row th-display">
-                              <div class="options-icons">
-                                <span (click)="deleteInternoInMemory(internosM.descripcion)" class="btn-delete"></span>
+                              <div class="btn-delete">
+                                <button class="btn btn-sm btn-danger btn-size-card"
+                                  (click)="deleteInternoInMemory(internosM.descripcion)">
+                                  <i class="fas fa-trash"></i>
+                                </button>
                               </div>
                             </th>
                             <td class="pt-3 text-dark font-text-table">{{internosM.descripcion}}</td>
@@ -230,7 +216,8 @@
                       <form [formGroup]="formUpdateControlInterno">
                         <div>
                           <div class="mt-1">
-                            <label for="inputRecurso" class="form-label">Descripción:</label>
+                            <label for="inputRecurso" class="form-label">Descripción<span
+                                class="obligatorio">*</span></label>
                             <textarea id="inputRecurso" name="inputRecurso" class="form-control"
                               formControlName="descripcion" rows="4"></textarea>
                           </div>
@@ -247,22 +234,14 @@
                 </div>
               </form>
             </div>
-
-
-
-
-
           </div>
-
-
-
-
           <div class="btns-modal mt-5">
-            <div>
+            <div class="btns-modal-container">
               <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
-                (click)="cancelarUpdate()">Cancelar</button>
+                (click)="cancelarUpdate()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
               <button [disabled]="formUpdateRiesgo.invalid" type="submit" class="btn btn-primary btn-size"
-                (click)="updateRiesgo()" data-bs-dismiss="modal">Actualizar</button>
+                (click)="updateRiesgo()" data-bs-dismiss="modal"><i class="fa fa-pencil" aria-hidden="true"></i>
+                Actualizar</button>
             </div>
           </div>
         </form>
@@ -270,8 +249,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!-- Modal Actualizar Plan controles y recursos -->
 <div class="modal fade" id="planModal" tabindex="-1" aria-labelledby="planModalLabel" aria-hidden="true">
@@ -331,7 +308,7 @@
           </form>
 
           <!-- ---------Controles--------- -->
-          <h3>Controles:</h3>
+          <h3 class="mt-5">Controles:</h3>
           <form [formGroup]="formUpdateControlImplementacion" class="mb-5">
             <div class="row justify-content-center">
               <div class="container-table-coImple">
@@ -356,11 +333,15 @@
                     <tbody>
                       <tr *ngFor="let ctImplementacion of controlesImplementacionObtenidos">
                         <th scope="row th-display">
-                          <div class="options-icons">
-                            <span (click)="deleteControlInMemoryTablaGet(ctImplementacion.id_implementacion)"
-                              class="btn-delete"></span>
+                          <div class="btn-delete">
+                            <button class="btn btn-sm btn-danger btn-size-card"
+                              (click)="deleteControlInMemoryTablaGet(ctImplementacion.id_implementacion)">
+                              <i class="fas fa-trash"></i>
+                            </button>
                           </div>
                         </th>
+
+
                         <td class="pt-3 text-dark font-text-table">
                           <div class="table-width">
                             {{ctImplementacion.que}}
@@ -400,12 +381,14 @@
                     <tbody>
                       <tr *ngFor="let ctImplementacion of controlesMemory">
                         <th scope="row th-display">
-                          <div class="options-icons">
-                            <span
-                              (click)="deleteControlInMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien, ctImplementacion.cuando)"
-                              class="btn-delete"></span>
+                          <div class="btn-delete">
+                            <button class="btn btn-sm btn-danger btn-size-card"
+                              (click)="deleteControlInMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien, ctImplementacion.cuando)">
+                              <i class="fas fa-trash"></i>
+                            </button>
                           </div>
                         </th>
+
                         <td class="pt-3 text-dark font-text-table">
                           <div class="table-width">
                             {{ctImplementacion.que}}
@@ -436,24 +419,24 @@
                   <form [formGroup]="formUpdateControlImplementacion">
                     <div class="row">
                       <div class="col-6 mt-2">
-                        <label for="inputQue" class="form-label">Que:</label>
+                        <label for="inputQue" class="form-label">¿Que?<span class="obligatorio">*</span></label>
                         <textarea id="inputQue" name="inputQue" class="form-control" formControlName="que"
                           rows="4"></textarea>
                       </div>
                       <div class="col-6 mt-2">
                         <div class="container-btn-add">
-                          <label for="inputComo" class="form-label">Como:</label>
+                          <label for="inputComo" class="form-label">¿Como?<span class="obligatorio">*</span></label>
                         </div>
                         <textarea id="inputComo" name="inputComo" class="form-control" formControlName="como"
                           rows="4"></textarea>
                       </div>
                       <div class="col-6 mt-2">
-                        <label for="inputQuien" class="form-label">Quien:</label>
+                        <label for="inputQuien" class="form-label">¿Quien?<span class="obligatorio">*</span></label>
                         <textarea id="inputQuien" name="inputQuien" class="form-control" formControlName="quien"
                           rows="4"></textarea>
                       </div>
                       <div class="col-6 mt-2">
-                        <label for="inputCuando" class="form-label">Cuando:</label>
+                        <label for="inputCuando" class="form-label">¿Cuando?<span class="obligatorio">*</span></label>
                         <textarea id="inputCuando" name="inputCuando" class="form-control" formControlName="cuando"
                           rows="4"></textarea>
                       </div>
@@ -492,11 +475,14 @@
                     <tbody>
                       <tr *ngFor="let recurso of recursosObtenidos">
                         <th scope="row th-display">
-                          <div class="options-icons">
-                            <span (click)="deleteRecursoInMemoryTablaGet(recurso.id_recursos)"
-                              class="btn-delete"></span>
+                          <div class="btn-delete">
+                            <button class="btn btn-sm btn-danger btn-size-card"
+                              (click)="deleteRecursoInMemoryTablaGet(recurso.id_recursos)">
+                              <i class="fas fa-trash"></i>
+                            </button>
                           </div>
                         </th>
+
                         <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
                       </tr>
                     </tbody>
@@ -508,10 +494,14 @@
                     <tbody>
                       <tr *ngFor="let recurso of recursosMemory">
                         <th scope="row th-display">
-                          <div class="options-icons">
-                            <span (click)="deleteRecursoMemory(recurso.descripcion)" class="btn-delete"></span>
+                          <div class="btn-delete">
+                            <button class="btn btn-sm btn-danger btn-size-card"
+                              (click)="deleteRecursoMemory(recurso.descripcion)">
+                              <i class="fas fa-trash"></i>
+                            </button>
                           </div>
                         </th>
+
                         <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
                       </tr>
                     </tbody>
@@ -523,7 +513,7 @@
                   <form [formGroup]="formUpdateRecursos">
                     <div>
                       <div class="mt-1">
-                        <label for="inputRecurso" class="form-label">Recursos:</label>
+                        <label for="inputRecurso" class="form-label">Recursos<span class="obligatorio">*</span></label>
                         <textarea id="inputRecurso" name="inputRecurso" class="form-control"
                           formControlName="descripcion" rows="4"></textarea>
                       </div>
@@ -543,9 +533,9 @@
           <div class="btns-modal">
             <div>
               <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
-                (click)="resetVariables()">Cancelar</button>
+                (click)="resetVariables()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
               <button (click)="updatePlanTrabajoControlesRecursos()" type="button" class="btn btn-primary btn-size"
-                data-bs-dismiss="modal">Actualizar</button>
+                data-bs-dismiss="modal"><i class="fa fa-pencil" aria-hidden="true"></i> Actualizar</button>
             </div>
           </div>
         </div>

@@ -58,3 +58,23 @@
   display: flex;
   justify-content: center;
 }
+
+@media only screen and (max-width: 840px) {
+  .inputs-select-styles {
+    width: 300px;
+  }
+  .container-btn {
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .container-btn > button {
+    margin: 0;
+    width: 300px;
+  }
+  .matriz-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
