@@ -124,7 +124,7 @@ export class RiesgosComponent implements OnInit {
   formUpdateControlInterno = new FormGroup({
     id_riesgo: new FormControl(''),
     descripcion: new FormControl('', Validators.required),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl('')
   })
   formUpdatePlan = new FormGroup({
     id_prioridad: new FormControl('', Validators.required),
@@ -685,10 +685,14 @@ export class RiesgosComponent implements OnInit {
   //push y splice en memorias controles y recursos
   //Controles Internos Memory
   addInternoInMemory() {
-    const dataFormControl = this.formUpdateControlInterno.value;
-    if (dataFormControl.descripcion) {
-      this.internosMemory.push(dataFormControl);
-      this.formUpdateControlInterno.reset()
+    if(this.formUpdateControlInterno.invalid){
+      this.utilidades.mostrarError("Ingrese una descripción")
+    } else {
+      const dataFormControl = this.formUpdateControlInterno.value;
+      if (dataFormControl.descripcion) {
+        this.internosMemory.push(dataFormControl);
+        this.formUpdateControlInterno.reset()
+      }
     }
   }
   deleteInternoInMemory(descripcion: any) {

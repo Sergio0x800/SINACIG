@@ -3,33 +3,20 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } f
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
+export interface OnExit {
+  onExit: () => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ExitGuard implements CanDeactivate<unknown> {
   canDeactivate(
-    component: unknown,
+    component: OnExit,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.OnExit();
-  }
-  OnExit(){
-    const confirm = Swal.fire({
-      title: '¿Está seguro de salir?',
-      text: 'Perderá los datos ingresados.',
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Confirmar',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        return true;
-      }
-      return false
-    });
-    return confirm
+
+    return component.onExit ? component.onExit() : true;
   }
 }

@@ -1,7 +1,117 @@
 .btn-size {
-  width: 200px;
+  width: 100%;
 }
 
-.main-login {
-    background-color: #172b4d;
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-image:linear-gradient(87deg, rgb(17, 205, 239) 0px, rgb(17, 113, 239) 100%);
+    // background-color: #172b4d;
+}
+
+.header-container {
+  width: 100%;
+  padding: 5px 15px;
+  background-color: #f7fafc;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  .header__imgLogo {
+    width: 250px;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.login-container {
+  background-color: #f7fafc;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 420px;
+  padding: 30px;
+  .login-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      color: #474a51;
+      font-size: 22px;
+    }
+    small {
+      font-family: 'Nunito';
+      color: #525f7f;
+      text-align: center;
+      font-size: 14px;
+    }
+  }
+}
+
+.footer-container {
+  width: 100%;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f7fafc;
+  box-shadow: rgba(0, 0, 0, 0.35) 5px 0px 15px;
+  .footer-items-container {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 10px;
+    .items {
+      list-style: none;
+    }
+  }
+}
+p {
+  margin: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .header-container {
+    justify-content: center;
+  }
+  .login {
+    justify-content: flex-start;
+    gap: 85px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  .btn-size {
+    width: 220px;
+  }
+  .login-container {
+    width: 350px;
+  }
+  .footer-container {
+    display: none;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .login {
+    justify-content: flex-start;
+    gap: 85px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  .btn-size {
+    width: 100%;
+  }
+  .login-container {
+    width: 300px;
+    padding: 15px;
+  }
+  .footer-container {
+    display: none;
+  }
 }
