@@ -5,11 +5,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxMaskModule } from 'ngx-mask'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { AdminLayoutRoutingModule } from './admin-layout-routing.module';
 import { MapaRiesgoComponent } from './pages/reports/mapa-riesgo/mapa-riesgo.component';
@@ -26,6 +26,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
+
 @NgModule({
   declarations: [
     MapaRiesgoComponent,
@@ -49,8 +50,7 @@ import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
-    // BrowserAnimationsModule,
-    NgxMaskModule.forRoot(),
+    NgxMaskModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

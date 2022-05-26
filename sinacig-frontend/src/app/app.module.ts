@@ -32,7 +32,8 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     NgxSpinnerModule,
     BrowserAnimationsModule,
     NgbModule,
-    AngularMyDatePickerModule
+    AngularMyDatePickerModule,
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
