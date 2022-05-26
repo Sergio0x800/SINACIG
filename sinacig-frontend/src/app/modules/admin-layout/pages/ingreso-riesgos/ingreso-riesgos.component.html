@@ -1,34 +1,40 @@
-<div class="container-info-periodo">
-  <!-- TITULO -->
-  <div class="title-position">
-    <h2 class="matriz-form__title">Periodo evaluado</h2>
-  </div>
-
-  <!-- INPUTS -->
-  <div class="inputs-perido">
-    <!-- unidad ejecutora -->
-    <div class="inputs_unidad">
-      <label for="inputUnidad" class="form-label">Unidad Ejecutora</label>
-      <input [disabled]="true" type="text" class="form-control input_unidad_w" [value]="concatCodigoUnidad">
+<div class="container-encabezado">
+  <div class="container-info-periodo">
+    <div class="title-position">
+      <h2 class="matriz-form__title">Periodo evaluado</h2>
     </div>
-    <!-- fechas -->
-    <div class="inputs_date1">
-      <label for="inputUnidad" class="form-label">Fecha inicio</label>
-      <input [disabled]="true" type="text" class="form-control"
-        [value]="matrizEncontrada.fecha_periodo_inicio | date: 'dd/MM/yyyy'">
-    </div>
-    <div class="inputs_date2">
-      <label for="inputUnidad" class="form-label">Fecha fin</label>
-      <input [disabled]="true" type="text" class="form-control"
-        [value]="matrizEncontrada.fecha_periodo_fin | date: 'dd/MM/yyyy'">
+    <div class="container-cards-periodo">
+      <div class="card card-style">
+        <div class="card-header card-header-periodo bg-info text-black">
+          Unidad Ejecutora:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{concatCodigoUnidad}}
+        </div>
+      </div>
+      <div class="card card-style">
+        <div class="card-header card-header-periodo bg-info text-black">
+          Fecha inicio:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{matrizEncontrada.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}
+        </div>
+      </div>
+      <div class="card card-style">
+        <div class="card-header card-header-periodo bg-info text-black">
+          Fecha fin:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{matrizEncontrada.fecha_periodo_fin | date: 'dd/MM/yyyy'}}
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<hr class="mb-4" />
 <div class="container_form_riesgos ">
   <form class="container_form_form" [formGroup]="formCreateRiesgo">
-    <h2 class="matriz-form__title mb-3">Ingreso de riesgo:</h2>
+    <h2 class="matriz-form__title mb-3">Ingreso de riesgo</h2>
     <div class="row justify-content-center">
       <div class="col-6 double-inputs-form mt-1">
         <div class="inputs-size">

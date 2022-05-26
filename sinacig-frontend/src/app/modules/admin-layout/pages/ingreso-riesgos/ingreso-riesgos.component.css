@@ -5,7 +5,29 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px 100px;
+  padding: 30px 30px;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  border-radius: 10px;
+}
+.container-encabezado {
+  width: 100%;
+  padding: 30px;
+}
+.container-cards-periodo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* flex-wrap: wrap; */
+  gap: 15px;
+  color: black;
+}
+
+.card-header-periodo {
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  height: auto;
+  margin: 0;
+  padding: 10px;
 }
 
 .inputs-perido {
@@ -37,6 +59,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.card-body-periodo {
+  padding: 15px;
+}
+
+.card-style {
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.09);
 }
 
 
