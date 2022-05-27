@@ -24,6 +24,16 @@
   font-family: "Poppins", sans-serif;
   align-self: flex-start;
 }
+.form-control {
+  color: #000000;
+  font-size: 16px;
+  border: 1px solid rgba(145, 145, 145, 0.7);
+}
+
+.form-select {
+  border: 1px solid rgba(145, 145, 145, 0.7);
+}
+
 
 .container-cards-periodo {
   width: 100%;
