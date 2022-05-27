@@ -66,6 +66,8 @@ export class UsuariosComponent implements OnInit {
       id_usuario_ingreso: this.usuarioEncontrado.id_usuario
     }
 
+
+
     this.usuarioService.obtenerUsuariosByCui({ cui: data.cui, user: data.usuario }).subscribe((usuario: any) => {
       let dataUsuario = data.usuario.toLowerCase();
       let getUsuario = usuario.usuario.toLowerCase();
@@ -120,7 +122,7 @@ export class UsuariosComponent implements OnInit {
       this.utils.mostrarError('Debe ingresar los apellidos')
       return false
     }
-    if (!this.utils.cuiValido(this.cui, false)) {
+    if (!this.utils.cuiValido(this.cui.toString(), false)) {
       this.utils.mostrarError('Debe ingresar un CUI/DPI válido')
       return false
     }
@@ -215,15 +217,27 @@ export class UsuariosComponent implements OnInit {
       id_usuario_ingreso: this.usuarioEncontrado.id_usuario
     }
 
-    const RESPONSE_ACTUALIZAR_USUARIO: any = await this.usuarioService.actualizarUsuario(data)
+    const usuariosToEdit = this.usuarios.filter((usuario: any) => {
+      if(data.cui == usuario.cui && data.id_usuario != usuario.id_usuario){
+        return usuario
+      }
+    })
 
-    if (RESPONSE_ACTUALIZAR_USUARIO.result = 'ok') {
-      this.utils.mostrarExito(RESPONSE_ACTUALIZAR_USUARIO.msg)
-      document.getElementById("editarUsuarioCloseButton")?.click();
-      this.limpiarCampos()
-      this.obtenerUsuarios()
+    if(usuariosToEdit.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        text: `¡El CUI ingresado ya existe en los registros!`
+      })
     } else {
-      this.utils.mostrarError(RESPONSE_ACTUALIZAR_USUARIO.msg)
+      const RESPONSE_ACTUALIZAR_USUARIO: any = await this.usuarioService.actualizarUsuario(data)
+      if (RESPONSE_ACTUALIZAR_USUARIO.result = 'ok') {
+        this.utils.mostrarExito(RESPONSE_ACTUALIZAR_USUARIO.msg)
+        document.getElementById("editarUsuarioCloseButton")?.click();
+        this.limpiarCampos()
+        this.obtenerUsuarios()
+      } else {
+        this.utils.mostrarError(RESPONSE_ACTUALIZAR_USUARIO.msg)
+      }
     }
   }
 

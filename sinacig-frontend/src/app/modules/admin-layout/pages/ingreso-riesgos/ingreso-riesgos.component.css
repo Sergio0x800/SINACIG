@@ -1,22 +1,23 @@
 /*Encabezado periodo*/
+.container-encabezado {
+  width: 100%;
+  padding: 30px;
+}
+
 .container-info-periodo {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px 100px;
+  padding: 30px;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  border-radius: 10px;
 }
 
-.inputs-perido {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 5px;
-}
-
-.inputs_unidad {
-  width: 60%;
+.title-position {
+  align-self: flex-start;
 }
 
 .matriz-form__title {
@@ -24,21 +25,61 @@
   align-self: flex-start;
 }
 
-.title-position {
-  align-self: flex-start;
+.container-cards-periodo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 5fr 1fr 1fr;
+  gap: 15px;
+  color: black;
 }
 
-.btn-size {
-  width: 245px;
+.card-style {
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.card-header-periodo {
+  height: auto;
   margin: 0;
+  padding: 10px;
+  background-color: #0026ff60;
 }
 
-.th-display {
+.card-body-periodo {
+  padding: 15px;
+}
+/*Fin encabezado periodo*/
+
+/*Form ingreso de riesgo*/
+.container-body-riesgo {
+  padding: 0px 30px; 
+}
+
+.container_form_riesgos {
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
 }
 
+.container_form_riesgos > form {
+  width: 70%;
+}
+
+.container-inputs-ingresoRiesgo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.double-inputs-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+}
 
 .container-btn-ingreso {
   display: flex;
@@ -48,82 +89,97 @@
   gap: 20px;
 }
 
-
-.container-btn-plus {
-  position: relative;
+.btn-size {
+  width: 245px;
+  margin: 0;
 }
 
-.btn-float {
-  position: absolute;
-  top: calc(100% - 10px);
-  right: calc(100% - 25px);
-  border-radius: 100%;
-  font-size: 18px;
-  font-weight: bold;
-
+.form-control {
+  color: #000000;
+  font-size: 16px;
 }
+/*Fin form ingreso de riesgo*/
 
-.obligatorio {
-  color: red;
-}
-
+/*Form control interno*/
 .container-btn-add {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.obligatorio {
+  color: red;
+}
+
+.container-btn-plus {
+  position: relative;
+}
+
+.container-btn-control {
+  position: relative;
+}
+
+.btn-float {
+  position: absolute;
+  bottom: calc(100% - 27px);
+  left: calc(100% - 27px);
+  display: block;
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .btn-delete {
-  /* background-image: url('../../../../../assets/img/icons/delete.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 27px;
-  height: 27px; */
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.options-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.container_form_riesgos {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.container_form_form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-}
-
-.double-inputs-form {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-}
-
-.inputs-size {
-  width: 100%;
-}
-
-.container__title {
-  align-self: start;
-}
-
 
 .select-control-mitigador {
   width: 350px;
 }
 
+.form-control-bg {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+.tolerable {
+  background-color: rgba(0, 255, 34, 0.09);
+}
+
+.gestionable {
+  background-color: rgba(229, 255, 0, 0.09);
+}
+
+.noTolerable {
+  background-color: rgba(255, 0, 0, 0.09);
+}
+/*Fin form control interno*/
+
+@media only screen and (max-width: 1219px) {
+  .container-cards-periodo {
+    grid-template-columns: 3fr 1fr 1fr;
+  }
+  .container_form_riesgos > form {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 984px) {
+  
+  .container-cards-periodo {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  .double-inputs-form {
+    grid-template-columns: 1fr;
+  }
+
+}

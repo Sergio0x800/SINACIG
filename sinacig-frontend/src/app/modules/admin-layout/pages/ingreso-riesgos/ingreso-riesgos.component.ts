@@ -11,13 +11,14 @@ import { CorrelativoService } from 'src/app/services/correlativo.service';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import Swal from 'sweetalert2'
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { OnExit } from '../../guards/exit.guard';
 
 @Component({
   selector: 'app-ingreso-riesgos',
   templateUrl: './ingreso-riesgos.component.html',
   styleUrls: ['./ingreso-riesgos.component.css']
 })
-export class IngresoRiesgosComponent implements OnInit {
+export class IngresoRiesgosComponent implements OnInit, OnExit {
 
   //parametros recibidos por url de otras paginas
   id_matriz: string | null = null;
@@ -71,6 +72,22 @@ export class IngresoRiesgosComponent implements OnInit {
   showBtnControlI: boolean = true
 
   //formulario reactivo para la creacion de riesgos y controles internos
+  tipoObjetivoInvalid = false;
+  tipoObjetivoValid = false;
+  areaEvaluadaInvalid = false;
+  areaEvaluadaValid = false;
+  eventosIdentificadosInvalid = false;
+  eventosIdentificadosValid = false;
+  probabilidadInvalid = false;
+  probabilidadValid = false;
+  severidadInvalid = false;
+  severidadValid = false;
+  controlMitigadorInvalid = false;
+  controlMitigadorValid = false;
+  descripcionRiesgoInvalid = false;
+  descripcionRiesgoValid = false;
+  descripcionControlInvalid = false;
+  descripcionControlValid = false;
   formCreateRiesgo = new FormGroup({
     id_tipo_objetivo: new FormControl('', Validators.required),
     id_area_evaluada: new FormControl('', Validators.required),
@@ -93,6 +110,8 @@ export class IngresoRiesgosComponent implements OnInit {
     usuario_registro: new FormControl(''),
   })
   usuario: any = {};
+  confirm: any = true;
+  nextPagePlan: any = false;
   constructor(
     private catalogsService: CatalogosService,
     private riesgosService: RiesgosService,
@@ -114,6 +133,57 @@ export class IngresoRiesgosComponent implements OnInit {
           this.matrizEncontrada.nombre_unidad
       })
     })
+
+    //validacion de formulario
+    this.formCreateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((value: any) => {
+      if (this.tipoObjetivoInvalid && this.formCreateRiesgo.get('id_tipo_objetivo')?.dirty) {
+        this.tipoObjetivoValid = true
+        this.tipoObjetivoInvalid = false
+      }
+    })
+    this.formCreateRiesgo.get('id_area_evaluada')?.valueChanges.subscribe((value: any) => {
+      if (this.areaEvaluadaInvalid && this.formCreateRiesgo.get('id_area_evaluada')?.dirty) {
+        this.areaEvaluadaValid = true
+        this.areaEvaluadaInvalid = false
+      }
+    })
+    this.formCreateRiesgo.get('id_eventos_identificados')?.valueChanges.subscribe((value: any) => {
+      if (this.eventosIdentificadosInvalid && this.formCreateRiesgo.get('id_eventos_identificados')?.dirty) {
+        this.eventosIdentificadosValid = true
+        this.eventosIdentificadosInvalid = false
+      }
+    })
+    this.formCreateRiesgo.get('descripcion_riesgo')?.valueChanges.subscribe((value: any) => {
+      if (this.descripcionRiesgoInvalid && this.formCreateRiesgo.get('descripcion_riesgo')?.dirty) {
+        this.descripcionRiesgoValid = true
+        this.descripcionRiesgoInvalid = false
+      }
+    })
+    this.formCreateRiesgo.get('id_probabilidad')?.valueChanges.subscribe((value: any) => {
+      if (this.probabilidadInvalid && this.formCreateRiesgo.get('id_probabilidad')?.dirty) {
+        this.probabilidadValid = true
+        this.probabilidadInvalid = false
+      }
+    })
+    this.formCreateRiesgo.get('id_severidad')?.valueChanges.subscribe((value: any) => {
+      if (this.severidadInvalid && this.formCreateRiesgo.get('id_severidad')?.dirty) {
+        this.severidadValid = true
+        this.severidadInvalid = false
+      }
+    })
+    this.formCreateRiesgo.get('id_control_mitigador')?.valueChanges.subscribe((value: any) => {
+      if (this.controlMitigadorInvalid && this.formCreateRiesgo.get('id_control_mitigador')?.dirty) {
+        this.controlMitigadorValid = true
+        this.controlMitigadorInvalid = false
+      }
+    })
+    this.formCreateControlInterno.get('descripcion')?.valueChanges.subscribe((value: any) => {
+      if (this.descripcionControlInvalid && this.controlInternoMemory.length > 0) {
+        this.descripcionControlValid = true
+        this.descripcionControlInvalid = false
+      }
+    })
+
     //llamado a catalogos
     this.catalogsService.getTipoObjetivo().subscribe(obj => this.tipoObjetivos = obj);
     this.catalogsService.getAreaEvaluada().subscribe(areas => this.areas_evaluadas = areas);
@@ -123,42 +193,6 @@ export class IngresoRiesgosComponent implements OnInit {
     this.catalogsService.getMedidaRiesgo().subscribe(medidas => this.medidasRiesgo = medidas);
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
-
-
-
-    // ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
-    // this.formCreateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
-    //   //Se encuentra el tipo de objetivo seleccionado
-    //   this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
-    //   //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
-    //   this.correlativoService.getCorrelativo({ id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
-    //     if (!maximoEncontrado) {
-    //       const newCorrelativo = {
-    //         id_matriz: this.id_matriz,
-    //         id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //         correlativo_maximo: 0,
-    //         usuario_registro: 1
-    //       }
-    //       this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-    //         //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
-    //         this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-    //           this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //           this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
-    //           //este atributo sirve para al momento de crear el nuevo correlativo
-    //           this.maximoCorrelativoEncontrado = maximo
-    //         })
-    //       })
-    //     } else {
-    //       //si el correlativo ya esta inicializado, solo aumenta a 1 el correlativo maximo
-    //       this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-    //         this.formCreateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //         this.codigoReferenciaToInput = this.formCreateRiesgo.get('codigo_referencia')?.value
-    //         this.maximoCorrelativoEncontrado = maximo
-    //       })
-    //     }
-    //   })
-    // })
-
 
     this.formCreateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
       this.showBtnControlI = false
@@ -206,6 +240,30 @@ export class IngresoRiesgosComponent implements OnInit {
       this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
     })
   }
+  //
+  onExit() {
+    if (this.nextPagePlan) {
+      this.confirm = true
+    } else if (this.formCreateRiesgo.touched || this.formCreateControlInterno.touched) {
+      this.confirm = Swal.fire({
+        title: '¿Está seguro de salir?',
+        text: 'Perderá los datos ingresados.',
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return true;
+        }
+        return false
+      });
+    }
+    return this.confirm
+  }
+
   //metodo para la creacion de nuevos riesgos y nuevos controles internos
   createNewRiesgo() {
     ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
@@ -322,11 +380,33 @@ export class IngresoRiesgosComponent implements OnInit {
   }
 
   validarFormularioRiesgo() {
+
+    if (this.formCreateRiesgo.get('id_tipo_objetivo')?.invalid) {
+      this.tipoObjetivoInvalid = true
+    } if (this.formCreateRiesgo.get('id_area_evaluada')?.invalid) {
+      this.areaEvaluadaInvalid = true
+    } if (this.formCreateRiesgo.get('id_eventos_identificados')?.invalid) {
+      this.eventosIdentificadosInvalid = true
+    } if (!this.formCreateRiesgo.get('id_probabilidad')?.dirty) {
+      this.probabilidadInvalid = true
+    } if (!this.formCreateRiesgo.get('id_severidad')?.dirty) {
+      this.severidadInvalid = true
+    } if (!this.formCreateRiesgo.get('id_control_mitigador')?.dirty) {
+      this.controlMitigadorInvalid = true
+    } if (this.formCreateRiesgo.get('descripcion_riesgo')?.invalid) {
+      this.descripcionRiesgoInvalid = true
+    } if (this.controlInternoMemory.length < 1) {
+      this.descripcionControlInvalid = true
+    }
+
     if (this.controlInternoMemory.length < 1 || this.formCreateRiesgo.invalid) {
       this.utilidades.mostrarError("Debe de llenar todos los campos obligatorios!")
     } else {
+      this.nextPagePlan = true
       this.createNewRiesgo()
     }
+
+
   }
 
   //metodo para ingresar controles internos en memoria
@@ -350,4 +430,6 @@ export class IngresoRiesgosComponent implements OnInit {
     this.controlInternoMemory.splice(id, 1)
     this.controlInternoMemory2.splice(idMemory2, 1)
   }
+
+
 }
