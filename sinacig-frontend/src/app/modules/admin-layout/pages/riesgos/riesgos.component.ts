@@ -762,6 +762,7 @@ export class RiesgosComponent implements OnInit {
 
   cancelarUpdate() {
     this.internosMemoryDelete = []
+
   }
 
   verificarPlanes() {

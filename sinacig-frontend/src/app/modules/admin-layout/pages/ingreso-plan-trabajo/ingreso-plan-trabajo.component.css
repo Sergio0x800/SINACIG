@@ -1,10 +1,103 @@
 /*Encabezado*/
+.container-encabezado {
+  width: 100%;
+  padding: 30px;
+}
+
 .container-info-periodo {
   width: 100%;
-  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  border-radius: 10px;
+}
+
+.title-position {
+  align-self: flex-start;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  align-self: flex-start;
+}
+
+.container-cards-periodo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: 15px;
+  color: black;
+}
+
+.card-style {
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.card-header-periodo {
+  height: auto;
+  margin: 0;
+  padding: 10px;
+  background-color: #0026ff60;
+}
+
+.card-body-periodo {
+  padding: 15px;
+}
+/*Fin encabezado riesgo*/
+
+/*Form ingreso de plan*/
+.container-body-plan {
+  padding: 0px 30px;
+}
+
+.container_form_plan {
   display: flex;
   justify-content: center;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
 }
+
+.container_form_plan > form {
+  width: 70%;
+}
+
+.fechas-plan {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: start;
+}
+
+.fechaFin-container {
+  justify-self: end;
+}
+
+.input-group-append {
+  height: 50px;
+}
+.inputs-fechas {
+  height: 50px;
+  width: 220px;
+}
+
+.container-inputs-ingresoPlan {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.btn-size {
+  width: 245px;
+  margin: 0;
+}
+/*Fin form ingreso Plan*/
 .title-inputs-periodo {
   min-width: 500px;
   display: flex;
@@ -29,10 +122,6 @@
   color: red;
 }
 
-
-.btn-size {
-  width: 245px;
-}
 
 .btn-terminar-registro {
   width: 100%;

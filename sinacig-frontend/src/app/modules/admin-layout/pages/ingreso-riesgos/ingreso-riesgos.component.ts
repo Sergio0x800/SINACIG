@@ -68,8 +68,6 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
   //variable que guarda en memoria los controles internos agregados para luego hacer un sulo insert
   controlInternoMemory: any = []
   controlInternoMemory2: any = []
-  showBtnControlP: boolean = true
-  showBtnControlI: boolean = true
 
   //formulario reactivo para la creacion de riesgos y controles internos
   tipoObjetivoInvalid = false;
@@ -88,6 +86,7 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
   descripcionRiesgoValid = false;
   descripcionControlInvalid = false;
   descripcionControlValid = false;
+
   formCreateRiesgo = new FormGroup({
     id_tipo_objetivo: new FormControl('', Validators.required),
     id_area_evaluada: new FormControl('', Validators.required),
@@ -195,7 +194,6 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
 
     this.formCreateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
-      this.showBtnControlI = false
       this.formCreateRiesgo.patchValue({ riesgo_inherente: this.formCreateRiesgo.get('id_probabilidad')?.value * severidad_input })
       this.resultadoRI = this.formCreateRiesgo.get('riesgo_inherente')?.value
 
@@ -212,7 +210,6 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
       }
     })
     this.formCreateRiesgo.get('id_probabilidad')?.valueChanges.subscribe((probabilidad_input: any) => {
-      this.showBtnControlP = false
       this.formCreateRiesgo.patchValue({ riesgo_inherente: this.formCreateRiesgo.get('id_severidad')?.value * probabilidad_input })
       this.resultadoRI = this.formCreateRiesgo.get('riesgo_inherente')?.value
 
@@ -380,7 +377,6 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
   }
 
   validarFormularioRiesgo() {
-
     if (this.formCreateRiesgo.get('id_tipo_objetivo')?.invalid) {
       this.tipoObjetivoInvalid = true
     } if (this.formCreateRiesgo.get('id_area_evaluada')?.invalid) {
@@ -398,15 +394,12 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     } if (this.controlInternoMemory.length < 1) {
       this.descripcionControlInvalid = true
     }
-
-    if (this.controlInternoMemory.length < 1 || this.formCreateRiesgo.invalid) {
+    if (this.controlInternoMemory.length < 1 || this.formCreateRiesgo.invalid || !this.formCreateRiesgo.get('id_control_mitigador')?.dirty||!this.formCreateRiesgo.get('id_severidad')?.dirty || !this.formCreateRiesgo.get('id_probabilidad')?.dirty) {
       this.utilidades.mostrarError("Debe de llenar todos los campos obligatorios!")
     } else {
       this.nextPagePlan = true
       this.createNewRiesgo()
     }
-
-
   }
 
   //metodo para ingresar controles internos en memoria

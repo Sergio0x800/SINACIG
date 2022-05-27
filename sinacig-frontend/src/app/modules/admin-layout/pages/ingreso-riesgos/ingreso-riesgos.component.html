@@ -31,7 +31,6 @@
     </div>
   </div>
 </div>
-
 <div class="container-body-riesgo">
   <div class="container_form_riesgos">
     <form [formGroup]="formCreateRiesgo">
@@ -100,22 +99,17 @@
             <label for="riesgoRI">Riesgo Inherente (RI)</label>
           </div>
           <div class="form-floating">
-            <select *ngIf="showBtnControlP || showBtnControlI; else elseIfSelect" [disabled]="true" class="form-select"
-              [ngClass]="{
-              'is-invalid': controlMitigadorInvalid,
-              'is-valid': controlMitigadorValid
-            }" id="valorMitigador" aria-label="valorMitigador" formControlName="id_control_mitigador">
+            <select
+              *ngIf="formCreateRiesgo.get('id_probabilidad')?.dirty && formCreateRiesgo.get('id_severidad')?.dirty; else elseControlMitigador"
+              class="form-select" [ngClass]="{
+                  'is-invalid': controlMitigadorInvalid,
+                  'is-valid': controlMitigadorValid
+                }" id="valorMitigador" aria-label="valorMitigador" formControlName="id_control_mitigador">
               <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
                 {{probabilidad.nivel_probabilidad}}</option>
             </select>
-            <ng-template #elseIfSelect>
-              <select class="form-select" id="valorMitigador" aria-label="valorMitigador" [ngClass]="{
-                'is-invalid': controlMitigadorInvalid,
-                'is-valid': controlMitigadorValid
-              }" formControlName="id_control_mitigador">
-                <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
-                  {{probabilidad.nivel_probabilidad}}</option>
-              </select>
+            <ng-template #elseControlMitigador>
+              <input type="number" class="form-control" [value]="0" [disabled]="true">
             </ng-template>
             <label for="valorMitigador" class="">Control Mitigador</label>
           </div>
@@ -135,11 +129,7 @@
           </div>
         </div>
         <div>
-
-
-
           <form [formGroup]="formCreateControlInterno">
-
             <div class="form-floating container-btn-control">
               <button [disabled]="formCreateControlInterno.invalid" type="button" class="btn btn-primary btn-float"
                 (click)="pushControlInterno()">+</button>
@@ -150,7 +140,6 @@
                 style="height: 130px"></textarea>
               <label for="txt_observaciones">Controles internos para mitigar</label>
             </div>
-
           </form>
           <div *ngIf="controlInternoMemory.length > 0" class="table-responsive table-hover">
             <table class="table">
