@@ -4,7 +4,7 @@
   padding: 30px;
 }
 
-.container-info-periodo {
+.container-info-riesgo {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -24,18 +24,8 @@
   font-family: "Poppins", sans-serif;
   align-self: flex-start;
 }
-.form-control {
-  color: #000000;
-  font-size: 16px;
-  border: 1px solid rgba(145, 145, 145, 0.7);
-}
 
-.form-select {
-  border: 1px solid rgba(145, 145, 145, 0.7);
-}
-
-
-.container-cards-periodo {
+.container-cards-riesgo {
   width: 100%;
   display: grid;
   grid-template-columns: 4fr 1fr;
@@ -58,6 +48,12 @@
 .card-body-periodo {
   padding: 15px;
 }
+
+.prioridad-puesto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+}
 /*Fin encabezado riesgo*/
 
 /*Form ingreso de plan*/
@@ -79,35 +75,117 @@
   width: 70%;
 }
 
-.fechas-plan {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: start;
-}
-
-.fechaFin-container {
-  justify-self: end;
-}
-
-.input-group-append {
-  height: 50px;
-}
-.inputs-fechas {
-  height: 50px;
-  width: 220px;
-}
-
 .container-inputs-ingresoPlan {
   display: grid;
   grid-template-columns: 1fr;
   gap: 30px;
 }
 
+.fechas-plan {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: start;
+  gap: 70px;
+}
+
+.fecha-style {
+  width: 100%;
+}
+
+
+
+
+.input-group-append {
+  height: 50px;
+}
+
+.fechaFin-container {
+  justify-self: end;
+}
+
 .btn-size {
   width: 245px;
   margin: 0;
 }
+
+.invalid-feed {
+  color: red;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.select-control-mitigador {
+  width: 350px;
+}
 /*Fin form ingreso Plan*/
+
+/*Form controles para implementacion*/
+.form-controles-Imple {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.container-btn-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-btn {
+  position: relative;
+}
+
+.btn-float-controles {
+  position: absolute;
+  top: calc(100% + 23px);
+  right: calc(100% - 25px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-text-table {
+  font-size: 14px;
+  font-weight: 500;
+}
+/*Fin form controles implementacion*/
+
+/*Form recursos*/
+.form-recursos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.container-btn-recursos {
+  position: relative;
+}
+
+.btn-float-recursos {
+  position: absolute;
+  bottom: calc(100% - 26px);
+  left: calc(100% - 28px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+/**/
+
 .title-inputs-periodo {
   min-width: 500px;
   display: flex;
@@ -148,43 +226,12 @@
   gap: 15px;
 }
 
-.th-display {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.btn-delete {
-  /* background-image: url('../../../../../assets/img/icons/delete.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 27px;
-  height: 27px; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .options-icons {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.container-btn-add {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.container-table-coImple {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 
 .container-form-co-re {
@@ -215,34 +262,6 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 15px;
-}
-
-.container-btn {
-  position: relative;
-}
-
-.btn-float {
-  position: absolute;
-  top: calc(100% - 10px);
-  right: calc(100% - 25px);
-  border-radius: 100%;
-  font-size: 18px;
-  font-weight: bold;
-
-}
-.btn-float-controles {
-  position: absolute;
-  top: calc(100% - 50px);
-  right: calc(100% - 25px);
-  border-radius: 100%;
-  font-size: 18px;
-  font-weight: bold;
-
-}
-
-.font-text-table {
-  font-size: 14px;
-  font-weight: 500;
 }
 
 .container-ingreso-plan {
@@ -281,4 +300,24 @@
   justify-content: center;
   align-items: center;
   width: 600px;
+}
+
+
+/*Clases de bootstrap*/
+.form-control {
+  color: #000000;
+  font-size: 14px;
+}
+
+
+@media only screen and (max-width: 1224px) {
+  .fechas-plan {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .prioridad-puesto {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
 }

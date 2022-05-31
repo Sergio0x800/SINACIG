@@ -9,7 +9,6 @@ function routerApi(app) {
   router.use('/reportes', reporteEvaluacionRiesgo);
   router.use('/reportes', reportePlanTrabajo);
   router.use('/reportes', mapaRiesgo);
-
 }
 
 module.exports = routerApi;

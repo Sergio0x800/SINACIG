@@ -50,11 +50,11 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
 
     //Datos unidad ejecutora y periodo evaluación
     ws.cell(7, 1).string('Unidad Ejecutora No.').style(estilosReportes.negrita);
-    ws.cell(7, 2).string(`${unidadEjecutoraData[0].codigo}`);
+    ws.cell(7, 2).string(`${unidadEjecutoraData.codigo_unidad}`);
     ws.cell(8, 1)
       .string('Nombre de la Unidad Ejecutora')
       .style(estilosReportes.negrita);
-    ws.cell(8, 2, 8, 4, true).string(`${unidadEjecutoraData[0].nombre}`);
+    ws.cell(8, 2, 8, 4, true).string(`${unidadEjecutoraData.nombre_unidad}`);
     ws.cell(9, 1)
       .string('Periodo de Evaluación')
       .style(estilosReportes.negrita);
@@ -129,7 +129,7 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
 
     //indicamos el número de fila donde se comenzará a escribir la información del reporte
     const resultado = await reporteService.dataReportePlanTrabajo(
-      unidadEjecutoraData[0].codigo,
+      unidadEjecutoraData.codigo_unidad,
       fechaInicio,
       fechaFin
     );

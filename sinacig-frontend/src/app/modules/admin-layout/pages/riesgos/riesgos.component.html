@@ -10,8 +10,51 @@
         riesgo</button>
     </div>
   </div>
-  <div class="table-responsive mt-2">
-    <table *ngIf="showTablePlanesTrabajo" class="mt-3 table table-striped table-bordered table-sm">
+
+
+
+  <div *ngIf="showTablePlanesTrabajo" class="table-matriz mt-5">
+    <div class="table-header-matriz">
+      <div><span class="header-title">Opciones</span></div>
+      <div><span class="header-title">Referencia</span></div>
+      <div><span class="header-title">Descripción</span></div>
+      <div><span class="header-title">R.I</span></div>
+      <div><span class="header-title">R.R</span></div>
+      <div><span class="header-title">Medida riesgo</span></div>
+      <div><span class="header-title">Plan asignado</span></div>
+    </div>
+
+
+    <div class="table-body-matriz" *ngFor="let riesgo of riesgos">
+      <div>
+        <button class="btn btn-sm btn-warning btn-size-card" (click)="editRiesgo(riesgo.id_riesgo)">
+          <i class="fas fa-pencil"></i>
+        </button>
+      </div>
+      <div>
+        <span class="riesgo-descripcion-style">{{riesgo.codigo_referencia}}</span>
+      </div>
+      <div><span class="riesgo-descripcion-style">{{riesgo.descripcion_riesgo}}</span>
+      </div>
+      <div><span class="riesgo-descripcion-style">{{riesgo.riesgo_inherente}}</span>
+      </div>
+      <div><span class="riesgo-descripcion-style">{{riesgo.riesgo_residual}}</span>
+      </div>
+      <div><span class="riesgo-descripcion-style">{{ riesgo.medida_riesgo }}</span>
+      </div>
+      <div>
+        <button class="btn btn_primary bg-primary btn-sm btn-plan-search" data-bs-toggle="modal"
+          data-bs-target="#planModal" (click)="editPlanTrabajoControlesRecursos(riesgo.id_riesgo)">Plan de
+          trabajo</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- <div class="table-responsive mt-2">
+    <table *ngIf="showTablePlanesTrabajo" class="mt-3 table table-hover table-sm">
       <thead>
         <tr>
           <th scope="col"> <span class="center-style">Opciones</span></th>
@@ -51,8 +94,8 @@
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="btn-offset" *ngIf="showBtnOffset && riesgos.length >= 10">
+  </div> -->
+  <div class="btn-offset mt-5" *ngIf="showBtnOffset && riesgos.length >= 10">
     <button class="btn btn-outline-success btn-lg btn-block" (click)="aumentarOffset()">Cargar mas</button>
   </div>
 </div>
@@ -171,7 +214,7 @@
                       </div>
                     </div>
                     <div *ngIf="controlesInternosObtenidos.length > 0" class="table-responsive">
-                      <table class="table">
+                      <table class="table table-hover">
                         <thead>
                           <tr>
                             <th scope="col">Opciones</th>
@@ -188,14 +231,16 @@
                                 </button>
                               </div>
                             </th>
-                            <td class="pt-3 text-dark font-text-table">{{internos.descripcion}}</td>
+                            <td class="pt-3 text-dark font-text-table">
+                              {{internos.descripcion}}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                     <div *ngIf="internosMemory.length > 0" class="table-responsive mt-3">
                       <h5>Nuevos controles para agregar:</h5>
-                      <table class="table">
+                      <table class="table table-hover">
                         <tbody>
                           <tr *ngFor="let internosM of internosMemory">
                             <th scope="row th-display">
@@ -315,7 +360,7 @@
               <div class="container-table-coImple">
                 <div>
                   <div>
-                    <button type="button" class="btn btn-success btn-sm mb-2" (click)="mostrarCampos()"><i
+                    <button type="button" class="btn btn-success btn-sm mb-5" (click)="mostrarCampos()"><i
                         class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
                   </div>
                 </div>
@@ -335,7 +380,7 @@
                       <tr *ngFor="let ctImplementacion of controlesImplementacionObtenidos">
                         <th scope="row th-display">
                           <div class="btn-delete">
-                            <button class="btn btn-sm btn-danger btn-size-card"
+                            <button class="btn btn-sm btn-danger"
                               (click)="deleteControlInMemoryTablaGet(ctImplementacion.id_implementacion)">
                               <i class="fas fa-trash"></i>
                             </button>
@@ -368,7 +413,7 @@
                   </table>
                 </div>
                 <div *ngIf="controlesMemory.length > 0" class="table-responsive mt-0">
-                  <h5>Nuevos controles para agregar:</h5>
+                  <h5>Nuevos controles:</h5>
                   <table class="table table-hover">
                     <thead>
                       <tr>
@@ -461,18 +506,18 @@
               <div class="container-table-coImple">
                 <div>
                   <div>
-                    <button type="button" class="btn btn-success btn-sm mb-2" (click)="mostrarCamposRecursos()"><i
+                    <button type="button" class="btn btn-success btn-sm mb-5" (click)="mostrarCamposRecursos()"><i
                         class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
                   </div>
                 </div>
                 <div *ngIf="recursosObtenidos.length > 0" class="table-responsive">
-                  <table class="table">
-                    <thead>
+                  <table class="table table-hover">
+                    <!-- <thead>
                       <tr>
                         <th scope="col">Opciones</th>
                         <th scope="col">Descripción</th>
                       </tr>
-                    </thead>
+                    </thead> -->
                     <tbody>
                       <tr *ngFor="let recurso of recursosObtenidos">
                         <th scope="row th-display">
@@ -484,14 +529,18 @@
                           </div>
                         </th>
 
-                        <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
+                        <td class="pt-3 text-dark font-text-table">
+                          <div class="descripcion-recursos">
+                            {{recurso.descripcion}}
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div *ngIf="recursosMemory.length > 0" class="table-responsive">
-                  <h5>Nuevos controles para agregar:</h5>
-                  <table class="table">
+                  <h5>Nuevos recursos:</h5>
+                  <table class="table table-hover">
                     <tbody>
                       <tr *ngFor="let recurso of recursosMemory">
                         <th scope="row th-display">
@@ -503,7 +552,11 @@
                           </div>
                         </th>
 
-                        <td class="pt-3 text-dark font-text-table">{{recurso.descripcion}}</td>
+                        <td class="pt-3 text-dark font-text-table">
+                          <div class="descripcion-recursos">
+                            {{recurso.descripcion}}
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>

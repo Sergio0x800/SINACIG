@@ -17,6 +17,7 @@ export class UsuariosComponent implements OnInit {
   RESPONSE_INACTIVAR_USUARIO: any = []
 
   roles: any = [];
+  unidades: any = [];
 
   id_usuario: any
   id_rol: any = '-1'
@@ -27,12 +28,16 @@ export class UsuariosComponent implements OnInit {
   password: any
   cpassword: any
   usuarioEncontrado: any = {}
+  id_unidad_ejecutora: any = '-1'
+
+
 
   constructor(private usuarioService: UsuarioService, private utils: UtilidadesService, private catalogosService: CatalogosService) { }
 
   async ngOnInit(): Promise<void> {
     await this.obtenerUsuarios()
     this.catalogosService.getRoles().subscribe(roles => this.roles = roles)
+    this.catalogosService.getUnidadEjecutora().subscribe(unidad => this.unidades = unidad)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuarioEncontrado = result
     })
@@ -45,6 +50,7 @@ export class UsuariosComponent implements OnInit {
 
   limpiarCampos() {
     this.id_rol = '-1'
+    this.id_unidad_ejecutora = '-1'
     this.usuario = undefined
     this.cui = undefined
     this.nombres = undefined
@@ -63,7 +69,8 @@ export class UsuariosComponent implements OnInit {
       nombres: this.nombres,
       apellidos: this.apellidos,
       password: this.password,
-      id_usuario_ingreso: this.usuarioEncontrado.id_usuario
+      id_usuario_ingreso: this.usuarioEncontrado.id_usuario,
+      id_unidad_ejecutora: this.id_unidad_ejecutora
     }
 
 
@@ -100,6 +107,10 @@ export class UsuariosComponent implements OnInit {
   camposValidosNuevoUsuario() {
     if (this.id_rol == '-1') {
       this.utils.mostrarError('Debe seleccionar un rol')
+      return false
+    }
+    if (this.id_unidad_ejecutora == '-1') {
+      this.utils.mostrarError('Debe seleccionar una unidad ejecutora')
       return false
     }
     if (!this.usuario) {
@@ -197,6 +208,7 @@ export class UsuariosComponent implements OnInit {
   buscarUsuarioParaActualizar(usuario: any) {
     this.id_usuario = usuario.id_usuario
     this.id_rol = usuario.id_rol
+    this.id_unidad_ejecutora = usuario.id_unidad_ejecutora
     this.usuario = usuario.usuario
     this.cui = usuario.cui
     this.nombres = usuario.nombres
@@ -210,6 +222,7 @@ export class UsuariosComponent implements OnInit {
     let data = {
       id_usuario: this.id_usuario,
       id_rol: this.id_rol,
+      id_unidad_ejecutora: this.id_unidad_ejecutora,
       cui: this.cui,
       nombres: this.nombres,
       apellidos: this.apellidos,
@@ -218,12 +231,12 @@ export class UsuariosComponent implements OnInit {
     }
 
     const usuariosToEdit = this.usuarios.filter((usuario: any) => {
-      if(data.cui == usuario.cui && data.id_usuario != usuario.id_usuario){
+      if (data.cui == usuario.cui && data.id_usuario != usuario.id_usuario) {
         return usuario
       }
     })
 
-    if(usuariosToEdit.length > 0) {
+    if (usuariosToEdit.length > 0) {
       Swal.fire({
         icon: 'warning',
         text: `¡El CUI ingresado ya existe en los registros!`
@@ -244,6 +257,10 @@ export class UsuariosComponent implements OnInit {
   camposValidosActualizarUsuario() {
     if (this.id_rol == '-1') {
       this.utils.mostrarError('Debe seleccionar un rol')
+      return false
+    }
+    if (this.id_unidad_ejecutora == '-1') {
+      this.utils.mostrarError('Debe seleccionar una unidad ejecutora')
       return false
     }
     if (!this.usuario) {

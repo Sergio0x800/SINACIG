@@ -1,4 +1,4 @@
-<div class="container-matriz mb-5">
+<div class="container-matriz mb-7">
   <form [formGroup]="formSearchCreateMatrizPeriodo" class="matriz-form">
     <div>
       <h2 class="matriz-form__title">Matriz de riesgos</h2>
@@ -33,18 +33,46 @@
     </div>
   </form>
 </div>
-<div class="container-table">
+<div *ngIf="showTablePeriodos" class="table-matriz ">
+  <div class="table-header-matriz">
+    <div><span class="header-title">Acciones</span></div>
+    <div><span class="header-title">Unidad ejecutora</span></div>
+    <div><span class="header-title">Fecha inicio</span></div>
+    <div><span class="header-title">Fecha final</span></div>
+    <div><span class="header-title">Riesgos</span></div>
+  </div>
+  <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
+    <div>
+      <button class="btn btn-sm btn-danger" (click)="deletePeriodoMatriz(matriz.id_matriz)">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div>
+      <span>{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
+    </div>
+    <div><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
+    </div>
+    <div><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
+    </div>
+    <div>
+      <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
+        [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
+        riesgos</button>
+    </div>
+  </div>
+</div>
+<!-- <div class="container-table">
   <div class="table-responsive" *ngIf="showTablePeriodos">
     <div>
       <div class="container-fluid mt-6">
-        <table class="mt-3 table table-striped table-bordered table-sm">
+        <table class="mt-3 table table-hover table-sm">
           <thead>
             <tr>
-              <th scope="col"><span class="center-style">Acciones</span></th>
-              <th scope="col"><span class="center-style">Unidad ejecutora</span></th>
-              <th scope="col"><span class="center-style">Fecha periodo de inicio</span></th>
-              <th scope="col"><span class="center-style">Fecha periodo final</span></th>
-              <th scope="col"><span class="center-style">Riesgos</span></th>
+              <th scope="col"><span>Acciones</span></th>
+              <th scope="col"><span>Unidad ejecutora</span></th>
+              <th scope="col"><span>Fecha periodo de inicio</span></th>
+              <th scope="col"><span>Fecha periodo final</span></th>
+              <th scope="col"><span>Riesgos</span></th>
             </tr>
           </thead>
           <tbody>
@@ -58,12 +86,12 @@
               </th>
               <td class="pt-3">
                 <div class="containe-unidad">
-                  <span class="center-style">{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
+                  <span>{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
                 </div>
               </td>
-              <td class="pt-3"><span class="center-style">{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
+              <td class="pt-3"><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
               </td>
-              <td class="pt-3"><span class="center-style">{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
+              <td class="pt-3"><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
               </td>
               <td>
                 <div class="container-add-plan">
@@ -78,4 +106,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

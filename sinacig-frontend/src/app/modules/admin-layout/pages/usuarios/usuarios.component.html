@@ -88,7 +88,17 @@
                   [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="selectUnidad" class="form-label">Unidad ejecutora<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_unidad_ejecutora" id="selectUnidad" name="selectUnidad" class="form-select">
+                  <option value="-1">- Seleccione una Opción -</option>
+                  <option *ngFor="let unidad of unidades" [value]="unidad.id_unidad_ejecutora">
+                    {{unidad.codigo_unidad+ " - " +unidad.nombre_unidad}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">CUI/DPI<span class="obligatorio">*</span></label>
                 <input [(ngModel)]="cui" type="text" class="form-control" placeholder="CUI/DPI" mask="0{13}">
@@ -174,7 +184,16 @@
                   [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="selectUnidadE" class="form-label">Unidad ejecutora<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_unidad_ejecutora" id="selectUnidadE" name="selectUnidadE" class="form-select">
+                  <option *ngFor="let unidad of unidades" [value]="unidad.id_unidad_ejecutora">
+                    {{unidad.codigo_unidad + ' - ' + unidad.nombre_unidad}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">CUI/DPI<span class="obligatorio">*</span></label>
                 <input [(ngModel)]="cui" type="text" class="form-control" placeholder="CUI/DPI" mask="0{13}">

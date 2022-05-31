@@ -98,6 +98,12 @@
   color: #000000;
   font-size: 16px;
 }
+
+.invalid-feed {
+  color: red;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+}
 /*Fin form ingreso de riesgo*/
 
 /*Form control interno*/
@@ -105,10 +111,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.obligatorio {
-  color: red;
 }
 
 .container-btn-plus {
@@ -143,11 +145,17 @@
 }
 
 .select-control-mitigador {
-  width: 350px;
+  width: 300px;
 }
 
 .form-control-bg {
   background-color: rgba(255, 255, 255, 0.09);
+}
+
+.objetivo-area-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
 }
 
 .tolerable {
@@ -169,6 +177,12 @@
   }
   .container_form_riesgos > form {
     width: 100%;
+  }
+
+  .objetivo-area-container {
+    
+    grid-template-columns: 1fr;
+    
   }
 }
 @media only screen and (max-width: 984px) {

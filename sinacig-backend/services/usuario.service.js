@@ -73,7 +73,9 @@ class UsuarioService {
               }',
               @id_usuario_ingreso = ${
                 data.id_usuario_ingreso ? data.id_usuario_ingreso : null
-              }`
+              },
+              @id_unidad_ejecutora = ${data.id_unidad_ejecutora}
+              `
       );
       return result[0];
     } catch (error) {
@@ -108,8 +110,13 @@ class UsuarioService {
   // }
 
   async obtenerUsuarios() {
-    const result = await sequelize.query(`EXEC sp_obtener_usuarios`);
-    return result[0];
+    // const result = await sequelize.query(`EXEC sp_obtener_usuarios`);
+    const rst = await models.Usuario.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+    return rst;
   }
 
   async obtenerUsuariosByCui(cui, usuario) {

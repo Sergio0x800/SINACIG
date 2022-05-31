@@ -56,13 +56,34 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   showBtn: boolean = true;
   showOptions: boolean = false;
 
+  prioridadInvalid = false;
+  prioridadValid = false;
+  puestoInvalid = false;
+  puestoValid = false;
+  fechaInicioInvalid = false;
+  fechaInicioValid = false;
+  fechaFinInvalid = false;
+  fechaFinValid = false;
+
+  queInvalid = false;
+  queValid = false;
+  comoInvalid = false;
+  comoValid = false;
+  quienInvalid = false;
+  quienValid = false;
+  cuandoInvalid = false;
+  cuandoValid = false;
+
+  descripcionInvalid = false;
+  descripcionValid = false;
+
   formCreatePlanRiesgo = new FormGroup({
     id_prioridad: new FormControl('', Validators.required),
     id_puesto_responsable: new FormControl('', Validators.required),
     fecha_inicio: new FormControl('', Validators.required),
     fecha_fin: new FormControl('', Validators.required),
     comentario: new FormControl(''),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl(''),
   })
   formCreateControlImplementacion = new FormGroup({
     que: new FormControl('', Validators.required),
@@ -73,7 +94,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   })
   formCreateRecursos = new FormGroup({
     descripcion: new FormControl('', Validators.required),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl('',),
   })
 
   controlImplementacionMemory: any = []
@@ -103,6 +124,53 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     this.catalogosService.getPrioridad().subscribe(prioridad => this.prioridades = prioridad)
     this.catalogosService.getPuestoResponsable().subscribe(puesto => this.puestos = puesto)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
+
+    //validacion de formulario
+    this.formCreatePlanRiesgo.get('id_prioridad')?.valueChanges.subscribe((value: any) => {
+      if (this.prioridadInvalid && this.formCreatePlanRiesgo.get('id_prioridad')?.dirty) {
+        this.prioridadValid = true
+        this.prioridadInvalid = false
+      }
+    })
+    this.formCreatePlanRiesgo.get('id_puesto_responsable')?.valueChanges.subscribe((value: any) => {
+      if (this.puestoInvalid && this.formCreatePlanRiesgo.get('id_puesto_responsable')?.dirty) {
+        this.puestoValid = true
+        this.puestoInvalid = false
+      }
+    })
+    this.formCreatePlanRiesgo.get('fecha_inicio')?.valueChanges.subscribe((value: any) => {
+      if (this.fechaInicioInvalid && this.formCreatePlanRiesgo.get('fecha_inicio')?.dirty) {
+        this.fechaInicioValid = true
+        this.fechaInicioInvalid = false
+      }
+    })
+    this.formCreatePlanRiesgo.get('fecha_fin')?.valueChanges.subscribe((value: any) => {
+      if (this.fechaFinInvalid && this.formCreatePlanRiesgo.get('fecha_fin')?.dirty) {
+        this.fechaFinValid = true
+        this.fechaFinInvalid = false
+      }
+    })
+
+    //validacion controles
+    this.formCreateControlImplementacion.valueChanges.subscribe((value: any) => {
+      if ((this.queInvalid || this.comoInvalid || this.quienInvalid || this.cuandoInvalid) && this.controlImplementacionMemory.length > 0) {
+        this.queValid = true
+        this.comoValid = true
+        this.quienValid = true
+        this.cuandoValid = true
+        this.queInvalid = false
+        this.comoInvalid = false
+        this.quienInvalid = false
+        this.cuandoInvalid = false
+      }
+    })
+    //recursos
+    this.formCreateRecursos.get('descripcion')?.valueChanges.subscribe((value: any) => {
+      if (this.descripcionInvalid && this.recursosMemory.length > 0) {
+        this.descripcionValid = true
+        this.descripcionInvalid = false
+      }
+    })
   }
 
   createNewPlanRiesgo() {
@@ -155,9 +223,35 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   }
 
   validarFormPlanRiesgo() {
-    if ((this.formCreatePlanRiesgo.invalid || !(this.controlImplementacionMemory.length > 0)) || !(this.recursosMemory.length > 0)) {
+
+    //Plan
+    if (this.formCreatePlanRiesgo.get('id_prioridad')?.invalid) {
+      this.prioridadInvalid = true
+    } if (this.formCreatePlanRiesgo.get('id_puesto_responsable')?.invalid) {
+      this.puestoInvalid = true
+    } if (this.formCreatePlanRiesgo.get('fecha_inicio')?.invalid) {
+      this.fechaInicioInvalid = true
+    } if (this.formCreatePlanRiesgo.get('fecha_fin')?.invalid) {
+      this.fechaFinInvalid = true
+    }
+
+    //controles
+    if (this.controlImplementacionMemory.length < 1) {
+      this.queInvalid = true
+      this.comoInvalid = true
+      this.quienInvalid = true
+      this.cuandoInvalid = true
+    }
+    //recursos
+    if (this.recursosMemory.length < 1) {
+      this.descripcionInvalid = true
+    }
+
+
+    if (this.controlImplementacionMemory.length < 1 || this.recursosMemory.length < 1 || this.formCreatePlanRiesgo.invalid) {
       this.utilidades.mostrarError("Debe de llenar todos los campos obligatorios!")
     } else {
+      // this.nextPagePlan = true
       this.createNewPlanRiesgo()
     }
   }
@@ -174,7 +268,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   }
 
   deleteControlFromMemory(que: any, como: any, quien: any, cuando: any) {
-    const id: any = this.controlImplementacionMemory.find((control: any) => (control.que === que) && (control.como === como) && (control.quien === quien) && (control.cuando === cuando))
+    const id: any = this.controlImplementacionMemory.findIndex((control: any) => (control.que === que) && (control.como === como) && (control.quien === quien) && (control.cuando === cuando))
     this.controlImplementacionMemory.splice(id, 1)
   }
 
@@ -185,7 +279,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   }
 
   deleteRecursoFromMemory(descripcion: any) {
-    const id = this.recursosMemory.find((recurso: any) => recurso.descripcion === descripcion)
+    const id = this.recursosMemory.findIndex((recurso: any) => recurso.descripcion === descripcion)
     this.recursosMemory.splice(id, 1)
   }
 }

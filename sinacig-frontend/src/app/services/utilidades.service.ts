@@ -20,7 +20,7 @@ export class UtilidadesService {
     toast: true,
     position: 'top',
     showConfirmButton: false,
-    timer: 2000,
+    timer: 2500,
     timerProgressBar: true,
   })
 

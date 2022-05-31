@@ -23,6 +23,10 @@
   color: red;
 }
 
+.descripcion-recursos {
+  width: 350px;
+}
+
 .th-display {
   display: flex;
   justify-content: center;
@@ -45,12 +49,6 @@
 }
 
 .btn-delete {
-  /* background-image: url('../../../../../assets/img/icons/delete.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 27px;
-  height: 27px; */
   width: 100%;
   display: flex;
   align-items: center;
@@ -160,6 +158,11 @@ h2 {
 }
 
 
+.table-riesgo {
+  padding: 20px;
+  overflow-x: scroll;
+}
+
 
 .conatiner-btn-agregar {
   display: flex;
@@ -184,6 +187,63 @@ h2 {
     gap: 15px;
   }
 }
+
+.table-matriz {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0 10px;
+}
+
+.table-header-matriz {
+  display: grid;
+  grid-template-columns: 10% 10% 40% 10% 10% 10% 10%;
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-header-matriz > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: 10% 10% 40% 10% 10% 10% 10%;
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-body-matriz > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.header-title {
+   color: #2b2b2b;
+   font-size: 12px;
+   font-weight: 600;
+   font-family: 'Poppins', sans-serif;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  text-align: start;
+  width: 100%;
+  padding: 0 0px;
+  font-family: 'Poppins';
+  text-align: center;
+}
+
+
 @media only screen and (max-width: 768px) {
   .title-btns {
     display: flex;
