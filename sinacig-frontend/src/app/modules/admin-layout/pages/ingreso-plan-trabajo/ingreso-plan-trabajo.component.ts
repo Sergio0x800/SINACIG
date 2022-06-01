@@ -223,7 +223,6 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   }
 
   validarFormPlanRiesgo() {
-
     //Plan
     if (this.formCreatePlanRiesgo.get('id_prioridad')?.invalid) {
       this.prioridadInvalid = true
@@ -249,7 +248,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
 
 
     if (this.controlImplementacionMemory.length < 1 || this.recursosMemory.length < 1 || this.formCreatePlanRiesgo.invalid) {
-      this.utilidades.mostrarError("Debe de llenar todos los campos obligatorios!")
+      this.utilidades.mostrarError("Por favor llene los campos obligatorios")
     } else {
       // this.nextPagePlan = true
       this.createNewPlanRiesgo()

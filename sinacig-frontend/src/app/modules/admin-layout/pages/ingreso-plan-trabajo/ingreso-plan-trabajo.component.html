@@ -196,6 +196,8 @@
             </table>
           </div>
         </form>
+
+
         <form [formGroup]="formCreateRecursos" class="form-recursos">
           <h3 class="">Ingreso de Recursos</h3>
           <div class="form-floating container-btn-recursos">
@@ -212,7 +214,24 @@
           </div>
 
 
-          <div *ngIf="showTableRecursos" class="table-responsive">
+
+          <div class="container-table-grid">
+            <div *ngIf="showTableRecursos">
+              <div class="table-body-matriz" *ngFor="let recurso of recursosMemory">
+                <div>
+                  <button class="btn btn-sm btn-danger" (click)="deleteRecursoFromMemory(recurso.descripcion)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="riesgo-descripcion-style">
+                  {{recurso.descripcion}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- <div *ngIf="showTableRecursos" class="table-responsive">
             <table class="table">
               <tbody>
                 <tr *ngFor="let recurso of recursosMemory">
@@ -231,7 +250,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
 
 
         </form>

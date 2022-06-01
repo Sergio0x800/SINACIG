@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit {
     this.router.navigate(['/auth/login'])
     Swal.fire({
       icon: 'warning',
-      text: 'La sesión se ha cerrado por inactividad!'
+      text: 'La sesión se ha cerrado por inactividad'
     })
   }
 

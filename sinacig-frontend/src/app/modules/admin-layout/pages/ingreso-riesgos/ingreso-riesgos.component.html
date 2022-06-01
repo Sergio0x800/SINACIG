@@ -36,7 +36,6 @@
     <form [formGroup]="formCreateRiesgo">
       <div class="container-inputs-ingresoRiesgo">
         <h2 class="matriz-form__title">Ingreso de riesgo</h2>
-
         <div class="objetivo-area-container">
           <div class="form-floating">
             <select class="form-select is-valid" id="inputTipoObjetivo" aria-label="inputTipoObjetivo" [ngClass]="{
@@ -66,8 +65,6 @@
             </div>
           </div>
         </div>
-
-
         <div class="form-floating">
           <textarea maxlength="500" class="form-control" formControlName="id_eventos_identificados" [ngClass]="{
             'is-invalid': eventosIdentificadosInvalid,
@@ -171,8 +168,24 @@
             </div>
           </form>
 
+          <div class="container-table-grid mt-2">
+            <div *ngIf="controlInternoMemory.length > 0">
+              <div class="table-body-matriz" *ngFor="let controlInt of controlInternoMemory">
+                <div>
+                  <button class="btn btn-sm btn-danger" (click)="deleteControlInterno(controlInt.descripcion)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="riesgo-descripcion-style">
+                  {{controlInt.descripcion}}
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <div *ngIf="controlInternoMemory.length > 0" class="table-responsive table-hover">
+
+
+          <!-- <div *ngIf="controlInternoMemory.length > 0" class="table-responsive table-hover">
             <table class="table">
               <tbody>
                 <tr *ngFor="let controlInt of controlInternoMemory">
@@ -191,7 +204,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
 
 
 

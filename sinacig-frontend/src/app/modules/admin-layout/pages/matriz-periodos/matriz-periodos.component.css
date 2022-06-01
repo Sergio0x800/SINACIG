@@ -68,7 +68,8 @@
 
 .table-header-matriz {
   display: grid;
-  grid-template-columns: 1fr 5fr 1fr 1fr 1fr;
+  grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr);
+
   justify-items: center;
   gap: 4px;
 }
@@ -85,7 +86,7 @@
 
 .table-body-matriz {
   display: grid;
-  grid-template-columns: 1fr 5fr 1fr 1fr 1fr;
+  grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr);
   justify-items: center;
   gap: 4px;
 }
@@ -100,10 +101,11 @@
 }
 
 .header-title {
-   color: #2b2b2b;
-   font-size: 14px;
-   font-weight: 600;
-   font-family: 'Poppins', sans-serif;
+  color: #2b2b2b;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
 }
 
 @media only screen and (max-width: 840px) {

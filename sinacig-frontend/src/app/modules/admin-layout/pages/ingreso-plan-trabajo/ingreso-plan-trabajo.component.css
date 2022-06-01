@@ -309,6 +309,35 @@
   font-size: 14px;
 }
 
+/*Tabla matriz*/
+
+.container-table-grid {
+  width: 100%;
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: 70px 2fr;
+  gap: 4px;
+}
+
+.table-body-matriz > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  width: 100%;
+  font-family: 'Poppins';
+}
+
+/*Fin form control interno*/
+
 
 @media only screen and (max-width: 1224px) {
   .fechas-plan {
