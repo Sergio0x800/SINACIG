@@ -183,7 +183,6 @@
 }
 
 .table-body-matriz > div {
-  width: 100%;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -193,7 +192,6 @@
 
 .riesgo-descripcion-style {
   font-size: 13px;
-  width: 100%;
   font-family: 'Poppins';
 }
 
