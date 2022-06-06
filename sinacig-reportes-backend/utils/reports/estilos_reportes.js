@@ -14,6 +14,14 @@ const estilosReportes = {
     },
   }),
 
+  fondoHeader: wb.createStyle({
+    fill: {
+      type: 'pattern',
+      patternType: 'solid',
+      bgColor: '#FFFFFF',
+      fgColor: '#FFFFFF',
+    },
+  }),
   encabezadoTabla: wb.createStyle({
     border: {
       left: {
