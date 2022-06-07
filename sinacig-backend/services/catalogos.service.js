@@ -17,6 +17,19 @@ class CatalogosService {
     return dataUnidad;
   }
 
+  async findUnidadEjecutoraByCodigo(id_unidad) {
+    const dataUnidad = await models.Unidad.findOne({
+      where: {
+        id_unidad_ejecutora: id_unidad,
+        estado_registro: 1,
+      },
+    });
+    if (dataUnidad.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return [dataUnidad];
+  }
+
   async findRoles() {
     const dataRoles = await models.Rol.findAll({
       where: {

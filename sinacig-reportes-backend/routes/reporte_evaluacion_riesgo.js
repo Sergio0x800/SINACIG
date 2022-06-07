@@ -22,12 +22,13 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     const { unidadEjecutora, fechaInicio, fechaFin } = req.body;
 
     var wb = new xl.Workbook();
-
     var ws = wb.addWorksheet('Matriz evaluacion riesgos');
+
     //Obtenemos información de la unidad ejecutora por el id
     const unidadEjecutoraData = await catalogosServiceI.findUnidadEjecutoraById(
       unidadEjecutora
     );
+
     //Damos el ancho a las columnas especificando el numero de columna ws.column(1)
     ws.column(1).setWidth(10);
     ws.column(2).setWidth(10);
@@ -60,16 +61,16 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
 
     ws.row(17).filter({
       firstRow: 17,
-      firstColumn: 2,
+      firstColumn: 1,
       lastRow: 17,
-      lastColumn: 5,
+      lastColumn: 13,
     });
 
     //Encabezado principal
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
     ws.addImage({
-      path: 'C:/Users/marti/OneDrive/Desktop/PROYECTOS_MSPAS/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
       type: 'picture',
       position: {
         type: 'absoluteAnchor',
@@ -207,58 +208,58 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
 
     //indicamos el número de fila donde se comenzará a escribir la información del reporte
     let rowIndex = 18;
-    // let colNum = 0;
+    let colNum = 0;
 
-    // resultado[0].forEach((item) => {
-    //   let columnIndex = 2;
-    //   colNum++;
-    //   Object.keys(item).forEach((colName) => {
-    //     ws.cell(rowIndex, 1)
-    //       .string(colNum.toString())
-    //       .style(tableBody.tableBodyText1);
-    //     if (colName === 'Riesgo Residual') {
-    //       if (item[colName] >= 0 && item[colName] <= 10) {
-    //         ws.cell(rowIndex, columnIndex++)
-    //           .string(item[colName].toString())
-    //           .style(tableBody.tableBodyTolerable);
-    //       } else if (item[colName] >= 10.01 && item[colName] <= 15) {
-    //         ws.cell(rowIndex, columnIndex++)
-    //           .string(item[colName].toString())
-    //           .style(tableBody.tableBodyGestionable);
-    //       } else if (item[colName] >= 15.01) {
-    //         ws.cell(rowIndex, columnIndex++)
-    //           .string(item[colName].toString())
-    //           .style(tableBody.tableBodyNoTolerable);
-    //       } else {
-    //         ws.cell(rowIndex, columnIndex++)
-    //           .string(item[colName].toString())
-    //           .style(tableBody.tableBodyText1);
-    //       }
-    //     } else if (
-    //       colName === 'Tipo Objetivo' ||
-    //       colName === 'Código Referencia' ||
-    //       colName === 'Área Evaluada'
-    //     ) {
-    //       ws.cell(rowIndex, columnIndex++)
-    //         .string(item[colName].toString())
-    //         .style(tableBody.tableBodyText2);
-    //     } else if (
-    //       colName === 'Descripción Riesgo' ||
-    //       colName === 'Control Interno para Mitigar' ||
-    //       colName === 'Eventos Identificados' ||
-    //       colName === 'Observaciones'
-    //     ) {
-    //       ws.cell(rowIndex, columnIndex++)
-    //         .string(item[colName].toString())
-    //         .style(tableBody.tableBodyText3);
-    //     } else {
-    //       ws.cell(rowIndex, columnIndex++)
-    //         .string(item[colName].toString())
-    //         .style(tableBody.tableBodyText1);
-    //     }
-    //   });
-    //   rowIndex++;
-    // });
+    resultado[0].forEach((item) => {
+      let columnIndex = 2;
+      colNum++;
+      Object.keys(item).forEach((colName) => {
+        ws.cell(rowIndex, 1)
+          .string(colNum.toString())
+          .style(tableBody.tableBodyText1);
+        if (colName === 'Riesgo Residual') {
+          if (item[colName] >= 0 && item[colName] <= 10) {
+            ws.cell(rowIndex, columnIndex++)
+              .string(item[colName].toString())
+              .style(tableBody.tableBodyTolerable);
+          } else if (item[colName] >= 10.01 && item[colName] <= 15) {
+            ws.cell(rowIndex, columnIndex++)
+              .string(item[colName].toString())
+              .style(tableBody.tableBodyGestionable);
+          } else if (item[colName] >= 15.01) {
+            ws.cell(rowIndex, columnIndex++)
+              .string(item[colName].toString())
+              .style(tableBody.tableBodyNoTolerable);
+          } else {
+            ws.cell(rowIndex, columnIndex++)
+              .string(item[colName].toString())
+              .style(tableBody.tableBodyText1);
+          }
+        } else if (
+          colName === 'Tipo Objetivo' ||
+          colName === 'Código Referencia' ||
+          colName === 'Área Evaluada'
+        ) {
+          ws.cell(rowIndex, columnIndex++)
+            .string(item[colName].toString())
+            .style(tableBody.tableBodyText2);
+        } else if (
+          colName === 'Descripción Riesgo' ||
+          colName === 'Control Interno para Mitigar' ||
+          colName === 'Eventos Identificados' ||
+          colName === 'Observaciones'
+        ) {
+          ws.cell(rowIndex, columnIndex++)
+            .string(item[colName].toString())
+            .style(tableBody.tableBodyText3);
+        } else {
+          ws.cell(rowIndex, columnIndex++)
+            .string(item[colName].toString())
+            .style(tableBody.tableBodyText1);
+        }
+      });
+      rowIndex++;
+    });
 
     //Pie de página
 
@@ -290,8 +291,8 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     );
     ws.row(rowIndex + 10).setHeight(20);
 
-    // wb.write('Matriz_evaluacion_riesgos.xlsx', res);
-    res.json(resultado);
+    wb.write('Matriz_evaluacion_riesgos.xlsx', res);
+    // res.json(resultado);
   } catch (error) {
     console.log(error.message);
     next(error);

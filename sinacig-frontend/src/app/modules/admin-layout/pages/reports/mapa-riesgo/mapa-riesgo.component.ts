@@ -4,6 +4,7 @@ import { CatalogosService } from 'src/app/services/catalogos.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MapaRiesgoService } from '../services/mapa-riesgo/mapa-riesgo.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-mapa-riesgo',
@@ -26,15 +27,26 @@ export class MapaRiesgoComponent implements OnInit {
     unidadEjecutora: new FormControl('', Validators.required),
     id_periodo: new FormControl('', Validators.required),
   })
+  usuario: any;
   constructor(
     private catalogsService: CatalogosService,
     private reporteService: MapaRiesgoService,
-    private utilidades: UtilidadesService
+    private utilidades: UtilidadesService,
+    private usuarioService: UsuarioService,
   ) { }
 
   ngOnInit(): void {
-    this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
+      this.usuario = result
+      if (this.usuario.id_rol == 1) {
+        this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+      } else {
+        this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
+          this.unidadesEjecutoras = unidades
+        })
+      }
+    })
   }
 
   descargarReporte(): void {

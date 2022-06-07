@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { EvaluacionRiesgoReporteService } from '../../services/evaluacion-riesgo/evaluacion-riesgo-reporte.service';
 import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2'
 import { PlanTrabajoService } from '../../services/plan-trabajo/plan-trabajo.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
@@ -19,31 +20,46 @@ export class PlanTrabajoComponent implements OnInit {
   //Forms Control Search by Params
   generarReporte = new FormGroup({
     unidadEjecutora: new FormControl('', Validators.required),
-    fechaInicio: new FormControl('', Validators.required),
-    fechaFin: new FormControl('', Validators.required)
+    id_periodo: new FormControl('', Validators.required),
+    // fechaInicio: new FormControl('', Validators.required),
+    // fechaFin: new FormControl('', Validators.required)
   })
+  usuario: any;
+  periodos: any;
   constructor(
     private catalogsService: CatalogosService,
     private reporteService: PlanTrabajoService,
-    private utilidades: UtilidadesService
+    private utilidades: UtilidadesService,
+    private usuarioService: UsuarioService,
   ) { }
 
   //fechas
   myDpOptions: IAngularMyDpOptions = {
     dateRange: false,
-    dateFormat: 'dd/mm/yyyy'
+    dateFormat: 'dd/mm/yyyy',
   };
   locale: string = 'es'
 
   ngOnInit(): void {
-    this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+    this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
+      this.usuario = result
+      if (this.usuario.id_rol == 1) {
+        this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+      } else {
+        this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
+          this.unidadesEjecutoras = unidades
+        })
+      }
+    })
   }
 
   descargarReporte(): void {
+    const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.generarReporte.get('id_periodo')?.value)
     const dataReporte = {
       unidadEjecutora: this.generarReporte.get('unidadEjecutora')?.value,
-      fechaInicio: this.generarReporte.get('fechaInicio')?.value.singleDate.formatted,
-      fechaFin: this.generarReporte.get('fechaFin')?.value.singleDate.formatted,
+      fechaInicio: periodoSeleccionado.fecha_inicio,
+      fechaFin: periodoSeleccionado.fecha_fin
     }
 
     const fechaCorrecta: boolean = this.validarFechas(dataReporte.fechaInicio, dataReporte.fechaFin);

@@ -52,9 +52,17 @@ export class MatrizPeriodosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
-    this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
+      this.usuario = result
+      if (this.usuario.id_rol == 1) {
+        this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+      } else {
+        this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
+          this.unidadesEjecutoras = unidades
+        })
+      }
+    })
   }
 
   createNewMatrizPeriodo() {

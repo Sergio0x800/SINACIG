@@ -13,6 +13,17 @@ router.get('/unidad_ejecutora', async (req, res, next) => {
   }
 });
 
+router.get('/unidad_ejecutoraByid/:id_unidad', async (req, res, next) => {
+  try {
+    const { id_unidad } = req.params;
+    const unidadesEjecutoras =
+      await catalogosServiceI.findUnidadEjecutoraByCodigo(id_unidad);
+    res.json(unidadesEjecutoras);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/roles', async (req, res, next) => {
   try {
     const roles = await catalogosServiceI.findRoles();

@@ -11,6 +11,7 @@ class PlanTrabajoReporteService {
                 @fecha_inicio = '${fechaInicio}',
                 @fecha_fin = '${fechaFin}'
             `);
+
       return dataReporte;
     } catch (error) {
       throw `${error}`;

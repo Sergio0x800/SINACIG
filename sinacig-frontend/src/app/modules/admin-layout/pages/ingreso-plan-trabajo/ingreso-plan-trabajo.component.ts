@@ -9,6 +9,7 @@ import { DATES, IAngularMyDpOptions } from 'angular-mydatepicker';
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
+import { MatrizService } from 'src/app/services/matriz.service';
 
 
 @Component({
@@ -25,6 +26,11 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   myDpOptions: IAngularMyDpOptions = {
     dateRange: false,
     dateFormat: 'dd/mm/yyyy',
+    disableUntil: {
+      year: 2020,
+      month: 1,
+      day: 1,
+    },
   };
   myDateInit: boolean = true;
   model: any = null;
@@ -101,6 +107,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   recursosMemory: any = []
   id_riesgo_plan_trabajo: any = 0;
   id_matriz: string | null = null;
+  periodoObtenido: any;
 
   constructor(
     private planRiesgoService: PlanRiesgosService,
@@ -109,7 +116,8 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private usuarioService: UsuarioService,
-    private utilidades: UtilidadesService
+    private utilidades: UtilidadesService,
+    private matrizService: MatrizService
   ) { }
 
   ngOnInit(): void {
@@ -124,7 +132,10 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     this.catalogosService.getPrioridad().subscribe(prioridad => this.prioridades = prioridad)
     this.catalogosService.getPuestoResponsable().subscribe(puesto => this.puestos = puesto)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
-
+    this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe(result => {
+      this.periodoObtenido = result
+      console.log(this.periodoObtenido)
+    })
     //validacion de formulario
     this.formCreatePlanRiesgo.get('id_prioridad')?.valueChanges.subscribe((value: any) => {
       if (this.prioridadInvalid && this.formCreatePlanRiesgo.get('id_prioridad')?.dirty) {

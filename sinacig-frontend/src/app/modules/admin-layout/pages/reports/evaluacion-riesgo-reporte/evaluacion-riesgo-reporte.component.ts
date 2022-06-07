@@ -5,6 +5,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2'
 import { EvaluacionRiesgoReporteService } from '../services/evaluacion-riesgo/evaluacion-riesgo-reporte.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-evaluacion-riesgo-reporte',
   templateUrl: './evaluacion-riesgo-reporte.component.html',
@@ -20,10 +21,12 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
     unidadEjecutora: new FormControl('', Validators.required),
     id_periodo: new FormControl('', Validators.required),
   })
+  usuario: any;
   constructor(
     private catalogsService: CatalogosService,
     private reporteService: EvaluacionRiesgoReporteService,
-    private utilidades: UtilidadesService
+    private utilidades: UtilidadesService,
+    private usuarioService: UsuarioService,
   ) { }
 
   //fechas
@@ -34,8 +37,17 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
   locale: string = 'es'
 
   ngOnInit(): void {
-    this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
+      this.usuario = result
+      if (this.usuario.id_rol == 1) {
+        this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+      } else {
+        this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
+          this.unidadesEjecutoras = unidades
+        })
+      }
+    })
   }
 
   descargarReporte(): void {

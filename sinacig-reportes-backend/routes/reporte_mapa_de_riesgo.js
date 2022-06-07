@@ -4,97 +4,130 @@ const xl = require('excel4node');
 const CatalogosService = require('../services/catalogos.service');
 const estilosReportes = require('../utils/reports/estilos_reportes');
 const MapaRiesgo = require('../services/mapa_riesgo_reporte.service');
+const moment = require('moment');
 
+const {
+  header,
+  table,
+  tableBody,
+  tableFooter,
+} = require('../utils/reports/styles-reportes-excel/style_report_evaluacion_riesgo');
 const catalogosServiceI = new CatalogosService();
 const mapaRiesgoService = new MapaRiesgo();
 router.post('/mapa_riesgo', async (req, res, next) => {
-  try {
-    const { unidadEjecutora, fechaInicio, fechaFin } = req.body;
+  const { unidadEjecutora, fechaInicio, fechaFin } = req.body;
 
+  const unidadEjecutoraData = await catalogosServiceI.findUnidadEjecutoraById(
+    unidadEjecutora
+  );
+  let dataReporte = await mapaRiesgoService.dataReporteMapariesgo(
+    unidadEjecutoraData.codigo_unidad,
+    fechaInicio,
+    fechaFin
+  );
+  try {
     var wb = new xl.Workbook();
     var ws = wb.addWorksheet('Matriz evaluacion riesgos');
     //Obtenemos información de la unidad ejecutora por el id
-    const unidadEjecutoraData = await catalogosServiceI.findUnidadEjecutoraById(
-      unidadEjecutora
-    );
+
     //Damos el ancho a las columnas especificando el numero de columna ws.column(1)
-    ws.column(1).setWidth(30);
-    ws.column(2).setWidth(15);
-    ws.column(3).setWidth(30);
-    ws.column(4).setWidth(30);
-    ws.column(5).setWidth(30);
-    ws.column(6).setWidth(30);
-    ws.column(7).setWidth(30);
+    ws.column(1).setWidth(10);
+    ws.column(2).setWidth(14);
+    ws.column(4).setWidth(20);
+    ws.column(5).setWidth(20);
+    ws.column(6).setWidth(20);
+    ws.column(7).setWidth(20);
     ws.column(8).setWidth(20);
-    ws.column(9).setWidth(20);
-    ws.column(10).setWidth(30);
-    ws.column(11).setWidth(30);
-    ws.column(12).setWidth(20);
-    ws.column(13).setWidth(20);
-    ws.column(14).setWidth(35);
-    ws.column(15).setWidth(20);
+
+    //Damos el ancho a las columnas especificando el numero de columna ws.column(1)
+
+    ws.row(1).setHeight(13);
+    ws.row(5).setHeight(13);
+    ws.row(6).setHeight(13);
+    ws.row(7).setHeight(13);
+    ws.row(8).setHeight(13);
+    ws.row(9).setHeight(13);
+    ws.row(10).setHeight(13);
+    ws.row(11).setHeight(13);
+    ws.row(12).setHeight(13);
+    ws.row(13).setHeight(13);
+    ws.row(14).setHeight(13);
+    ws.row(15).setHeight(13);
+    ws.row(16).setHeight(13);
 
     //Encabezado principal
-    ws.cell(2, 3, 2, 6, true)
+    const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
+    const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
+    ws.addImage({
+      path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      type: 'picture',
+      position: {
+        type: 'absoluteAnchor',
+        x: '0.3in',
+        y: '0.2in',
+      },
+    });
+
+    ws.cell(1, 1, 13, 8).style(header.fondoHeader);
+
+    ws.cell(2, 3, 3, 8, true)
       .string('Ministerio de Salud Pública y Asistencia Social-MSPAS-')
-      .style(estilosReportes.encabezadoPrincipal);
-    ws.cell(3, 3, 3, 6, true)
+      .style(header.tituloPrincipal);
+    ws.cell(4, 3, 4, 8, true)
       .string('Matriz de Evaluación de Riesgos')
-      .style(estilosReportes.encabezadoPrincipal);
+      .style(header.tituloSecundario);
 
     //Datos unidad ejecutora y periodo evaluación
-    ws.cell(7, 1).string('Unidad Ejecutora No.').style(estilosReportes.negrita);
-    ws.cell(7, 2).string(`${unidadEjecutoraData.codigo_unidad}`);
-    ws.cell(8, 1)
-      .string('Nombre de la Unidad Ejecutora')
-      .style(estilosReportes.negrita);
-    ws.cell(8, 2, 8, 4, true).string(`${unidadEjecutoraData.nombre_unidad}`);
-    ws.cell(9, 1)
-      .string('Periodo de Evaluación')
-      .style(estilosReportes.negrita);
-    ws.cell(9, 2, 9, 3, true).string(`Del ${fechaInicio} al ${fechaFin}`);
+    ws.cell(7, 1, 7, 3, true)
+      .string('Unidad Ejecutora No.')
+      .style(header.tituloInfoUnidad);
+    ws.cell(7, 4, 7, 6, true)
+      .string(`${unidadEjecutoraData.codigo_unidad}`)
+      .style(header.text);
+    ws.cell(8, 1, 8, 3, true)
+      .string('Nombre de la Unidad Ejecutora:')
+      .style(header.tituloInfoUnidad);
+    ws.cell(8, 4, 8, 13, true)
+      .string(`${unidadEjecutoraData.nombre_unidad}`)
+      .style(header.text);
+    ws.cell(9, 1, 9, 3, true)
+      .string('Periodo de evaluación:')
+      .style(header.tituloInfoUnidad);
+    ws.cell(9, 4, 9, 6, true)
+      .string(`Del ${fecha_inicio} al ${fecha_fin}`)
+      .style(header.text);
 
-    //Instrucciones
-    ws.cell(12, 1, 12, 5, true).string(
-      'Instrucciones: Realice el mapa de riesgos, completando la información de la matriz según lo indica el documento SINACIG'
-    );
-    ws.cell(13, 1, 13, 2, true).string('en la página 53.');
+    // Instrucciones
+    ws.cell(12, 1, 13, 8, true)
+      .string(
+        'Instrucciones: Realice el mapa de riesgos, completando la información de la matriz según lo indica el documento SINACIG en la página 53.'
+      )
+      .style(header.text);
 
-    ws.cell(15, 2, 15, 6, true)
+    ws.cell(14, 4, 15, 8, true)
       .string('Probabilidad y Severidad')
       .style(estilosReportes.encabezadoTabla);
-    ws.cell(16, 1, 21, 1, true)
+    ws.cell(17, 2, 21, 2, true)
       .string('Probabilidad')
       .style(estilosReportes.encabezadoTabla);
 
-    ws.cell(16, 2).number(1);
-    ws.cell(17, 2).number(2);
-    ws.cell(18, 2).number(3);
-    ws.cell(19, 2).number(4);
-    ws.cell(20, 2).number(5);
+    ws.cell(17, 3).number(5);
+    ws.cell(18, 3).number(4);
+    ws.cell(19, 3).number(3);
+    ws.cell(20, 3).number(2);
     ws.cell(21, 3).number(1);
-    ws.cell(21, 4).number(2);
-    ws.cell(21, 5).number(3);
-    ws.cell(21, 6).number(4);
-    ws.cell(21, 7).number(5);
 
-    ws.row(16).setHeight(110);
-    ws.row(17).setHeight(110);
-    ws.row(18).setHeight(110);
-    ws.row(19).setHeight(110);
-    ws.row(20).setHeight(110);
-
-    let dataReporte = await mapaRiesgoService.dataReporteMapariesgo(
-      unidadEjecutoraData.codigo_unidad,
-      fechaInicio,
-      fechaFin
-    );
+    ws.cell(22, 4).number(1);
+    ws.cell(22, 5).number(2);
+    ws.cell(22, 6).number(3);
+    ws.cell(22, 7).number(4);
+    ws.cell(22, 8).number(5);
 
     // Le damos color a la tabla de mapa de riesgo
-    let fila = 16;
+    let fila = 17;
     //variable i es la probabilidad, variable j es la severidad
     for (let i = 0; i < 5; i++) {
-      let columna = 3;
+      let columna = 4;
       for (let j = 0; j < 5; j++) {
         if (i == 0 && j == 2) {
           datosAmarillo(1, 3, fila, columna);
@@ -152,75 +185,30 @@ router.post('/mapa_riesgo', async (req, res, next) => {
       fila++;
     }
 
-    function datosAmarillo(pro, sev, fila, columna) {
-      let data = [];
-      var celda;
-      dataReporte.find((element) => {
-        if (element.Probabilidad == pro && element.Severidad == sev) {
-          data.push(`(${element.Riesgo}), `);
-          celda = ws
-            .cell(fila, columna)
-            .string(data)
-            .style(estilosReportes.backgroundAmarillo);
-        } else {
-          celda = ws
-            .cell(fila, columna)
-            .style(estilosReportes.backgroundAmarillo);
-        }
-      });
-      return celda;
-    }
-
-    function datosRojo(pro, sev, fila, columna) {
-      let data = [];
-      var celda;
-      dataReporte.find((element) => {
-        if (element.Probabilidad == pro && element.Severidad == sev) {
-          data.push(`(${element.Riesgo}), `);
-          celda = ws
-            .cell(fila, columna)
-            .string(data)
-            .style(estilosReportes.backgroundRojo);
-        } else {
-          celda = ws.cell(fila, columna).style(estilosReportes.backgroundRojo);
-        }
-      });
-      return celda;
-    }
-
-    function datosVerde(pro, sev, fila, columna) {
-      let data = [];
-      var celda;
-      dataReporte.find((element) => {
-        if (element.Probabilidad == pro && element.Severidad == sev) {
-          data.push(`(${element.Riesgo}), `);
-          celda = ws
-            .cell(fila, columna)
-            .string(data)
-            .style(estilosReportes.backgroundVerde);
-        } else {
-          celda = ws.cell(fila, columna).style(estilosReportes.backgroundVerde);
-        }
-      });
-      return celda;
-    }
-
-    ws.cell(23, 3, 23, 7, true)
+    ws.cell(24, 4, 24, 8, true)
       .string('Severidad')
       .style(estilosReportes.encabezadoTabla);
 
-    ws.cell(26, 1).string('Riesgos').style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 2)
+    ws.cell(26, 4).string('No.').style(estilosReportes.encabezadoTabla);
+    ws.cell(26, 5).string('Riesgos').style(estilosReportes.encabezadoTabla);
+    ws.cell(26, 6)
       .string('Probabilidad')
       .style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 3).string('Severidad').style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 4).string('Punteo').style(estilosReportes.encabezadoTabla);
+    ws.cell(26, 7).string('Severidad').style(estilosReportes.encabezadoTabla);
+    ws.cell(26, 8).string('Punteo').style(estilosReportes.encabezadoTabla);
 
     let rowIndex = 27;
+    let colNum = 0;
     dataReporte.forEach((item) => {
-      let columnIndex = 1;
+      let columnIndex = 5;
+      colNum++;
       Object.keys(item).forEach((colName) => {
-        ws.cell(rowIndex, columnIndex++).string(item[colName].toString());
+        ws.cell(rowIndex, 4)
+          .string(colNum.toString())
+          .style(tableBody.tableBodyText1);
+        ws.cell(rowIndex, columnIndex++)
+          .string(item[colName].toString())
+          .style(tableBody.tableBodyText1);
       });
       rowIndex++;
     });
@@ -229,6 +217,59 @@ router.post('/mapa_riesgo', async (req, res, next) => {
   } catch (error) {
     console.log(error.message);
     next(error);
+  }
+
+  function datosAmarillo(pro, sev, fila, columna) {
+    let data = [];
+    var celda;
+    dataReporte.find((element) => {
+      if (element.Probabilidad == pro && element.Severidad == sev) {
+        data.push(`(${element.Riesgo}), `);
+        celda = ws
+          .cell(fila, columna)
+          .string(data)
+          .style(estilosReportes.backgroundAmarillo);
+      } else {
+        celda = ws
+          .cell(fila, columna)
+          .style(estilosReportes.backgroundAmarillo);
+      }
+    });
+    return celda;
+  }
+
+  function datosRojo(pro, sev, fila, columna) {
+    let data = [];
+    var celda;
+    dataReporte.find((element) => {
+      if (element.Probabilidad == pro && element.Severidad == sev) {
+        data.push(`(${element.Riesgo}), `);
+        celda = ws
+          .cell(fila, columna)
+          .string(data)
+          .style(estilosReportes.backgroundRojo);
+      } else {
+        celda = ws.cell(fila, columna).style(estilosReportes.backgroundRojo);
+      }
+    });
+    return celda;
+  }
+
+  function datosVerde(pro, sev, fila, columna) {
+    let data = [];
+    var celda;
+    dataReporte.find((element) => {
+      if (element.Probabilidad == pro && element.Severidad == sev) {
+        data.push(`(${element.Riesgo}), `);
+        celda = ws
+          .cell(fila, columna)
+          .string(data)
+          .style(estilosReportes.backgroundVerde);
+      } else {
+        celda = ws.cell(fila, columna).style(estilosReportes.backgroundVerde);
+      }
+    });
+    return celda;
   }
 });
 

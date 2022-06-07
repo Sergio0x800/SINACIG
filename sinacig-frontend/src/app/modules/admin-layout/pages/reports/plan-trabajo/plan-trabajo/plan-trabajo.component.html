@@ -12,7 +12,15 @@
             {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
         </select>
       </div>
-      <div class="mb-3">
+      <div class="mb-5">
+        <label for="fInicioFindRiesgo" class="form-label">Año del periodo:</label>
+        <select formControlName="id_periodo" id="periodoAnio" name="periodoAnio"
+          class="form-select inputs-select-styles">
+          <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
+            {{periodo.anio}}</option>
+        </select>
+      </div>
+      <!-- <div class="mb-3">
         <div class="form-group">
           <label class="form-label" for="fecha_inicio">Fecha Inicio</label>
           <div class="input-group inputs-select-styles">
@@ -51,7 +59,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="container-btn">
 
