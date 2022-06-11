@@ -26,6 +26,19 @@ class RiesgoService {
     return dataRiesgosEncontrados[0];
   }
 
+  async findRiesgoByIdMatrizUpdateRef(id_matriz) {
+    const dataRiesgosEncontrados = await models.Riesgo.findAll({
+      where: {
+        estado_registro: 1,
+        id_matriz: id_matriz,
+      },
+    });
+    if (dataRiesgosEncontrados[0].length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataRiesgosEncontrados;
+  }
+
   async findRiesgoById(id_riesgo) {
     const dataRiesgosEncontrados = await sequelize.query(
       `EXEC sp_get_riesgos_by_id_riesgo
@@ -45,17 +58,17 @@ class RiesgoService {
     return riesgo;
   }
 
-  async deleteRiesgo(id_riesgo, changes) {
-    const riesgoEncontrado = await models.Riesgo.findOne({
-      where: { id_riesgo: id_riesgo },
-    });
-    if (riesgoEncontrado.length === 0) {
-      throw boom.notFound('No hay registros');
-    }
+  async deleteRiesgo(id_matriz, changes) {
+    // const riesgoEncontrado = await models.Riesgo.findOne({
+    //   where: { id_riesgo: id_matriz },
+    // });
+    // if (riesgoEncontrado.length === 0) {
+    //   throw boom.notFound('No hay registros');
+    // }
     try {
       const updatedRiesgo = await models.Riesgo.update(changes, {
         where: {
-          id_riesgo: id_riesgo,
+          id_matriz: id_matriz,
         },
       });
       return updatedRiesgo;

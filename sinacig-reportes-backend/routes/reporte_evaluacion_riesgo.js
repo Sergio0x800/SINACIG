@@ -188,6 +188,7 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
       fechaInicio,
       fechaFin
     );
+
     // .then((riesgos) => {
     //   let riesgosControles = [];
     //   riesgosControles = riesgos[0].map(async (riesgo) => {
@@ -245,12 +246,16 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
             .style(tableBody.tableBodyText2);
         } else if (
           colName === 'Descripción Riesgo' ||
-          colName === 'Control Interno para Mitigar' ||
           colName === 'Eventos Identificados' ||
           colName === 'Observaciones'
         ) {
           ws.cell(rowIndex, columnIndex++)
             .string(item[colName].toString())
+            .style(tableBody.tableBodyText3);
+        } else if (colName === 'Control Interno para Mitigar') {
+          let result = findControles(item[colName]);
+          ws.cell(rowIndex, columnIndex++)
+            .string(JSON.stringify(result))
             .style(tableBody.tableBodyText3);
         } else {
           ws.cell(rowIndex, columnIndex++)
@@ -296,6 +301,13 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
   } catch (error) {
     console.log(error.message);
     next(error);
+  }
+
+  async function findControles(id_riesgo) {
+    const controlesInternos = await reporteService.dataControlesInternos(
+      id_riesgo
+    );
+    return controlesInternos;
   }
 });
 

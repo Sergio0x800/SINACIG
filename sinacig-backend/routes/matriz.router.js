@@ -12,10 +12,6 @@ router.post(
   async (req, res, next) => {
     try {
       const dataMatriz = req.body;
-      // const dataMatrizFixed = {
-      //   ...dataMatriz,
-      //   id_unidad_ejecutora: parseInt(dataMatriz.id_unidad_ejecutora),
-      // };
       const matrizAdded = await matrizService.createMatriz(dataMatriz);
       res.json(matrizAdded);
     } catch (error) {
@@ -59,20 +55,20 @@ router.get(
   }
 );
 
-router.get(
-  '/update/:id_matriz',
-  passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
-  async (req, res, next) => {
-    try {
-      const { id_matriz } = req.params;
-      const matrizPeriodos = await matrizService.findMatrizById(id_matriz);
-      res.json(matrizPeriodos);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+// router.get(
+//   '/update/:id_matriz',
+//   passport.authenticate('jwt', { session: false }),
+//   checkRoles(1, 2),
+//   async (req, res, next) => {
+//     try {
+//       const { id_matriz } = req.params;
+//       const matrizPeriodos = await matrizService.findMatrizById(id_matriz);
+//       res.json(matrizPeriodos);
+//     } catch (error) {
+//       next(error);
+//     }
+//   }
+// );
 
 router.patch(
   '/update/:id_matriz',

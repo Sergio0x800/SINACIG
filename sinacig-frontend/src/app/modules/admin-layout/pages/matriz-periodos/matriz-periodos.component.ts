@@ -48,7 +48,8 @@ export class MatrizPeriodosComponent implements OnInit {
     private catalogsService: CatalogosService,
     private matrizService: MatrizService,
     private usuarioService: UsuarioService,
-    private utilidades: UtilidadesService
+    private utilidades: UtilidadesService,
+    private riesgoService: RiesgosService
   ) { }
 
   ngOnInit(): void {
@@ -162,17 +163,62 @@ export class MatrizPeriodosComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.matrizService.deleteMatriz(id_matriz).subscribe(() => {
+        this.matrizService.deleteMatriz(id_matriz).subscribe((value: any) => {
           Swal.fire({
             icon: 'success',
             text: '¡El registro se eliminó correctamente!'
           });
-          // this.riesgoService.deleteRiesgoByIdMatriz(id_matriz).subscribe((value: any) => { })
+          this.riesgoService.deleteRiesgoByIdMatriz(value[0]).subscribe((value: any) => { })
           this.showTablePeriodos = false
         }, err => {
           Swal.fire({
             icon: 'error',
             text: '¡No se pudo eliminar el registro!'
+          })
+        });
+      }
+    })
+  }
+
+  cerrarPeriodo(id_matriz: any) {
+    Swal.fire({
+      title: '¿Estás seguro de cerrar este periodo?',
+      text: "¡No podrás revertir este cambio y ya no podras realizar ninguna acción que no sea visualizar los registros!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, ¡cerrar periodo!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.matrizService.updateMatriz(id_matriz).subscribe(() => {
+          Swal.fire({
+            icon: 'success',
+            text: '¡El periodo se ha cerrado correctamente!'
+          });
+
+          this.riesgoService.getRiesgoByIdMatrizRef(id_matriz).subscribe((value: any) => {
+            value.map(riesgo => {
+              if (riesgo.codigo_referencia === 'E-') {
+                // this.riesgoService.updateRiesgo()
+              }
+            })
+          })
+          this.usuarioService.obtenerUsuario().subscribe((result: any) => {
+            this.usuario = result
+            if (this.usuario.id_rol == 1) {
+              this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+            } else {
+              this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
+                this.unidadesEjecutoras = unidades
+              })
+            }
+          })
+        }, err => {
+          Swal.fire({
+            icon: 'error',
+            text: '¡No se pudo cerrar el registro, ha ocurrido un error!'
           })
         });
       }

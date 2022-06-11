@@ -14,7 +14,10 @@ router.post(
         sub: usuario.id_usuario,
         role: usuario.id_rol,
       };
-      const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '2h' });
+      const token = jwt.sign(
+        payload,
+        config.jwtSecret /*, { expiresIn: '2h' }*/
+      );
       delete usuario.password;
       res.json({ usuario, token });
     } catch (error) {

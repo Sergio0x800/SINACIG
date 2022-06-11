@@ -59,12 +59,16 @@
       </div>
       <!-- Navigation -->
       <ul class="navbar-nav">
+
+
         <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
           <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
             <i class="ni {{menuItem.icon}}"></i>
             {{menuItem.title}}
           </a>
         </li>
+
+
         <li class="nav-item">
           <a routerLinkActive="active" class="nav-link" data-bs-toggle="collapse" href="#itemsReportes" role="button"
             arial-expanded="false">

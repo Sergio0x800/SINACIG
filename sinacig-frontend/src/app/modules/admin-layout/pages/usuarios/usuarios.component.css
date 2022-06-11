@@ -16,6 +16,7 @@
 .btn-size {
   width: 245px;
 }
+
 .btn-table-riesgo {
   display: flex;
   align-items: center;
@@ -58,6 +59,11 @@
   width: 350px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: transform 0.1s;
+}
+
+.card-user:hover {
+  transform: scale(1.05);
 }
 
 

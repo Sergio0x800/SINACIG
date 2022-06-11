@@ -5,7 +5,8 @@
       <button class="btn btn-danger btn-size" routerLink="/admin/matriz"><i class="fa fa-arrow-left"
           aria-hidden="true"></i>
         Regresar</button>
-      <button class="btn btn-success btn-size" (click)="verificarPlanes()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-success btn-size"
+        (click)="verificarPlanes()"><i class="fa fa-plus" aria-hidden="true"></i>
         Nuevo
         riesgo</button>
     </div>
@@ -16,7 +17,8 @@
   <div *ngIf="showTablePlanesTrabajo" class="table-matriz mt-5">
     <div class="table-header-matriz">
       <div class="header-title">Opciones</div>
-      <div class="header-title">Referencia</div>
+      <!-- <div class="header-title">Referencia</div> -->
+      <div class="header-title">Fecha de registro</div>
       <div class="header-title">Descripción</div>
       <div class="header-title">R.I</div>
       <div class="header-title">R.R</div>
@@ -27,13 +29,18 @@
 
     <div class="table-body-matriz" *ngFor="let riesgo of riesgos">
       <div>
-        <button class="btn btn-sm btn-warning btn-size-card" data-bs-toggle="modal" data-bs-target="#riesgoModal"
-          (click)=" editRiesgo(riesgo.id_riesgo)">
-          <i class="fas fa-pencil"></i>
+        <button class="btn btn-sm btn-size-card" data-bs-toggle="modal" [ngClass]="{
+          'btn-primary': matrizObtenida.periodo_abierto === 0,
+          'btn-warning': matrizObtenida.periodo_abierto === 1
+        }" data-bs-target="#riesgoModal" (click)=" editRiesgo(riesgo.id_riesgo)">
+          <i class="fas fa-pencil" *ngIf="matrizObtenida ===1; else elseIconShow"></i>
+          <ng-template #elseIconShow>
+            <i class="fa-solid fa-eye"></i>
+          </ng-template>
         </button>
       </div>
       <div>
-        <span class="riesgo-descripcion-style">{{riesgo.codigo_referencia}}</span>
+        <span class="riesgo-descripcion-style">{{riesgo.fecha_registro | date: 'dd/MM/yyyy'}}</span>
       </div>
       <div><span class="riesgo-descripcion-style">{{riesgo.descripcion_riesgo}}</span>
       </div>
@@ -209,21 +216,22 @@
                   <div class="container-table-coImple">
                     <div>
                       <div>
-                        <button type="button" class="btn btn-success btn-sm mb-2" (click)="mostrarCamposInterno()"><i
-                            class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
+                        <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                          class="btn btn-success btn-sm mb-2" (click)="mostrarCamposInterno()"><i class="fa fa-plus"
+                            aria-hidden="true"></i> Nuevo</button>
                       </div>
                     </div>
                     <div *ngIf="controlesInternosObtenidos.length > 0" class="table-responsive">
                       <table class="table table-hover">
                         <thead>
                           <tr>
-                            <th scope="col">Opciones</th>
+                            <th *ngIf="matrizObtenida.periodo_abierto === 1" scope="col">Opciones</th>
                             <th scope="col">Descripción</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr *ngFor="let internos of controlesInternosObtenidos">
-                            <th scope="row th-display">
+                            <th *ngIf="matrizObtenida.periodo_abierto === 1" scope="row th-display">
                               <div class="btn-delete">
                                 <button class="btn btn-sm btn-danger btn-size-card"
                                   (click)="deleteInternoInMemoryTablaGet(internos.id_riesgo_control_interno)">
@@ -285,8 +293,9 @@
             <div class="btns-modal-container">
               <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
                 (click)="cancelarUpdate()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
-              <button [disabled]="formUpdateRiesgo.invalid" type="submit" class="btn btn-primary btn-size"
-                (click)="updateRiesgo()" data-bs-dismiss="modal"><i class="fa fa-pencil" aria-hidden="true"></i>
+              <button *ngIf="matrizObtenida.periodo_abierto === 1" [disabled]="formUpdateRiesgo.invalid" type="submit"
+                class="btn btn-primary btn-size" (click)="updateRiesgo()" data-bs-dismiss="modal"><i
+                  class="fa fa-pencil" aria-hidden="true"></i>
                 Actualizar</button>
             </div>
           </div>
@@ -360,8 +369,9 @@
               <div class="container-table-coImple">
                 <div>
                   <div>
-                    <button type="button" class="btn btn-success btn-sm mb-5" (click)="mostrarCampos()"><i
-                        class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
+                    <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                      class="btn btn-success btn-sm mb-5" (click)="mostrarCampos()"><i class="fa fa-plus"
+                        aria-hidden="true"></i> Nuevo</button>
                   </div>
                 </div>
 
@@ -369,7 +379,7 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col"></th>
+                        <th *ngIf="matrizObtenida.periodo_abierto === 1" scope="col"></th>
                         <th scope="col">Que:</th>
                         <th scope="col">Como:</th>
                         <th scope="col">Quien:</th>
@@ -378,7 +388,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let ctImplementacion of controlesImplementacionObtenidos">
-                        <th scope="row th-display">
+                        <th *ngIf="matrizObtenida.periodo_abierto === 1" scope="row th-display">
                           <div class="btn-delete">
                             <button class="btn btn-sm btn-danger"
                               (click)="deleteControlInMemoryTablaGet(ctImplementacion.id_implementacion)">
@@ -412,6 +422,8 @@
                     </tbody>
                   </table>
                 </div>
+
+
                 <div *ngIf="controlesMemory.length > 0" class="table-responsive mt-0">
                   <h5>Nuevos controles:</h5>
                   <table class="table table-hover">
@@ -506,8 +518,9 @@
               <div class="container-table-coImple">
                 <div>
                   <div>
-                    <button type="button" class="btn btn-success btn-sm mb-5" (click)="mostrarCamposRecursos()"><i
-                        class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
+                    <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                      class="btn btn-success btn-sm mb-5" (click)="mostrarCamposRecursos()"><i class="fa fa-plus"
+                        aria-hidden="true"></i> Nuevo</button>
                   </div>
                 </div>
                 <div *ngIf="recursosObtenidos.length > 0" class="table-responsive">
@@ -520,7 +533,7 @@
                     </thead> -->
                     <tbody>
                       <tr *ngFor="let recurso of recursosObtenidos">
-                        <th scope="row th-display">
+                        <th *ngIf="matrizObtenida.periodo_abierto === 1" scope="row th-display">
                           <div class="btn-delete">
                             <button class="btn btn-sm btn-danger btn-size-card"
                               (click)="deleteRecursoInMemoryTablaGet(recurso.id_recursos)">
@@ -588,14 +601,13 @@
             <div>
               <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
                 (click)="resetVariables()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
-              <button (click)="updatePlanTrabajoControlesRecursos()" type="button" class="btn btn-primary btn-size"
-                data-bs-dismiss="modal"><i class="fa fa-pencil" aria-hidden="true"></i> Actualizar</button>
+              <button *ngIf="matrizObtenida.periodo_abierto === 1" (click)="updatePlanTrabajoControlesRecursos()"
+                type="button" class="btn btn-primary btn-size" data-bs-dismiss="modal"><i class="fa fa-pencil"
+                  aria-hidden="true"></i> Actualizar</button>
             </div>
           </div>
         </div>
       </div>
-
-
       <ng-template #ingresarPlanTrabajo>
         <div class="alert alert-dark" role="alert">
           Este riesgo no cuenta con un plan de trabajo actualmente, seleccione agregar para ingresar un nuevo plan!
@@ -609,6 +621,8 @@
           </div>
         </div>
       </ng-template>
+
+
 
 
 

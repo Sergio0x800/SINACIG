@@ -35,6 +35,10 @@ const MatrizSchema = {
     allowNull: true,
     type: DataTypes.DATE,
   },
+  periodo_abierto: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+  },
 };
 
 class Matriz extends Model {

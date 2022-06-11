@@ -38,6 +38,16 @@ router.get('/update/:id_riesgo', async (req, res, next) => {
   }
 });
 
+router.get('/updateRef/:id_matriz', async (req, res, next) => {
+  try {
+    const { id_matriz } = req.params;
+    const riesgo = await riesgoService.findRiesgoByIdMatrizUpdateRef(id_matriz);
+    res.json(riesgo);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/search/:id_riesgo', async (req, res, next) => {
   try {
     const { id_riesgo } = req.params;
@@ -58,12 +68,29 @@ router.get('/:id_matriz/:offset', async (req, res, next) => {
   }
 });
 
-router.patch('/:id_riesgo', async (req, res, next) => {
+// router.patch('/:id_riesgo', async (req, res, next) => {
+//   try {
+//     const { id_riesgo } = req.params;
+//     const dataRiesgo = req.body;
+//     const updatedRiesgo = await riesgoService.deleteRiesgo(
+//       id_riesgo,
+//       dataRiesgo
+//     );
+//     res.json({
+//       message: 'Riesgo actualizado correctamente',
+//       registro: updatedRiesgo,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+router.patch('/matriz/:id_matriz', async (req, res, next) => {
   try {
-    const { id_riesgo } = req.params;
+    const { id_matriz } = req.params;
     const dataRiesgo = req.body;
     const updatedRiesgo = await riesgoService.deleteRiesgo(
-      id_riesgo,
+      id_matriz,
       dataRiesgo
     );
     res.json({

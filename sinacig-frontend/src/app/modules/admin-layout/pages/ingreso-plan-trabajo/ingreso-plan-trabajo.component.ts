@@ -23,15 +23,17 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   id_riesgo: string | null = null;
 
   //configuracion de mydatepicker
-  myDpOptions: IAngularMyDpOptions = {
-    dateRange: false,
-    dateFormat: 'dd/mm/yyyy',
-    disableUntil: {
-      year: 2020,
-      month: 1,
-      day: 1,
-    },
-  };
+  periodoObtenido: any;
+  fechaInicioPeriodo: any;
+  fechaFinalPeriodo: any;
+  anioInicio: any;
+  mesInicio: any;
+  diaInicio: any;
+  anioFinal: any;
+  mesFinal: any;
+  diaFinal: any;
+  myDpOptions: IAngularMyDpOptions = {};
+  myDpOptions2: IAngularMyDpOptions = {};
   myDateInit: boolean = true;
   model: any = null;
   myDateInicioFin: any = {};
@@ -107,7 +109,6 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   recursosMemory: any = []
   id_riesgo_plan_trabajo: any = 0;
   id_matriz: string | null = null;
-  periodoObtenido: any;
 
   constructor(
     private planRiesgoService: PlanRiesgosService,
@@ -134,8 +135,29 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
     this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe(result => {
       this.periodoObtenido = result
-      console.log(this.periodoObtenido)
+      const fechaInicio = this.periodoObtenido[0].fecha_periodo_inicio.split('-');
+      const anioInicio = fechaInicio[0]
+      this.myDpOptions = {
+        dateRange: false,
+        dateFormat: 'dd/mm/yyyy',
+        disableUntil: {
+          year: parseInt(anioInicio) - 1,
+          month: 12,
+          day: 31,
+        },
+      }
+      this.myDpOptions2 = {
+        dateRange: false,
+        dateFormat: 'dd/mm/yyyy',
+        disableUntil: {
+          year: parseInt(anioInicio) - 1,
+          month: 12,
+          day: 31,
+        },
+      }
+      // this.formCreatePlanRiesgo.get('fecha_inicio')?.disable();
     })
+
     //validacion de formulario
     this.formCreatePlanRiesgo.get('id_prioridad')?.valueChanges.subscribe((value: any) => {
       if (this.prioridadInvalid && this.formCreatePlanRiesgo.get('id_prioridad')?.dirty) {
@@ -150,6 +172,16 @@ export class IngresoPlanTrabajoComponent implements OnInit {
       }
     })
     this.formCreatePlanRiesgo.get('fecha_inicio')?.valueChanges.subscribe((value: any) => {
+      this.formCreatePlanRiesgo.get('fecha_fin')?.reset();
+      this.myDpOptions2 = {
+        dateRange: false,
+        dateFormat: 'dd/mm/yyyy',
+        disableUntil: {
+          year: value.singleDate.date.year,
+          month: value.singleDate.date.month,
+          day: value.singleDate.date.day,
+        },
+      }
       if (this.fechaInicioInvalid && this.formCreatePlanRiesgo.get('fecha_inicio')?.dirty) {
         this.fechaInicioValid = true
         this.fechaInicioInvalid = false
