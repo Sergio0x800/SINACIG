@@ -1,4 +1,5 @@
 const { Unidad, UnidadSchema } = require('./catalogosModels/unidad.model');
+const { Recursos, RecursosSchema } = require('./recurso.model');
 const {
   ControlInterno,
   ControlInternoSchema,
@@ -6,6 +7,7 @@ const {
 function setupModels(sequelize) {
   Unidad.init(UnidadSchema, Unidad.config(sequelize));
   ControlInterno.init(ControlInternoSchema, ControlInterno.config(sequelize));
+  Recursos.init(RecursosSchema, Recursos.config(sequelize));
 }
 
 module.exports = setupModels;

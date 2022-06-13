@@ -85,6 +85,9 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   descripcionInvalid = false;
   descripcionValid = false;
 
+  descripcionControlesInternosPlanInvalid = false;
+  descripcionControlesInternosPlanValid = false;
+
   formCreatePlanRiesgo = new FormGroup({
     id_prioridad: new FormControl('', Validators.required),
     id_puesto_responsable: new FormControl('', Validators.required),
@@ -104,11 +107,17 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     descripcion: new FormControl('', Validators.required),
     usuario_registro: new FormControl('',),
   })
+  formCreateControlesInternosPlan = new FormGroup({
+    descripcion: new FormControl('', Validators.required),
+    usuario_registro: new FormControl('',),
+  })
 
   controlImplementacionMemory: any = []
   recursosMemory: any = []
   id_riesgo_plan_trabajo: any = 0;
   id_matriz: string | null = null;
+  controlInternoPlanMemory: any;
+  showTableControlInternoPlan: any = false;
 
   constructor(
     private planRiesgoService: PlanRiesgosService,
@@ -212,6 +221,13 @@ export class IngresoPlanTrabajoComponent implements OnInit {
       if (this.descripcionInvalid && this.recursosMemory.length > 0) {
         this.descripcionValid = true
         this.descripcionInvalid = false
+      }
+    })
+
+    this.formCreateControlesInternosPlan.get('descripcion')?.valueChanges.subscribe((value: any) => {
+      if (this.descripcionControlesInternosPlanInvalid && this.controlInternoPlanMemory.length > 0) {
+        this.descripcionControlesInternosPlanValid = true
+        this.descripcionControlesInternosPlanInvalid = false
       }
     })
   }
@@ -323,5 +339,11 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   deleteRecursoFromMemory(descripcion: any) {
     const id = this.recursosMemory.findIndex((recurso: any) => recurso.descripcion === descripcion)
     this.recursosMemory.splice(id, 1)
+  }
+
+  createNewControlInternoPlanToMemory() {
+    this.controlInternoPlanMemory.push(this.formCreateRecursos.value)
+    this.formCreateControlesInternosPlan.get('descripcion')?.reset();
+    this.showTableControlInternoPlan = true
   }
 }

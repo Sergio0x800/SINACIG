@@ -212,9 +212,6 @@
               Por favor ingresa al menos un recurso
             </div>
           </div>
-
-
-
           <!-- <div class="container-table-grid">
             <div *ngIf="showTableRecursos">
               <div class="table-body-matriz" *ngFor="let recurso of recursosMemory">
@@ -229,8 +226,6 @@
               </div>
             </div>
           </div> -->
-
-
           <div *ngIf="showTableRecursos" class="table-responsive">
             <table class="table">
               <tbody>
@@ -251,8 +246,58 @@
               </tbody>
             </table>
           </div>
+        </form>
 
-
+        <!-- Ingreso de controles Internos para el plan -->
+        <form [formGroup]="formCreateControlesInternosPlan" class="form-recursos">
+          <h3 class="">Ingreso de Controles Recomendados</h3>
+          <div class="form-floating container-btn-recursos">
+            <button [disabled]="formCreateControlesInternosPlan.invalid" type="button"
+              class="btn btn-success btn-float-recursos" (click)="createNewControlInternoPlanToMemory()">+</button>
+            <textarea maxlength="500" class="form-control" formControlName="descripcion" [ngClass]="{
+                  'is-invalid': descripcionControlesInternosPlanInvalid,
+                  'is-valid': descripcionControlesInternosPlanValid
+                }" placeholder="Ingresa los recursos aqui" id="inputRecurso" style="height: 130px"></textarea>
+            <label for="inputRecurso">Controles Recomendados</label>
+            <div *ngIf="controlInternoPlanMemory.length === 0 && descripcionControlesInternosPlanInvalid"
+              class="invalid-feed">
+              Por favor ingresa al menos un recurso
+            </div>
+          </div>
+          <!-- <div class="container-table-grid">
+            <div *ngIf="showTableRecursos">
+              <div class="table-body-matriz" *ngFor="let recurso of recursosMemory">
+                <div>
+                  <button class="btn btn-sm btn-danger" (click)="deleteRecursoFromMemory(recurso.descripcion)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="riesgo-descripcion-style">
+                  {{recurso.descripcion}}
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div *ngIf="showTableControlInternoPlan" class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let recurso of recursosMemory">
+                  <th scope="row th-display">
+                    <div class="btn-delete">
+                      <button class="btn btn-sm btn-danger" (click)="deleteRecursoFromMemory(recurso.descripcion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </th>
+                  <td class="pt-3 text-dark">
+                    <div class="select-control-mitigador">
+                      {{recurso.descripcion}}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </form>
         <div class="form-floating">
           <textarea maxlength="500" class="form-control" formControlName="comentario" [ngClass]="{

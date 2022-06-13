@@ -73,6 +73,9 @@ export class PlanRiesgosService {
     return this.http.get<any>(`${this.apiUrl}/riesgo_plan_trabajo/update/${id_plan}`);
   }
 
+  updateEstadoPlanByIdRiesgo(id_riesgo: any, data: any) {
+    return this.http.patch<any>(`${this.apiUrl}/estadoPlanByRiesgo/${id_riesgo}`, data);
+  }
   updatePlan(id_plan: any, data: any) {
     return this.http.patch<any>(`${this.apiUrl}/riesgo_plan_trabajo/${id_plan}`, data);
   }

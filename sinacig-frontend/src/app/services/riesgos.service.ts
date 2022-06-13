@@ -43,6 +43,7 @@ export class RiesgosService {
   updateRiesgo(id_riesgo: any, data: any) {
     return this.http.patch<any>(`${this.apiUrl}/update/${id_riesgo}`, data);
   }
+
   getRiesgoToEdit(id_riesgo: any) {
     return this.http.get<any>(`${this.apiUrl}/update/${id_riesgo}`);
   }

@@ -37,6 +37,7 @@ router.get('/existencia_plan/:id_matriz', async (req, res, next) => {
     next(error);
   }
 });
+
 router.get('/update/:id_plan', async (req, res, next) => {
   try {
     const { id_plan } = req.params;
@@ -54,6 +55,20 @@ router.get('/:id_riesgo', async (req, res, next) => {
       id_riesgo
     );
     res.json(planes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch('/estadoPlanByRiesgo/:id_riesgo', async (req, res, next) => {
+  try {
+    const { id_riesgo } = req.params;
+    const dataPlan = req.body;
+    const result = await riesgoPlanTrabajoService.deletePlanTrabajoByIdRiesgo(
+      id_riesgo,
+      dataPlan
+    );
+    res.json(result);
   } catch (error) {
     next(error);
   }

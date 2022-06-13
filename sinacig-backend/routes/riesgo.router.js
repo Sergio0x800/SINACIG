@@ -93,10 +93,7 @@ router.patch('/matriz/:id_matriz', async (req, res, next) => {
       id_matriz,
       dataRiesgo
     );
-    res.json({
-      message: 'Riesgo actualizado correctamente',
-      registro: updatedRiesgo,
-    });
+    res.json(updatedRiesgo);
   } catch (error) {
     next(error);
   }

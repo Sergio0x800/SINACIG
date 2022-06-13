@@ -151,7 +151,9 @@ export class RiesgosComponent implements OnInit {
   riesgoEncontrado: any = {};
   validarExistenciaPlan: any = {};
   usuario: any = {};
-  matrizObtenida: any;
+  matrizObtenida: any = {
+    periodo_abierto: 1
+  };
 
   constructor(
     private riesgoService: RiesgosService,
@@ -171,25 +173,22 @@ export class RiesgosComponent implements OnInit {
     this.route.paramMap.subscribe(param => {
       this.id_matriz = param.get('id_matriz');
       this.linkMatrizPeriodos = `/admin/ingreso-riesgos/${this.id_matriz}`
-
       this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe((result: any) => {
         this.matrizObtenida = result[0]
-        console.log(this.matrizObtenida)
+        this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
+          this.riesgos = riesgos;
+          this.showBtnOffset = true;
+        }, err => {
+          Swal.fire({
+            icon: 'warning',
+            text: '¡No existen registros para mostrar!'
+          })
+          this.showTablePlanesTrabajo = false
+          this.showBtnOffset = false;
+        })
       })
-
     })
 
-    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-      this.riesgos = riesgos;
-      this.showBtnOffset = true;
-    }, err => {
-      Swal.fire({
-        icon: 'warning',
-        text: '¡No existen registros para mostrar!'
-      })
-      this.showTablePlanesTrabajo = false
-      this.showBtnOffset = false;
-    })
 
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getTipoObjetivo().subscribe(obj => this.tipoObjetivos = obj);
@@ -200,6 +199,8 @@ export class RiesgosComponent implements OnInit {
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.catalogsService.getPuestoResponsable().subscribe(puestos => this.puestos = puestos);
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
+
+
 
 
     // ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
