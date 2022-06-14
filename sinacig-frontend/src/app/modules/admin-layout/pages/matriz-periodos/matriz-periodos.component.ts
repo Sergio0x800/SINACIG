@@ -199,9 +199,11 @@ export class MatrizPeriodosComponent implements OnInit {
           });
 
           this.riesgoService.getRiesgoByIdMatrizRef(id_matriz).subscribe((value: any) => {
-            value.map(riesgo => {
+            let contadorE = 1;
+            value.map((riesgo: any) => {
               if (riesgo.codigo_referencia === 'E-') {
-                // this.riesgoService.updateRiesgo()
+                this.riesgoService.updateRiesgo(riesgo.id_riesgo, {codigo_referencia: `E-${contadorE}`})
+                contadorE++
               }
             })
           })
