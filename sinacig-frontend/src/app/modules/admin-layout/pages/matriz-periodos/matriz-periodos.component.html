@@ -39,6 +39,7 @@
     <div class="header-title">Unidad ejecutora</div>
     <div class="header-title">Fecha inicio</div>
     <div class="header-title">Fecha final</div>
+    <div class="header-title">Estado</div>
     <div class="header-title">Riesgos</div>
   </div>
   <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
@@ -57,6 +58,10 @@
     <div><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
     </div>
     <div><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
+    </div>
+    <div *ngIf="matriz.periodo_abierto === 1"><span>Abierto</span>
+    </div>
+    <div *ngIf="matriz.periodo_abierto === 0"><span>Cerrado</span>
     </div>
     <div>
       <button class="btn btn_primary bg-primary btn-sm btn-plan-search"

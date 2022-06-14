@@ -60,14 +60,17 @@ export class RiesgosComponent implements OnInit {
 
   //almacena los recursos llamados por id_riesgo
   recursosObtenidos: any = [];
+  controlesInternosPlanObtenidos: any = [];
 
 
   //muestran los campos al momento de darle en nuevo en el modal de controles y recursos
   showInputsModalController: boolean = false;
+  showInputsModalControlInternoPlan: boolean = false
   showInputsModalRecursos: boolean = false;
   showInputsModalInterno: boolean = false;
   tableModalController: boolean = false;
   tableModalRecursos: boolean = false;
+  tableModalControlesInternosPlan: boolean = false;
   tableModalInterno: boolean = false;
 
   //desbloquea el select de control mitigador
@@ -99,7 +102,9 @@ export class RiesgosComponent implements OnInit {
   controlesMemory: any = [];
   controlesMemoryDelete: any = [];
   recursosMemory: any = [];
+  controlInternoPlanMemory: any = [];
   recursosMemoryDelete: any = [];
+  controlInternoPlanMemoryDelete: any = [];
   internosMemory: any = [];
   internosMemoryDelete: any = [];
   countIndice: any = 0;
@@ -146,12 +151,18 @@ export class RiesgosComponent implements OnInit {
     descripcion: new FormControl('', Validators.required),
     usuario_registro: new FormControl(''),
   })
+  formUpdateControlesInternosPlan = new FormGroup({
+    descripcion: new FormControl('', Validators.required),
+    usuario_registro: new FormControl(''),
+  })
 
   medidaRiesgoInput: any = '';
   riesgoEncontrado: any = {};
   validarExistenciaPlan: any = {};
   usuario: any = {};
-  matrizObtenida: any;
+  matrizObtenida: any = {
+    periodo_abierto: 1
+  };
 
   constructor(
     private riesgoService: RiesgosService,
@@ -171,25 +182,22 @@ export class RiesgosComponent implements OnInit {
     this.route.paramMap.subscribe(param => {
       this.id_matriz = param.get('id_matriz');
       this.linkMatrizPeriodos = `/admin/ingreso-riesgos/${this.id_matriz}`
-
       this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe((result: any) => {
         this.matrizObtenida = result[0]
-        console.log(this.matrizObtenida)
+        this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
+          this.riesgos = riesgos;
+          this.showBtnOffset = true;
+        }, err => {
+          Swal.fire({
+            icon: 'warning',
+            text: '¡No existen registros para mostrar!'
+          })
+          this.showTablePlanesTrabajo = false
+          this.showBtnOffset = false;
+        })
       })
-
     })
 
-    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-      this.riesgos = riesgos;
-      this.showBtnOffset = true;
-    }, err => {
-      Swal.fire({
-        icon: 'warning',
-        text: '¡No existen registros para mostrar!'
-      })
-      this.showTablePlanesTrabajo = false
-      this.showBtnOffset = false;
-    })
 
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getTipoObjetivo().subscribe(obj => this.tipoObjetivos = obj);
@@ -200,6 +208,8 @@ export class RiesgosComponent implements OnInit {
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.catalogsService.getPuestoResponsable().subscribe(puestos => this.puestos = puestos);
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
+
+
 
 
     // ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
@@ -690,6 +700,9 @@ export class RiesgosComponent implements OnInit {
       this.controlesMemoryDelete.map((id_control: any) => {
         this.planService.deleteControlImplementacion(id_control).subscribe((value) => { })
       })
+
+
+
       this.recursosMemory.map((recurso: any) => {
         const newRecurso = {
           ...recurso,
@@ -709,6 +722,30 @@ export class RiesgosComponent implements OnInit {
       this.recursosMemoryDelete.map((id_recurso: any) => {
         this.planService.deleteRecursos(id_recurso).subscribe((value) => { })
       })
+
+
+      this.controlInternoPlanMemory.map((controle: any) => {
+        const newControlesInternosPlan = {
+          ...controle,
+          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
+          usuario_registro: this.usuario.id_usuario
+        }
+        this.planService.createControlInternoPlan(newControlesInternosPlan).subscribe((value) => {
+          this.planService.getControlInternoPlanByIdRiesgo(this.id_riesgo_from_table).subscribe(controlObt => {
+            this.controlesInternosPlanObtenidos = controlObt;
+            this.controlInternoPlanMemory = []
+            this.showInputsModalControlInternoPlan = false
+          }, err => {
+            this.showInputsModalControlInternoPlan = false
+          })
+        })
+      })
+      this.controlInternoPlanMemoryDelete.map((id_plan: any) => {
+        this.planService.deleteControlInternoPlan(id_plan).subscribe((value) => { })
+      })
+
+
+
       this.logService.createLog(planObtenido).subscribe((value: any) => { })
       Swal.fire({
         icon: 'success',
@@ -757,6 +794,12 @@ export class RiesgosComponent implements OnInit {
       this.planService.getRecursosByIdRiesgo(id_riesgo).subscribe(recursos => {
         this.recursosObtenidos = recursos
         this.tableModalRecursos = true
+      })
+
+      this.planService.getControlInternoPlanByIdRiesgo(id_riesgo).subscribe(controles => {
+        this.controlesInternosPlanObtenidos = controles
+        this.tableModalControlesInternosPlan = true
+        console.log(this.controlesInternosPlanObtenidos)
       })
     })
 
@@ -827,6 +870,26 @@ export class RiesgosComponent implements OnInit {
     this.recursosObtenidos.splice(indice, 1);
     this.recursosMemoryDelete.push(id_recursos);
   }
+  addControlInternoPlanMemory() {
+    if (this.formUpdateControlesInternosPlan.invalid) {
+      this.utilidades.mostrarError('Debe de llenar los campos obligatorios!')
+    } else {
+      const dataFormControl = this.formUpdateControlesInternosPlan.value;
+      if (dataFormControl.descripcion) {
+        this.controlInternoPlanMemory.push(dataFormControl);
+        this.formUpdateControlesInternosPlan.reset()
+      }
+    }
+  }
+  deleteControlInternoPlanInMemory(descripcion: any) {
+    const indice = this.controlInternoPlanMemory.findIndex((value: any) => value.descripcion == descripcion)
+    this.controlInternoPlanMemory.splice(indice, 1)
+  }
+  deleteControlInternoPlanInMemoryTablaGet(id_plan_control: any) {
+    const indice = this.controlesInternosPlanObtenidos.findIndex((value: any) => value.id_plan_control_interno == id_plan_control);
+    this.controlesInternosPlanObtenidos.splice(indice, 1);
+    this.controlInternoPlanMemoryDelete.push(id_plan_control);
+  }
 
   //muestran los inputs para ingresar nuevos controles y recursos
   mostrarCampos() {
@@ -834,6 +897,9 @@ export class RiesgosComponent implements OnInit {
   }
   mostrarCamposRecursos() {
     this.showInputsModalRecursos = !this.showInputsModalRecursos
+  }
+  mostrarCamposControlesInternosPlan() {
+    this.showInputsModalControlInternoPlan = !this.showInputsModalControlInternoPlan
   }
   mostrarCamposInterno() {
     this.showInputsModalInterno = !this.showInputsModalInterno

@@ -85,6 +85,9 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   descripcionInvalid = false;
   descripcionValid = false;
 
+  descripcionControlesInternosPlanInvalid = false;
+  descripcionControlesInternosPlanValid = false;
+
   formCreatePlanRiesgo = new FormGroup({
     id_prioridad: new FormControl('', Validators.required),
     id_puesto_responsable: new FormControl('', Validators.required),
@@ -104,11 +107,17 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     descripcion: new FormControl('', Validators.required),
     usuario_registro: new FormControl('',),
   })
+  formCreateControlesInternosPlan = new FormGroup({
+    descripcion: new FormControl('', Validators.required),
+    usuario_registro: new FormControl('',),
+  })
 
   controlImplementacionMemory: any = []
   recursosMemory: any = []
   id_riesgo_plan_trabajo: any = 0;
   id_matriz: string | null = null;
+  controlInternoPlanMemory: any = [];
+  showTableControlInternoPlan: any = false;
 
   constructor(
     private planRiesgoService: PlanRiesgosService,
@@ -214,6 +223,13 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         this.descripcionInvalid = false
       }
     })
+
+    this.formCreateControlesInternosPlan.get('descripcion')?.valueChanges.subscribe((value: any) => {
+      if (this.descripcionControlesInternosPlanInvalid && this.controlInternoPlanMemory.length > 0) {
+        this.descripcionControlesInternosPlanValid = true
+        this.descripcionControlesInternosPlanInvalid = false
+      }
+    })
   }
 
   createNewPlanRiesgo() {
@@ -226,25 +242,52 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     }
     this.planRiesgoService.createPlanRiesgo(newRiesgoPlan).subscribe((value) => {
       this.id_riesgo_plan_trabajo = value;
+
+
+
+
+
       this.recursosMemory.map((recursosObt: any) => {
-        // const indice = this.recursosMemory.indexOf(recursosObt);
         const recursos = {
           ...recursosObt,
           id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
           usuario_registro: this.usuario.id_usuario,
-          // descripcion: ((indice + 1) + '. ') + recursosObt.descripcion
         }
         this.planRiesgoService.createRecurso(recursos).subscribe(value => {
         })
       })
+
+
+      this.controlInternoPlanMemory.map((controlesObt: any) => {
+        const controlesInternosPlan = {
+          ...controlesObt,
+          id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
+          usuario_registro: this.usuario.id_usuario,
+        }
+        this.planRiesgoService.createControlInternoPlan(controlesInternosPlan).subscribe(value => {
+        })
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       this.controlImplementacionMemory.map((controlObt: any) => {
-        // const indice = this.controlImplementacionMemory.indexOf(controlObt);
         const newControlesImp = {
           ...controlObt,
-          // que: ((indice + 1) + '. ') + controlObt.que,
-          // como: ((indice + 1) + '. ') + controlObt.como,
-          // quien: ((indice + 1) + '. ') + controlObt.quien,
-          // cuando: ((indice + 1) + '. ') + controlObt.cuando,
           id_riesgo_plan_trabajo: this.id_riesgo_plan_trabajo,
           usuario_registro: this.usuario.id_usuario
         }
@@ -289,8 +332,12 @@ export class IngresoPlanTrabajoComponent implements OnInit {
       this.descripcionInvalid = true
     }
 
+    if (this.controlInternoPlanMemory.length < 1) {
+      this.descripcionControlesInternosPlanInvalid = true
+    }
 
-    if (this.controlImplementacionMemory.length < 1 || this.recursosMemory.length < 1 || this.formCreatePlanRiesgo.invalid) {
+
+    if (this.controlImplementacionMemory.length < 1 || this.recursosMemory.length < 1 || this.controlInternoPlanMemory.length < 1 || this.formCreatePlanRiesgo.invalid) {
       this.utilidades.mostrarError("Por favor llene los campos obligatorios")
     } else {
       // this.nextPagePlan = true
@@ -323,5 +370,16 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   deleteRecursoFromMemory(descripcion: any) {
     const id = this.recursosMemory.findIndex((recurso: any) => recurso.descripcion === descripcion)
     this.recursosMemory.splice(id, 1)
+  }
+
+  createNewControlInternoPlanToMemory() {
+    this.controlInternoPlanMemory.push(this.formCreateControlesInternosPlan.value)
+    this.formCreateControlesInternosPlan.get('descripcion')?.reset();
+    this.showTableControlInternoPlan = true
+  }
+
+  deleteControlInternoPlanFromMemory(descripcion: any) {
+    const id = this.controlInternoPlanMemory.findIndex((control: any) => control.descripcion === descripcion)
+    this.controlInternoPlanMemory.splice(id, 1)
   }
 }

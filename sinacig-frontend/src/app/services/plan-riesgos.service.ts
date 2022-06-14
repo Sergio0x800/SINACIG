@@ -23,6 +23,10 @@ export class PlanRiesgosService {
     return this.http.post<any>(`${this.apiUrl}/recursos`, data);
   }
 
+  createControlInternoPlan(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/controlInternoPlan`, data);
+  }
+
   createControlImplementacion(data: any) {
     return this.http.post<any>(`${this.apiUrl}/implementacion`, data);
   }
@@ -43,6 +47,10 @@ export class PlanRiesgosService {
     return this.http.get<any>(`${this.apiUrl}/recursos/riesgos/${id_riesgo}`);
   }
 
+  getControlInternoPlanByIdRiesgo(id_riesgo: any) {
+    return this.http.get<any>(`${this.apiUrl}/controlInternoPlan/riesgos/${id_riesgo}`);
+  }
+
   getControlInterno(id_plan: any) {
     return this.http.get<any>(`${this.apiUrl}/riesgo_control_interno/${id_plan}`);
   }
@@ -61,6 +69,9 @@ export class PlanRiesgosService {
   deleteRecursos(id_plan: any) {
     return this.http.patch<any>(`${this.apiUrl}/recursos/${id_plan}`, { estado_registro: 0 });
   }
+  deleteControlInternoPlan(id_plan: any) {
+    return this.http.patch<any>(`${this.apiUrl}/controlInternoPlan/${id_plan}`, { estado_registro: 0 });
+  }
   deleteControlInterno(id_plan: any) {
     return this.http.patch<any>(`${this.apiUrl}/riesgo_control_interno/${id_plan}`, { estado_registro: 0 });
   }
@@ -73,6 +84,9 @@ export class PlanRiesgosService {
     return this.http.get<any>(`${this.apiUrl}/riesgo_plan_trabajo/update/${id_plan}`);
   }
 
+  updateEstadoPlanByIdRiesgo(id_riesgo: any, data: any) {
+    return this.http.patch<any>(`${this.apiUrl}/estadoPlanByRiesgo/${id_riesgo}`, data);
+  }
   updatePlan(id_plan: any, data: any) {
     return this.http.patch<any>(`${this.apiUrl}/riesgo_plan_trabajo/${id_plan}`, data);
   }

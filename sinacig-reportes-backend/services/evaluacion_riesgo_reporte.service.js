@@ -18,26 +18,6 @@ class EvaluacionRiesgoReporteService {
                 @fecha_fin = '${fechaFin}'
             `
       );
-      // .then((riesgos) => {
-      //   return new Promise(function (resolve, reject) {
-      //     let riesgosControles = riesgos[0].map((riesgo) => {
-      //       return new Promise(function (resolve, reject) {
-      //         const dataControl = await models.ControlInterno.findAll({
-      //           where: {
-      //             estado_registro: 1,
-      //             id_riesgo: riesgo.id_riesgo,
-      //           },
-      //         });
-      //         let nuevoRiesgo = {
-      //           ...riesgo,
-      //           controles: dataControl,
-      //         };
-      //         resolve(nuevoRiesgo);
-      //       });
-      //     });
-      //     resolve(riesgosControles[0]);
-      //   });
-      // });
 
       return dataReporte;
     } catch (error) {

@@ -84,6 +84,19 @@ class RiesgoPlanTrabajoService {
     }
   }
 
+  async deletePlanTrabajoByIdRiesgo(id_riesgo, changes) {
+    try {
+      const planTrabajo = await models.PlanTrabajo.update(changes, {
+        where: {
+          id_riesgo: id_riesgo,
+        },
+      });
+      return planTrabajo;
+    } catch (error) {
+      throw boom.internal('Error al actualizar el registro');
+    }
+  }
+
   // async RiesgoPlanTrabajo(unidad, fechaI, fechaF) {
   //   const dataRiesgosEncontrados = await sequelize.query(
   //     `EXEC sp_get_riesgos_by_fecha

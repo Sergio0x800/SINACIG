@@ -43,6 +43,10 @@ const {
   ControlInternoSchema,
 } = require('./riesgo_control_interno.model');
 const { Recursos, RecursosSchema } = require('./recurso.model');
+const {
+  ControlInternoPlan,
+  ControlInternoPlanSchema,
+} = require('./plan_control_interno.model');
 
 const {
   ControlImplementacion,
@@ -74,6 +78,10 @@ function setupModels(sequelize) {
   );
   ControlInterno.init(ControlInternoSchema, ControlInterno.config(sequelize));
   Recursos.init(RecursosSchema, Recursos.config(sequelize));
+  ControlInternoPlan.init(
+    ControlInternoPlanSchema,
+    ControlInternoPlan.config(sequelize)
+  );
   ControlImplementacion.init(
     ControlImplementacionSchema,
     ControlImplementacion.config(sequelize)

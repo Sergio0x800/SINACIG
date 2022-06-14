@@ -168,7 +168,9 @@ export class MatrizPeriodosComponent implements OnInit {
             icon: 'success',
             text: '¡El registro se eliminó correctamente!'
           });
-          this.riesgoService.deleteRiesgoByIdMatriz(value[0]).subscribe((value: any) => { })
+          this.riesgoService.deleteRiesgoByIdMatriz(value[0]).subscribe((value: any) => {
+            console.log(value)
+          })
           this.showTablePeriodos = false
         }, err => {
           Swal.fire({
@@ -181,49 +183,71 @@ export class MatrizPeriodosComponent implements OnInit {
   }
 
   cerrarPeriodo(id_matriz: any) {
-    Swal.fire({
-      title: '¿Estás seguro de cerrar este periodo?',
-      text: "¡No podrás revertir este cambio y ya no podras realizar ninguna acción que no sea visualizar los registros!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, ¡cerrar periodo!',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.matrizService.updateMatriz(id_matriz).subscribe(() => {
-          Swal.fire({
-            icon: 'success',
-            text: '¡El periodo se ha cerrado correctamente!'
-          });
-
-          this.riesgoService.getRiesgoByIdMatrizRef(id_matriz).subscribe((value: any) => {
-            let contadorE = 1;
-            value.map((riesgo: any) => {
-              if (riesgo.codigo_referencia === 'E-') {
-                this.riesgoService.updateRiesgo(riesgo.id_riesgo, {codigo_referencia: `E-${contadorE}`})
-                contadorE++
-              }
-            })
-          })
-          this.usuarioService.obtenerUsuario().subscribe((result: any) => {
-            this.usuario = result
-            if (this.usuario.id_rol == 1) {
-              this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
-            } else {
-              this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
-                this.unidadesEjecutoras = unidades
+    if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
+      Swal.fire({
+        title: 'Esta seguro de cerrar este periodo?',
+        text: "¡No podra revertir ni realizar alguna acción que no sea visualizar los registros!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, ¡cerrar periodo!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.matrizService.updateMatriz(id_matriz).subscribe(() => {
+            Swal.fire({
+              icon: 'success',
+              text: '¡El periodo se ha cerrado correctamente!'
+            });
+            let contadorE = 0
+            let contadorO = 0
+            let contadorCN = 0
+            let contadorI = 0
+            this.riesgoService.getRiesgoByIdMatrizRef(id_matriz).subscribe((value: any) => {
+              value.forEach((riesgo: any) => {
+                if (riesgo.codigo_referencia === 'E-') {
+                  contadorE++
+                  this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `E-${contadorE}` }).subscribe((value: any) => { })
+                } else if (riesgo.codigo_referencia === 'O-') {
+                  contadorO++
+                  this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `O-${contadorO}` }).subscribe((value: any) => { })
+                } else if (riesgo.codigo_referencia === 'CN-') {
+                  contadorCN++
+                  this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `CN-${contadorCN}` }).subscribe((value: any) => { })
+                } else if (riesgo.codigo_referencia === 'I-') {
+                  contadorI++
+                  this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `I-${contadorI}` }).subscribe((value: any) => { })
+                }
               })
+            })
+
+            const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
+            const dataSearch = {
+              ...this.formSearchCreateMatrizPeriodo.value,
+              fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
+              fecha_periodo_fin: periodoSeleccionado.fecha_fin
             }
-          })
-        }, err => {
-          Swal.fire({
-            icon: 'error',
-            text: '¡No se pudo cerrar el registro, ha ocurrido un error!'
-          })
-        });
-      }
-    })
+            this.matrizService.getMatrizByParams(dataSearch)
+              .subscribe(matriz => {
+                this.showTablePeriodos = true;
+                this.matrizPeriodosEncontrados = matriz;
+              })
+          }, err => {
+            Swal.fire({
+              icon: 'error',
+              text: '¡No se pudo cerrar el registro, ha ocurrido un error!'
+            })
+          });
+        }
+      })
+    } else {
+      Swal.fire({
+        text: 'El periodo ya se encuentra cerrado',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
+      })
+    }
   }
 }
