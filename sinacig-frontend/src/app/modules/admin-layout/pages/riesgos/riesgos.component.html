@@ -14,7 +14,7 @@
   <div *ngIf="showTablePlanesTrabajo" class="table-matriz mt-5">
     <div class="table-header-matriz">
       <div class="header-title">Opciones</div>
-      <div class="header-title">Fecha de registro</div>
+      <!-- <div class="header-title">Fecha de registro</div> -->
       <div class="header-title">Descripción</div>
       <div class="header-title">R.I</div>
       <div class="header-title">R.R</div>
@@ -33,9 +33,9 @@
           </ng-template>
         </button>
       </div>
-      <div>
+      <!-- <div>
         <span class="riesgo-descripcion-style">{{riesgo.fecha_registro | date: 'dd/MM/yyyy'}}</span>
-      </div>
+      </div> -->
       <div><span class="riesgo-descripcion-style">{{riesgo.descripcion_riesgo}}</span>
       </div>
       <div><span class="riesgo-descripcion-style">{{riesgo.riesgo_inherente}}</span>

@@ -1,5 +1,6 @@
 const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
+const boom = require('@hapi/boom');
 
 class EvaluacionRiesgoReporteService {
   constructor() {}
@@ -18,7 +19,6 @@ class EvaluacionRiesgoReporteService {
                 @fecha_fin = '${fechaFin}'
             `
       );
-
       return dataReporte;
     } catch (error) {
       throw `${error}`;

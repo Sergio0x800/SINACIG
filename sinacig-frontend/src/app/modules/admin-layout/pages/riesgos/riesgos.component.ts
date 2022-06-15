@@ -812,7 +812,6 @@ export class RiesgosComponent implements OnInit {
       this.planService.getControlInternoPlanByIdRiesgo(id_riesgo).subscribe(controles => {
         this.controlesInternosPlanObtenidos = controles
         this.tableModalControlesInternosPlan = true
-        console.log(this.controlesInternosPlanObtenidos)
       })
     })
 

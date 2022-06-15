@@ -70,14 +70,34 @@ router.get(
 //   }
 // );
 
+router.get(
+  '/periodoAbierto',
+  // passport.authenticate('jwt', { session: false }),
+  // checkRoles(1, 2),
+  async (req, res, next) => {
+    try {
+      const queryBody = req.query;
+      // const body = req.query;
+      const result = await matrizService.findMatrizPeriodoAbierto(queryBody);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.patch(
-  '/update',
+  '/update/:id_matriz',
   passport.authenticate('jwt', { session: false }),
   checkRoles(1, 2),
   async (req, res, next) => {
     try {
-      const body = req.body;
-      const updatedMatriz = await matrizService.updateMatrizPeriodo(body);
+      const { id_matriz } = req.params;
+      const dataMatriz = req.body;
+      const updatedMatriz = await matrizService.updateMatrizPeriodo(
+        id_matriz,
+        dataMatriz
+      );
       res.json(updatedMatriz);
     } catch (error) {
       next(error);

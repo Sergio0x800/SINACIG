@@ -46,31 +46,25 @@ export class PeriodosComponent implements OnInit {
 
 
   cerrarPeriodo(id_periodo: any, fecha_inicio: any, fecha_fin: any) {
-    if (true) {
-      Swal.fire({
-        title: '¿Está seguro de cerrar este periodo?',
-        text: "¡No podrá revertir esta acción y los registros actuales solo podrán visualizarse!",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, ¡cerrar periodo!',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.catalogsService.cerrarPeriodo(id_periodo).subscribe((value: any) => {
-            const dataFindMatriz = {
-              ...value,
-              fecha_inicio: fecha_inicio,
-              fecha_fin: fecha_fin
-            }
-            this.matrizService.updateMatriz(dataFindMatriz).subscribe((value: any) => {
-              Swal.fire({
-                icon: 'success',
-                text: '¡El periodo se ha cerrado correctamente!',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Aceptar'
-              });
+    const dataFindMatriz = {
+      fecha_inicio: fecha_inicio,
+      fecha_fin: fecha_fin
+    }
+    this.matrizService.findMatrizPeriodoAbierto(dataFindMatriz).subscribe((value: any) => {
+      console.log(value)
+      if (value < 1) {
+        Swal.fire({
+          title: '¿Está seguro de cerrar este periodo?',
+          text: "¡No podrá revertir esta acción y los registros actuales solo podrán visualizarse!",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, ¡cerrar periodo!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.catalogsService.cerrarPeriodo(id_periodo).subscribe((value: any) => {
               let contadorE = 0
               let contadorO = 0
               let contadorCN = 0
@@ -96,12 +90,25 @@ export class PeriodosComponent implements OnInit {
                   this.periodos = periodos
                   this.periodosTabla = periodos
                 })
+                Swal.fire({
+                  icon: 'success',
+                  text: '¡El periodo se ha cerrado correctamente!',
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'Aceptar'
+                });
               })
             })
-          })
-        }
-      })
-    }
+          }
+        })
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          text: '¡Aún existen unidades ejecutoras sin validar del periodo seleccionado!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    })
   }
   //   if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
   //     Swal.fire({

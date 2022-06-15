@@ -58,6 +58,7 @@ router.post('/mapa_riesgo', async (req, res, next) => {
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
     ws.addImage({
       path: '/root/sinacig/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      //path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
       type: 'picture',
       position: {
         type: 'absoluteAnchor',
@@ -72,7 +73,7 @@ router.post('/mapa_riesgo', async (req, res, next) => {
       .string('Ministerio de Salud Pública y Asistencia Social-MSPAS-')
       .style(header.tituloPrincipal);
     ws.cell(4, 3, 4, 8, true)
-      .string('Matriz de Evaluación de Riesgos')
+      .string('Mapa de Riesgos')
       .style(header.tituloSecundario);
 
     //Datos unidad ejecutora y periodo evaluación
@@ -125,100 +126,101 @@ router.post('/mapa_riesgo', async (req, res, next) => {
     ws.cell(22, 6).number(3);
     ws.cell(22, 7).number(4);
     ws.cell(22, 8).number(5);
-
-    // Le damos color a la tabla de mapa de riesgo
-    let fila = 21;
-    //variable i es la probabilidad, variable j es la severidad
-    for (let i = 0; i < 5; i++) {
-      let columna = 4;
-      for (let j = 0; j < 5; j++) {
-        if (i == 0 && j == 2) {
-          datosVerde(1, 3, fila, columna);
-        } else if (i == 1 && j == 2) {
-          datosVerde(2, 3, fila, columna);
-        } else if (i == 2 && j == 3) {
-          datosAmarillo(3, 4, fila, columna);
-        } else if (i == 2 && j == 4) {
-          datosAmarillo(3, 5, fila, columna);
-        } else if (i == 0 && j == 3) {
-          datosVerde(1, 4, fila, columna);
-        } else if (i == 0 && j == 4) {
-          datosVerde(1, 5, fila, columna);
-        } else if (i == 1 && j == 3) {
-          datosVerde(2, 4, fila, columna);
-        } else if (i == 1 && j == 4) {
-          datosVerde(2, 5, fila, columna);
-        } else if (i == 0 && j == 0) {
-          datosVerde(1, 1, fila, columna);
-        } else if (i == 0 && j == 1) {
-          datosVerde(1, 2, fila, columna);
-        } else if (i == 1 && j == 0) {
-          datosVerde(2, 1, fila, columna);
-        } else if (i == 1 && j == 1) {
-          datosVerde(2, 2, fila, columna);
-        } else if (i == 2 && j == 0) {
-          datosVerde(3, 1, fila, columna);
-        } else if (i == 2 && j == 1) {
-          datosVerde(3, 2, fila, columna);
-        } else if (i == 2 && j == 2) {
-          datosVerde(3, 3, fila, columna);
-        } else if (i == 3 && j == 0) {
-          datosVerde(4, 1, fila, columna);
-        } else if (i == 3 && j == 1) {
-          datosVerde(4, 2, fila, columna);
-        } else if (i == 3 && j == 2) {
-          datosAmarillo(4, 3, fila, columna);
-        } else if (i == 3 && j == 3) {
-          datosRojo(4, 4, fila, columna);
-        } else if (i == 3 && j == 4) {
-          datosRojo(4, 5, fila, columna);
-        } else if (i == 4 && j == 0) {
-          datosVerde(5, 1, fila, columna);
-        } else if (i == 4 && j == 1) {
-          datosVerde(5, 2, fila, columna);
-        } else if (i == 4 && j == 2) {
-          datosAmarillo(5, 3, fila, columna);
-        } else if (i == 4 && j == 3) {
-          datosRojo(5, 4, fila, columna);
-        } else if (i == 4 && j == 4) {
-          datosRojo(5, 5, fila, columna);
+    if (dataReporte.length > 0) {
+      // Le damos color a la tabla de mapa de riesgo
+      let fila = 21;
+      //variable i es la probabilidad, variable j es la severidad
+      for (let i = 0; i < 5; i++) {
+        let columna = 4;
+        for (let j = 0; j < 5; j++) {
+          if (i == 0 && j == 2) {
+            datosVerde(1, 3, fila, columna);
+          } else if (i == 1 && j == 2) {
+            datosVerde(2, 3, fila, columna);
+          } else if (i == 2 && j == 3) {
+            datosAmarillo(3, 4, fila, columna);
+          } else if (i == 2 && j == 4) {
+            datosAmarillo(3, 5, fila, columna);
+          } else if (i == 0 && j == 3) {
+            datosVerde(1, 4, fila, columna);
+          } else if (i == 0 && j == 4) {
+            datosVerde(1, 5, fila, columna);
+          } else if (i == 1 && j == 3) {
+            datosVerde(2, 4, fila, columna);
+          } else if (i == 1 && j == 4) {
+            datosVerde(2, 5, fila, columna);
+          } else if (i == 0 && j == 0) {
+            datosVerde(1, 1, fila, columna);
+          } else if (i == 0 && j == 1) {
+            datosVerde(1, 2, fila, columna);
+          } else if (i == 1 && j == 0) {
+            datosVerde(2, 1, fila, columna);
+          } else if (i == 1 && j == 1) {
+            datosVerde(2, 2, fila, columna);
+          } else if (i == 2 && j == 0) {
+            datosVerde(3, 1, fila, columna);
+          } else if (i == 2 && j == 1) {
+            datosVerde(3, 2, fila, columna);
+          } else if (i == 2 && j == 2) {
+            datosVerde(3, 3, fila, columna);
+          } else if (i == 3 && j == 0) {
+            datosVerde(4, 1, fila, columna);
+          } else if (i == 3 && j == 1) {
+            datosVerde(4, 2, fila, columna);
+          } else if (i == 3 && j == 2) {
+            datosAmarillo(4, 3, fila, columna);
+          } else if (i == 3 && j == 3) {
+            datosRojo(4, 4, fila, columna);
+          } else if (i == 3 && j == 4) {
+            datosRojo(4, 5, fila, columna);
+          } else if (i == 4 && j == 0) {
+            datosVerde(5, 1, fila, columna);
+          } else if (i == 4 && j == 1) {
+            datosVerde(5, 2, fila, columna);
+          } else if (i == 4 && j == 2) {
+            datosAmarillo(5, 3, fila, columna);
+          } else if (i == 4 && j == 3) {
+            datosRojo(5, 4, fila, columna);
+          } else if (i == 4 && j == 4) {
+            datosRojo(5, 5, fila, columna);
+          }
+          columna++;
         }
-        columna++;
+        fila--;
       }
-      fila--;
-    }
 
-    ws.cell(24, 4, 24, 8, true)
-      .string('Severidad')
-      .style(estilosReportes.encabezadoTabla);
+      ws.cell(24, 4, 24, 8, true)
+        .string('Severidad')
+        .style(estilosReportes.encabezadoTabla);
 
-    ws.cell(26, 4).string('No.').style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 5).string('Riesgos').style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 6)
-      .string('Probabilidad')
-      .style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 7).string('Severidad').style(estilosReportes.encabezadoTabla);
-    ws.cell(26, 8).string('Punteo').style(estilosReportes.encabezadoTabla);
-
-    let rowIndex = 27;
-    let colNum = 0;
-    dataReporte.forEach((item) => {
-      let columnIndex = 5;
-      colNum++;
-      Object.keys(item).forEach((colName) => {
-        ws.cell(rowIndex, 4)
-          .string(colNum.toString())
-          .style(tableBody.tableBodyText1);
-        ws.cell(rowIndex, columnIndex++)
-          .string(item[colName].toString())
-          .style(tableBody.tableBodyText1);
+      ws.cell(26, 4).string('No.').style(estilosReportes.encabezadoTabla);
+      ws.cell(26, 5).string('Riesgos').style(estilosReportes.encabezadoTabla);
+      ws.cell(26, 6)
+        .string('Probabilidad')
+        .style(estilosReportes.encabezadoTabla);
+      ws.cell(26, 7).string('Severidad').style(estilosReportes.encabezadoTabla);
+      ws.cell(26, 8).string('Punteo').style(estilosReportes.encabezadoTabla);
+      let rowIndex = 27;
+      let colNum = 0;
+      dataReporte.forEach((item) => {
+        let columnIndex = 5;
+        colNum++;
+        Object.keys(item).forEach((colName) => {
+          ws.cell(rowIndex, 4)
+            .string(colNum.toString())
+            .style(tableBody.tableBodyText1);
+          ws.cell(rowIndex, columnIndex++)
+            .string(item[colName].toString())
+            .style(tableBody.tableBodyText1);
+        });
+        rowIndex++;
       });
-      rowIndex++;
-    });
-
-    wb.write('Mapa_de_riesgo.xlsx', res);
+      wb.write('Mapa_de_riesgo.xlsx', res);
+    } else {
+      wb.write('Mapa_de_riesgo.xlsx', res);
+    }
   } catch (error) {
-    console.log(error.message);
+    console.log('error2::', error.message);
     next(error);
   }
 

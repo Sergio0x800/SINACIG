@@ -40,7 +40,12 @@ export class MapaRiesgoComponent implements OnInit {
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuario = result
       if (this.usuario.id_rol == 1) {
-        this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
+        this.catalogsService.getUnidadEjecutora().subscribe(unidades => {
+          let todas = []
+          todas = unidades.filter((unidad: any) => unidad.codigo_unidad == 999)
+          this.unidadesEjecutoras = unidades.filter((unidad: any) => unidad.codigo_unidad < 999)
+          this.unidadesEjecutoras.unshift(todas[0])
+        });
       } else {
         this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
           this.unidadesEjecutoras = unidades

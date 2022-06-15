@@ -39,7 +39,11 @@ export class MatrizService {
     return this.http.get<any>(`${this.apiUrl}/update/${id_matriz}`);
   }
 
-  updateMatriz(data: any) {
-    return this.http.patch<any>(`${this.apiUrl}/update`, data);
+  updateMatriz(id_matriz: any, estado: any) {
+    return this.http.patch<any>(`${this.apiUrl}/update/${id_matriz}`, { periodo_abierto: estado });
+  }
+
+  findMatrizPeriodoAbierto(data: any) {
+    return this.http.get<any>(`${this.apiUrl}/periodoAbierto`, { params: data });
   }
 }
