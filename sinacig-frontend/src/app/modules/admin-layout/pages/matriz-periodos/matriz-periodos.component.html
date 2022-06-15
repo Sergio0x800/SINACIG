@@ -50,7 +50,7 @@
   </div>
   <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
     <div>
-      <button *ngIf="usuario.id_rol === 1" class="btn btn-sm btn-danger"
+      <button *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1" class="btn btn-sm btn-danger"
         (click)="deletePeriodoMatriz(matriz.id_matriz)">
         <i class="fas fa-trash"></i>
       </button>
