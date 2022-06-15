@@ -44,7 +44,7 @@ class PlanTrabajoReporteService {
       const dataReporte = await sequelize.query(`
                 EXEC sp_get_plan_controles_internos
                 @Id_riesgo_plan_trabajo = ${id_plan}`);
-      return dataReporte;
+      return dataReporte[0];
     } catch (error) {
       throw `${error}`;
     }

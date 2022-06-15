@@ -8,9 +8,7 @@ const moment = require('moment');
 
 const {
   header,
-  table,
   tableBody,
-  tableFooter,
 } = require('../utils/reports/styles-reportes-excel/style_report_evaluacion_riesgo');
 const catalogosServiceI = new CatalogosService();
 const mapaRiesgoService = new MapaRiesgo();
@@ -59,7 +57,7 @@ router.post('/mapa_riesgo', async (req, res, next) => {
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
     ws.addImage({
-      path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      path: '/root/sinacig/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
       type: 'picture',
       position: {
         type: 'absoluteAnchor',
@@ -81,9 +79,14 @@ router.post('/mapa_riesgo', async (req, res, next) => {
     ws.cell(7, 1, 7, 3, true)
       .string('Unidad Ejecutora No.')
       .style(header.tituloInfoUnidad);
-    ws.cell(7, 4, 7, 6, true)
-      .string(`${unidadEjecutoraData.codigo_unidad}`)
-      .style(header.text);
+
+    if (unidadEjecutoraData.codigo_unidad == 999) {
+      ws.cell(7, 4, 7, 6, true).string(`TODAS`).style(header.text);
+    } else {
+      ws.cell(7, 4, 7, 6, true)
+        .string(`${unidadEjecutoraData.codigo_unidad}`)
+        .style(header.text);
+    }
     ws.cell(8, 1, 8, 3, true)
       .string('Nombre de la Unidad Ejecutora:')
       .style(header.tituloInfoUnidad);
@@ -124,27 +127,27 @@ router.post('/mapa_riesgo', async (req, res, next) => {
     ws.cell(22, 8).number(5);
 
     // Le damos color a la tabla de mapa de riesgo
-    let fila = 17;
+    let fila = 21;
     //variable i es la probabilidad, variable j es la severidad
     for (let i = 0; i < 5; i++) {
       let columna = 4;
       for (let j = 0; j < 5; j++) {
         if (i == 0 && j == 2) {
-          datosAmarillo(1, 3, fila, columna);
+          datosVerde(1, 3, fila, columna);
         } else if (i == 1 && j == 2) {
-          datosAmarillo(2, 3, fila, columna);
+          datosVerde(2, 3, fila, columna);
         } else if (i == 2 && j == 3) {
           datosAmarillo(3, 4, fila, columna);
         } else if (i == 2 && j == 4) {
           datosAmarillo(3, 5, fila, columna);
         } else if (i == 0 && j == 3) {
-          datosRojo(1, 4, fila, columna);
+          datosVerde(1, 4, fila, columna);
         } else if (i == 0 && j == 4) {
-          datosRojo(1, 5, fila, columna);
+          datosVerde(1, 5, fila, columna);
         } else if (i == 1 && j == 3) {
-          datosRojo(2, 4, fila, columna);
+          datosVerde(2, 4, fila, columna);
         } else if (i == 1 && j == 4) {
-          datosRojo(2, 5, fila, columna);
+          datosVerde(2, 5, fila, columna);
         } else if (i == 0 && j == 0) {
           datosVerde(1, 1, fila, columna);
         } else if (i == 0 && j == 1) {
@@ -164,25 +167,25 @@ router.post('/mapa_riesgo', async (req, res, next) => {
         } else if (i == 3 && j == 1) {
           datosVerde(4, 2, fila, columna);
         } else if (i == 3 && j == 2) {
-          datosVerde(4, 3, fila, columna);
+          datosAmarillo(4, 3, fila, columna);
         } else if (i == 3 && j == 3) {
-          datosVerde(4, 4, fila, columna);
+          datosRojo(4, 4, fila, columna);
         } else if (i == 3 && j == 4) {
-          datosVerde(4, 5, fila, columna);
+          datosRojo(4, 5, fila, columna);
         } else if (i == 4 && j == 0) {
           datosVerde(5, 1, fila, columna);
         } else if (i == 4 && j == 1) {
           datosVerde(5, 2, fila, columna);
         } else if (i == 4 && j == 2) {
-          datosVerde(5, 3, fila, columna);
+          datosAmarillo(5, 3, fila, columna);
         } else if (i == 4 && j == 3) {
-          datosVerde(5, 4, fila, columna);
+          datosRojo(5, 4, fila, columna);
         } else if (i == 4 && j == 4) {
-          datosVerde(5, 5, fila, columna);
+          datosRojo(5, 5, fila, columna);
         }
         columna++;
       }
-      fila++;
+      fila--;
     }
 
     ws.cell(24, 4, 24, 8, true)

@@ -23,6 +23,11 @@ export class CatalogosService {
   getPeriodos() {
     return this.http.get<any>(this.apiUrl + '/periodos');
   }
+
+  cerrarPeriodo(id_periodo: any) {
+    return this.http.patch<any>(`${this.apiUrl}/periodos/${id_periodo}`, { cierre_periodo: 0 });
+  }
+
   getTipoObjetivo() {
     return this.http.get<any>(this.apiUrl + '/tipo_objetivo')
   }

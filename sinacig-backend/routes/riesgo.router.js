@@ -38,10 +38,9 @@ router.get('/update/:id_riesgo', async (req, res, next) => {
   }
 });
 
-router.get('/updateRef/:id_matriz', async (req, res, next) => {
+router.get('/updateRef', async (req, res, next) => {
   try {
-    const { id_matriz } = req.params;
-    const riesgo = await riesgoService.findRiesgoByIdMatrizUpdateRef(id_matriz);
+    const riesgo = await riesgoService.findRiesgoByIdMatrizUpdateRef();
     res.json(riesgo);
   } catch (error) {
     next(error);

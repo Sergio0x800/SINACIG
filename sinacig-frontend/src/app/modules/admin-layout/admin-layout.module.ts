@@ -26,6 +26,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
+import { PeriodosComponent } from './pages/periodos/periodos.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
     IngresoPlanTrabajoComponent,
     LayoutComponent,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    PeriodosComponent
   ],
   imports: [
     AdminLayoutRoutingModule,

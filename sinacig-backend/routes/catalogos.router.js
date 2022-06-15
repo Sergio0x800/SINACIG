@@ -51,6 +51,17 @@ router.get('/periodos', async (req, res, next) => {
   }
 });
 
+router.patch('/periodos/:id_periodo', async (req, res, next) => {
+  const { id_periodo } = req.params;
+  const body = req.body;
+  try {
+    const periodos = await catalogosServiceI.cerrarPeriodo(id_periodo, body);
+    res.json(periodos);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/tipo_objetivo', async (req, res, next) => {
   try {
     const tipoObjetivos = await catalogosServiceI.findTipoObjetivo();

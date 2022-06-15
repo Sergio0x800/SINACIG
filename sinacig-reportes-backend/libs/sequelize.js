@@ -8,7 +8,7 @@ const sequelize = new Sequelize(
   {
     host: config.dbHost,
     dialect: 'mssql',
-    logging: true, // aca se puede cambiar los mensajes por consola de sequelize
+    logging: false, // aca se puede cambiar los mensajes por consola de sequelize
   }
 );
 

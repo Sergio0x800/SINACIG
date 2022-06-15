@@ -86,6 +86,21 @@ class CatalogosService {
     return periodos[0];
   }
 
+  async cerrarPeriodo(id_periodo, changes) {
+    const periodos = await models.Periodos.update(changes, {
+      where: {
+        id_periodo: id_periodo,
+      },
+    });
+
+    const periodo = await models.Periodos.findOne({
+      where: {
+        id_periodo: id_periodo,
+      },
+    });
+    return periodo;
+  }
+
   async findAreaEvaluada() {
     const dataAreaEvaluada = await models.AreaEvaluada.findAll({
       where: {

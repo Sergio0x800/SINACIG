@@ -33,6 +33,10 @@ const PeriodosSchema = {
     allowNull: true,
     type: DataTypes.DATE,
   },
+  cierre_periodo: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+  },
 };
 
 class Periodos extends Model {

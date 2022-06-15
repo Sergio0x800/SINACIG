@@ -44,9 +44,9 @@
   </div>
   <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
     <div>
-      <button *ngIf="usuario.id_rol === 1" class="btn btn-sm btn-warning" (click)="cerrarPeriodo(matriz.id_matriz)">
+      <!-- <button *ngIf="usuario.id_rol === 1" class="btn btn-sm btn-warning" (click)="cerrarPeriodo(matriz.id_matriz)">
         <i class="fa-solid fa-lock"></i>
-      </button>
+      </button> -->
       <button *ngIf="usuario.id_rol === 1" class="btn btn-sm btn-danger"
         (click)="deletePeriodoMatriz(matriz.id_matriz)">
         <i class="fas fa-trash"></i>

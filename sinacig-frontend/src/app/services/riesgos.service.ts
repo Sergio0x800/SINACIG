@@ -25,8 +25,8 @@ export class RiesgosService {
     return this.http.get<any>(`${this.apiUrl}/${id_riesgo}/${offset}`);
   }
 
-  getRiesgoByIdMatrizRef(id_matriz: any) {
-    return this.http.get<any>(`${this.apiUrl}/updateRef/${id_matriz}`);
+  getRiesgoByIdMatrizRef() {
+    return this.http.get<any>(`${this.apiUrl}/updateRef`);
   }
 
   getRiesgoById(id_riesgo: any) {

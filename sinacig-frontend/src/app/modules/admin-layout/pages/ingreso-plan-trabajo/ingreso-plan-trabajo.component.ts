@@ -347,7 +347,14 @@ export class IngresoPlanTrabajoComponent implements OnInit {
 
   createNewControlToMemory() {
     if (this.formCreateControlImplementacion.get('que')?.value || this.formCreateControlImplementacion.get('como')?.value || this.formCreateControlImplementacion.get('quien')?.value || this.formCreateControlImplementacion.get('cuando')?.value) {
-      this.controlImplementacionMemory.push(this.formCreateControlImplementacion.value)
+      const newValue = {
+        ...this.formCreateControlImplementacion.value,
+        que: `- QUÉ: ${this.formCreateControlImplementacion.get('que')?.value}`,
+        como: `- CÓMO: ${this.formCreateControlImplementacion.get('como')?.value}`,
+        quien: `- QUIÉN: ${this.formCreateControlImplementacion.get('quien')?.value}`,
+        cuando: `- CUÁNDO: ${this.formCreateControlImplementacion.get('cuando')?.value}`
+      }
+      this.controlImplementacionMemory.push(newValue)
       this.showTableControlImplementacion = true
       this.formCreateControlImplementacion.get('que')?.reset();
       this.formCreateControlImplementacion.get('como')?.reset();
@@ -362,7 +369,11 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   }
 
   createNewRecursoToMemory() {
-    this.recursosMemory.push(this.formCreateRecursos.value)
+    const newValue = {
+      ...this.formCreateRecursos.value,
+      descripcion: `- ${this.formCreateRecursos.get('descripcion')?.value}`
+    }
+    this.recursosMemory.push(newValue)
     this.formCreateRecursos.get('descripcion')?.reset();
     this.showTableRecursos = true
   }
@@ -373,7 +384,11 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   }
 
   createNewControlInternoPlanToMemory() {
-    this.controlInternoPlanMemory.push(this.formCreateControlesInternosPlan.value)
+    const newValue = {
+      ...this.formCreateControlesInternosPlan.value,
+      descripcion: `- ${this.formCreateControlesInternosPlan.get('descripcion')?.value}`
+    }
+    this.controlInternoPlanMemory.push(newValue)
     this.formCreateControlesInternosPlan.get('descripcion')?.reset();
     this.showTableControlInternoPlan = true
   }

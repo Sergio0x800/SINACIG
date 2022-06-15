@@ -26,17 +26,14 @@ class RiesgoService {
     return dataRiesgosEncontrados[0];
   }
 
-  async findRiesgoByIdMatrizUpdateRef(id_matriz) {
-    const dataRiesgosEncontrados = await models.Riesgo.findAll({
-      where: {
-        estado_registro: 1,
-        id_matriz: id_matriz,
-      },
-    });
+  async findRiesgoByIdMatrizUpdateRef() {
+    const dataRiesgosEncontrados = await sequelize.query(
+      `EXEC sp_get_riesgo_periodoCerrado`
+    );
     if (dataRiesgosEncontrados[0].length === 0) {
       throw boom.notFound('No hay registros');
     }
-    return dataRiesgosEncontrados;
+    return dataRiesgosEncontrados[0];
   }
 
   async findRiesgoById(id_riesgo) {

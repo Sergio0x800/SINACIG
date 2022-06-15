@@ -71,7 +71,7 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
     ws.addImage({
-      path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      path: '/root/sinacig/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
       type: 'picture',
       position: {
         type: 'absoluteAnchor',
@@ -93,9 +93,13 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     ws.cell(7, 1, 7, 3, true)
       .string('Unidad Ejecutora No.')
       .style(header.tituloInfoUnidad);
-    ws.cell(7, 4, 7, 6, true)
-      .string(`${unidadEjecutoraData.codigo_unidad}`)
-      .style(header.text);
+    if (unidadEjecutoraData.codigo_unidad == 999) {
+      ws.cell(7, 4, 7, 6, true).string(`TODAS`).style(header.text);
+    } else {
+      ws.cell(7, 4, 7, 6, true)
+        .string(`${unidadEjecutoraData.codigo_unidad}`)
+        .style(header.text);
+    }
     ws.cell(8, 1, 8, 3, true)
       .string('Nombre de la Unidad Ejecutora:')
       .style(header.tituloInfoUnidad);
@@ -137,10 +141,6 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     ws.cell(filaEncabezado, 2)
       .string('Código Unidad Ejecutora')
       .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 2)
-    //   .string('Nombre Unidad Ejecutora')
-    //   .style(estilosReportes.encabezadoTabla)
-    //   .style(estilosReportes.backgroundGris);
     ws.cell(filaEncabezado, 3)
       .string('Riesgo')
       .style(table.tableHeaderEvaluacion);
@@ -153,10 +153,6 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     ws.cell(filaEncabezado, 6)
       .string('Controles Recomendados')
       .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 6)
-    //   .string('Medida Riesgo')
-    //   .style(estilosReportes.encabezadoTabla)
-    //   .style(estilosReportes.backgroundGris);
     ws.cell(filaEncabezado, 7)
       .string('Perioridad de Implementación')
       .style(table.tableHeaderEvaluacion);
@@ -195,7 +191,6 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
         let rowIndex = 18;
         let colNum = 0;
         resultado[0].forEach((item) => {
-          console.log(item.id_planRecursos);
           reporteService
             .dataRecursos(item.id_planRecursos)
             .then((resultRecursos) => {

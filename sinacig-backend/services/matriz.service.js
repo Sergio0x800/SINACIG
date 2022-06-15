@@ -68,22 +68,22 @@ class MatrizService {
     }
   }
 
-  async updateMatrizPeriodo(id_matriz, changes) {
-    const matrizEncontrada = await models.Matriz.findOne({
-      where: { id_matriz: id_matriz },
-    });
-    if (matrizEncontrada.length === 0) {
-      throw boom.notFound('No hay registros');
-    }
+  async updateMatrizPeriodo(changes) {
     try {
-      const updateMatriz = await models.Matriz.update(changes, {
-        where: {
-          id_matriz: id_matriz,
+      const updateMatriz = await models.Matriz.update(
+        {
+          periodo_abierto: 0,
         },
-      });
+        {
+          where: {
+            fecha_periodo_inicio: changes.fecha_inicio,
+            fecha_periodo_fin: changes.fecha_fin,
+          },
+        }
+      );
       return updateMatriz;
     } catch (error) {
-      throw boom.internal('Error al actualizar el registro');
+      throw `${error}`;
     }
   }
 }

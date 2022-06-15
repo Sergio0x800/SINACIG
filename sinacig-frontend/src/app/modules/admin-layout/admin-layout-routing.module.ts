@@ -11,6 +11,7 @@ import { IngresoPlanTrabajoComponent } from './pages/ingreso-plan-trabajo/ingres
 import { AuthGuard } from './guards/auth.guard';
 import { ExitGuard } from './guards/exit.guard';
 import { LayoutComponent } from './components/layout/layout.component';
+import { PeriodosComponent } from './pages/periodos/periodos.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
         path: 'matriz',
         canActivate: [AuthGuard],
         component: MatrizPeriodosComponent
+      },
+      {
+        path: 'periodos',
+        canActivate: [AuthGuard],
+        component: PeriodosComponent
       },
       {
         path: 'riesgos/:id_matriz',

@@ -416,8 +416,12 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
         text: 'Ya existe un registro con esta descripción!'
       })
     } else {
-      this.controlInternoMemory.push(this.formCreateControlInterno.value);
-      this.controlInternoMemory2.push(this.formCreateControlInterno.get('descripcion')?.value);
+      const newValue = {
+        ...this.formCreateControlInterno.value,
+        descripcion: `- ${this.formCreateControlInterno.get('descripcion')?.value}`
+      }
+      this.controlInternoMemory.push(newValue);
+      this.controlInternoMemory2.push(newValue.descripcion);
     }
     this.formCreateControlInterno.get('descripcion')?.reset();
   }
@@ -429,6 +433,4 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     this.controlInternoMemory.splice(id, 1)
     this.controlInternoMemory2.splice(idMemory2, 1)
   }
-
-
 }

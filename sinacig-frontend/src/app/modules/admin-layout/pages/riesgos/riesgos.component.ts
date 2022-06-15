@@ -812,7 +812,11 @@ export class RiesgosComponent implements OnInit {
     } else {
       const dataFormControl = this.formUpdateControlInterno.value;
       if (dataFormControl.descripcion) {
-        this.internosMemory.push(dataFormControl);
+        const newValue = {
+          ...dataFormControl,
+          descripcion: `- ${dataFormControl.descripcion}`
+        }
+        this.internosMemory.push(newValue);
         this.formUpdateControlInterno.reset()
       }
     }
@@ -834,7 +838,14 @@ export class RiesgosComponent implements OnInit {
     } else {
       const dataFormControl = this.formUpdateControlImplementacion.value;
       if (dataFormControl.que || dataFormControl.como || dataFormControl.quien || dataFormControl.cuando) {
-        this.controlesMemory.push(dataFormControl);
+        const newValue = {
+          ...dataFormControl,
+          que: `- QUÉ: ${dataFormControl.que}`,
+          como: `- CÓMO: ${dataFormControl.como}`,
+          quien: `- QUIÉN: ${dataFormControl.quien}`,
+          cuando: `- CUÁNDO: ${dataFormControl.cuando}`,
+        }
+        this.controlesMemory.push(newValue);
         this.formUpdateControlImplementacion.reset()
       }
     }
@@ -856,7 +867,11 @@ export class RiesgosComponent implements OnInit {
     } else {
       const dataFormControl = this.formUpdateRecursos.value;
       if (dataFormControl.descripcion) {
-        this.recursosMemory.push(dataFormControl);
+        const newValue = {
+          ...dataFormControl,
+          descripcion: `- ${dataFormControl.descripcion}`
+        }
+        this.recursosMemory.push(newValue);
         this.formUpdateRecursos.reset()
       }
     }
@@ -876,7 +891,11 @@ export class RiesgosComponent implements OnInit {
     } else {
       const dataFormControl = this.formUpdateControlesInternosPlan.value;
       if (dataFormControl.descripcion) {
-        this.controlInternoPlanMemory.push(dataFormControl);
+        const newValue = {
+          ...dataFormControl,
+          descripcion: `- ${dataFormControl.descripcion}`
+        }
+        this.controlInternoPlanMemory.push(newValue);
         this.formUpdateControlesInternosPlan.reset()
       }
     }
