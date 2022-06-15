@@ -48,9 +48,9 @@ export class PeriodosComponent implements OnInit {
   cerrarPeriodo(id_periodo: any, fecha_inicio: any, fecha_fin: any) {
     if (true) {
       Swal.fire({
-        title: 'Esta seguro de cerrar este periodo?',
-        text: "¡No podra revertir ni realizar alguna acción que no sea visualizar los registros!",
-        icon: 'warning',
+        title: '¿Está seguro de cerrar este periodo?',
+        text: "¡No podrá revertir esta acción y los registros actuales solo podrán visualizarse!",
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -67,7 +67,9 @@ export class PeriodosComponent implements OnInit {
             this.matrizService.updateMatriz(dataFindMatriz).subscribe((value: any) => {
               Swal.fire({
                 icon: 'success',
-                text: '¡El periodo se ha cerrado correctamente!'
+                text: '¡El periodo se ha cerrado correctamente!',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
               });
               let contadorE = 0
               let contadorO = 0

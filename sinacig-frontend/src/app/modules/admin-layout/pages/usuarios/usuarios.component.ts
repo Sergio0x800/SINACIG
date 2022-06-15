@@ -81,12 +81,16 @@ export class UsuariosComponent implements OnInit {
       if (getUsuario == dataUsuario) {
         Swal.fire({
           icon: 'warning',
-          text: `¡El nombre de usuario ingresado ya existe en los registros!`
+          text: `¡El nombre de usuario ingresado ya existe en los registros!`,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
         })
       } else {
         Swal.fire({
           icon: 'warning',
-          text: `¡El CUI ingresado ya existe en los registros!`
+          text: `¡El CUI ingresado ya existe en los registros!`,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
         })
       }
     }, err => {
@@ -143,8 +147,8 @@ export class UsuariosComponent implements OnInit {
 
   async eliminarUsuario(idUsaurio: any) {
     Swal.fire({
-      title: 'Estas seguro de eliminar este registro?',
-      text: "No podrás revertir este cambio!",
+      title: '¿Está seguro de eliminar este registro?',
+      text: "¡No podrá revertir este cambio!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -156,7 +160,9 @@ export class UsuariosComponent implements OnInit {
         this.usuarioService.inactivarUsuario(idUsaurio).subscribe((value) => {
           Swal.fire({
             icon: 'success',
-            text: 'El registro se elimino correctamente!'
+            text: '¡El registro se elimino correctamente!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           });
           this.RESPONSE_INACTIVAR_USUARIO = value;
           if (this.RESPONSE_INACTIVAR_USUARIO.result = 'ok') {
@@ -168,7 +174,9 @@ export class UsuariosComponent implements OnInit {
         }, err => {
           Swal.fire({
             icon: 'error',
-            text: 'No se pudo eliminar el registro!'
+            text: '¡No se pudo eliminar el registro!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           })
         });
       }
@@ -239,7 +247,9 @@ export class UsuariosComponent implements OnInit {
     if (usuariosToEdit.length > 0) {
       Swal.fire({
         icon: 'warning',
-        text: `¡El CUI ingresado ya existe en los registros!`
+        text: `¡El CUI ingresado ya existe en los registros!`,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
     } else {
       const RESPONSE_ACTUALIZAR_USUARIO: any = await this.usuarioService.actualizarUsuario(data)

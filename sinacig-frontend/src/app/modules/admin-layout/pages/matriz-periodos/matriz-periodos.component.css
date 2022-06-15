@@ -14,10 +14,13 @@
 
 .matriz-form__title {
   font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;
 }
 
-.btn-size {
-  width: 245px;
+.inputs-matriz-periodo {
+  display: grid;
+  grid-template-columns:  minmax(1fr);
+  gap: 20px;
 }
 
 .container-btn {
@@ -26,39 +29,9 @@
   justify-content: space-between;
 }
 
-.btn-plan-search {
-  color: white;
+.btn-size {
+  width: 245px;
 }
-
-.btn-delete {
-  /* background-image: url('../../../../../assets/img/icons/delete.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 27px;
-  height: 27px; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
-.options-icons {
-  width: 100%;
-  padding-top: 5px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.container-add-plan {
-  width: 100%;
-  padding-top: 5px;
-  display: flex;
-  justify-content: center;
-}
-
 
 .table-matriz {
   display: grid;
@@ -69,9 +42,33 @@
 .table-header-matriz {
   display: grid;
   grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
-
   justify-items: center;
   gap: 4px;
+}
+
+.header-title {
+  color: #2b2b2b;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-body-matriz:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
+.btn-plan-search {
+  color: white;
 }
 
 .table-header-matriz > div {
@@ -84,13 +81,6 @@
   background-color: rgba(0, 38, 255, 0.3);
 }
 
-.table-body-matriz {
-  display: grid;
-  grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
-  justify-items: center;
-  gap: 4px;
-}
-
 .table-body-matriz > div {
   width: 100%;
   padding: 10px;
@@ -98,14 +88,6 @@
   align-items: center;
   justify-content: center;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
-
-.header-title {
-  color: #2b2b2b;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Poppins', sans-serif;
-  text-align: center;
 }
 
 @media only screen and (max-width: 840px) {

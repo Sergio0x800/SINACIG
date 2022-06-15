@@ -117,6 +117,12 @@ select {
   gap: 4px;
 }
 
+.table-body-matriz:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
 .table-body-matriz > div {
   width: 100%;
   padding: 10px;

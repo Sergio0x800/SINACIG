@@ -14,10 +14,13 @@
 
 .matriz-form__title {
   font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;
 }
 
-.btn-size {
-  width: 245px;
+.inputs-matriz-periodo {
+  display: grid;
+  grid-template-columns:  minmax(1fr);
+  gap: 20px;
 }
 
 .container-btn {
@@ -26,24 +29,26 @@
   justify-content: center;
 }
 
-.container-add-plan {
-  width: 100%;
-  padding-top: 5px;
-  display: flex;
-  justify-content: center;
+.btn-size {
+  width: 245px;
 }
 
-@media only screen and (max-width: 781px) {
-  .matriz-form {
-    justify-content: center;
-    align-items: center;
-  }
-
+@media only screen and (max-width: 840px) {
   .inputs-select-styles {
     width: 300px;
   }
-
-  .btn-size {
+  .container-btn {
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .container-btn > button {
+    margin: 0;
     width: 300px;
+  }
+  .matriz-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -66,7 +66,9 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
     if (!fechaCorrecta) {
       Swal.fire({
         icon: 'error',
-        text: '¡La fecha final ingresada no es válida!'
+        text: '¡La fecha final ingresada no es válida!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
     } else {
       this.reporteService.generarReporte(dataSearch).subscribe(res => {

@@ -143,17 +143,34 @@
             </div>
           </div>
 
-          <div *ngIf="controlImplementacionMemory.length > 0" class="table-responsive">
+
+
+
+          <div *ngIf="controlImplementacionMemory.length > 0" class="table-matriz-edit-plan">
+            <div class="table-body-matriz-edit-plan" *ngFor="let ctImplementacion of controlImplementacionMemory">
+              <div>
+                <button class="btn btn-sm btn-danger"
+                  (click)="deleteControlFromMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien,ctImplementacion.cuando)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.que}}</span>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.como}}</span>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.quien}}</span>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.cuando}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="controlImplementacionMemory.length > 0" class="table-responsive">
             <table class="table">
-              <!-- <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">Que:</th>
-                  <th scope="col">Como:</th>
-                  <th scope="col">Quien:</th>
-                  <th scope="col">Cuando</th>
-                </tr>
-              </thead> -->
               <tbody>
                 <tr *ngFor="let ctImplementacion of controlImplementacionMemory">
                   <th scope="row th-display">
@@ -181,7 +198,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
         </form>
 
 
@@ -199,7 +216,24 @@
               Por favor ingresa al menos un recurso
             </div>
           </div>
-          <div *ngIf="showTableRecursos" class="table-responsive">
+
+
+
+
+          <div *ngIf="showTableRecursos" class="table-matriz-edit">
+            <div class="table-body-matriz-edit" *ngFor="let recurso of recursosMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteRecursoFromMemory(recurso.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style"> {{recurso.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="showTableRecursos" class="table-responsive">
             <table class="table">
               <tbody>
                 <tr *ngFor="let recurso of recursosMemory">
@@ -218,7 +252,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
         </form>
 
         <!-- Ingreso de controles Internos para el plan -->
@@ -237,7 +271,22 @@
               Por favor ingresa al menos un control recomendado
             </div>
           </div>
-          <div *ngIf="showTableControlInternoPlan" class="table-responsive">
+
+
+
+          <div *ngIf="showTableControlInternoPlan" class="table-matriz-edit">
+            <div class="table-body-matriz-edit" *ngFor="let control of controlInternoPlanMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteControlInternoPlanFromMemory(control.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style"> {{control.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngIf="showTableControlInternoPlan" class="table-responsive">
             <table class="table">
               <tbody>
                 <tr *ngFor="let control of controlInternoPlanMemory">
@@ -257,14 +306,14 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
         </form>
         <div class="form-floating">
           <textarea maxlength="500" class="form-control" formControlName="comentario" [ngClass]="{
             'is-invalid': false,
             'is-valid': false
           }" placeholder="Ingresa los comentarios aquí" id="comentarioTxt" style="height: 130px"></textarea>
-          <label for="comentarioTxt">Comentario del plan de trabajo</label>
+          <label for="comentarioTxt">Comentario fplan de trabajo</label>
         </div>
         <div class="container-btn-agregar mt-5 mb-5">
           <button (click)="validarFormPlanRiesgo()" type="button" class="btn btn-primary btn-size"><i class="fa fa-flag"

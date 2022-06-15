@@ -169,7 +169,6 @@ export class RiesgosComponent implements OnInit {
     private route: ActivatedRoute,
     private catalogsService: CatalogosService,
     private planService: PlanRiesgosService,
-    private correlativoService: CorrelativoService,
     private usuarioService: UsuarioService,
     private router: Router,
     private logService: LogsService,
@@ -190,7 +189,9 @@ export class RiesgosComponent implements OnInit {
         }, err => {
           Swal.fire({
             icon: 'warning',
-            text: '¡No existen registros para mostrar!'
+            text: '¡No existen registros para mostrar!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           })
           this.showTablePlanesTrabajo = false
           this.showBtnOffset = false;
@@ -599,7 +600,9 @@ export class RiesgosComponent implements OnInit {
       this.internosMemoryDelete = []
       Swal.fire({
         icon: 'success',
-        text: 'El registro se actualizo correctamente!'
+        text: '¡El registro se actualizo correctamente!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
 
       // if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
@@ -635,15 +638,17 @@ export class RiesgosComponent implements OnInit {
       err => {
         Swal.fire({
           icon: 'error',
-          text: 'Error al actualizar el registro!'
+          text: '¡Error al actualizar el registro!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
         })
       })
   }
 
   deleteRiesgo(id_riesgo: any) {
     Swal.fire({
-      title: 'Estas seguro de eliminar este registro?',
-      text: "No podrás revertir este cambio!",
+      title: '¿Está seguro de eliminar este registro?',
+      text: "¡No podrá revertir este cambio!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -655,7 +660,9 @@ export class RiesgosComponent implements OnInit {
         this.riesgoService.deleteRiesgo(id_riesgo).subscribe(() => {
           Swal.fire({
             icon: 'success',
-            text: 'El registro se elimino correctamente!'
+            text: '¡El registro se elimino correctamente!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           });
           this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
             this.riesgos = riesgos
@@ -665,7 +672,9 @@ export class RiesgosComponent implements OnInit {
         }, err => {
           Swal.fire({
             icon: 'error',
-            text: 'No se pudo eliminar el registro!'
+            text: '¡No se pudo eliminar el registro!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           })
         });
       }
@@ -749,13 +758,17 @@ export class RiesgosComponent implements OnInit {
       this.logService.createLog(planObtenido).subscribe((value: any) => { })
       Swal.fire({
         icon: 'success',
-        text: 'El registro se actualizo correctamente!'
+        text: '¡El registro se actualizo correctamente!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
       this.resetVariables()
     }, err => {
       Swal.fire({
         icon: 'error',
-        text: 'Error al actualizar el registro!'
+        text: '¡Error al actualizar el registro!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
       this.resetVariables()
     })
@@ -933,7 +946,9 @@ export class RiesgosComponent implements OnInit {
     this.planService.getExistenciaPlanTrabajo(this.id_matriz).subscribe((result: any) => {
       Swal.fire({
         icon: 'warning',
-        text: `¡Planes de trabajo pedientes de ingresar!`
+        text: `¡Planes de trabajo pedientes de ingresar!`,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
     }, err => {
       this.router.navigate(['/admin/ingreso-riesgos/', this.id_matriz])
@@ -953,7 +968,9 @@ export class RiesgosComponent implements OnInit {
         this.showBtnOffset = false;
         Swal.fire({
           icon: 'warning',
-          text: 'Se han cargado todos los registros!'
+          text: '¡Se han cargado todos los registros!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
         })
       }
     })

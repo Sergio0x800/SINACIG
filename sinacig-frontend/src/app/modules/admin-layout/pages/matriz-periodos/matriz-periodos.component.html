@@ -3,20 +3,21 @@
     <div>
       <h2 class="matriz-form__title">Matriz de riesgos</h2>
     </div>
-    <div>
-      <div class="mb-3 inputs-select-styles">
-        <label class="form-label" for="unidadFindRiesgo">Unidad ejecutora:</label>
-        <select class="form-select" formControlName="id_unidad_ejecutora" id="unidadFindRiesgo" name="unidadFindRiesgo">
+    <div class="inputs-matriz-periodo">
+      <div class="form-floating">
+        <select class="form-select" id="unidadFindRiesgo" aria-label="unidadFindRiesgo"
+          formControlName="id_unidad_ejecutora">
           <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
             {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
         </select>
+        <label for="unidadFindRiesgo">Unidad Ejecutora</label>
       </div>
-      <div class="mb-5 inputs-select-styles">
-        <label class="form-label" for="fInicioFindRiesgo">Año del periodo:</label>
-        <select class="form-select" formControlName="id_periodo" id="periodoAnio" name="periodoAnio">
+      <div class="form-floating">
+        <select class="form-select" id="periodoAnio" aria-label="periodoAnio" formControlName="id_periodo">
           <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
             {{periodo.anio}}</option>
         </select>
+        <label for="periodoAnio">Periodo</label>
       </div>
       <div>
         <div class="container-btn">
@@ -33,6 +34,11 @@
     </div>
   </form>
 </div>
+
+
+
+
+
 <div *ngIf="showTablePeriodos" class="table-matriz ">
   <div class="table-header-matriz">
     <div class="header-title">Acciones</div>
@@ -44,9 +50,6 @@
   </div>
   <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
     <div>
-      <!-- <button *ngIf="usuario.id_rol === 1" class="btn btn-sm btn-warning" (click)="cerrarPeriodo(matriz.id_matriz)">
-        <i class="fa-solid fa-lock"></i>
-      </button> -->
       <button *ngIf="usuario.id_rol === 1" class="btn btn-sm btn-danger"
         (click)="deletePeriodoMatriz(matriz.id_matriz)">
         <i class="fas fa-trash"></i>
@@ -70,49 +73,3 @@
     </div>
   </div>
 </div>
-<!-- <div class="container-table">
-  <div class="table-responsive" *ngIf="showTablePeriodos">
-    <div>
-      <div class="container-fluid mt-6">
-        <table class="mt-3 table table-hover table-sm">
-          <thead>
-            <tr>
-              <th scope="col"><span>Acciones</span></th>
-              <th scope="col"><span>Unidad ejecutora</span></th>
-              <th scope="col"><span>Fecha periodo de inicio</span></th>
-              <th scope="col"><span>Fecha periodo final</span></th>
-              <th scope="col"><span>Riesgos</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let matriz of matrizPeriodosEncontrados">
-              <th scope="row th-display">
-                <div class="btn-delete">
-                  <button class="btn btn-sm btn-danger btn-size-card" (click)="deletePeriodoMatriz(matriz.id_matriz)">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </th>
-              <td class="pt-3">
-                <div class="containe-unidad">
-                  <span>{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
-                </div>
-              </td>
-              <td class="pt-3"><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
-              </td>
-              <td class="pt-3"><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
-              </td>
-              <td>
-                <div class="container-add-plan">
-                  <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
-                    [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
-                    riesgos</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div> -->

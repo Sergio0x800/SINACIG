@@ -196,6 +196,10 @@ h2 {
   grid-template-columns: 1fr;
   padding: 0 10px;
 }
+.table-matriz-edit {
+  display: grid;
+  grid-template-columns: 1fr;
+}
 
 .table-header-matriz {
   display: grid;
@@ -203,8 +207,43 @@ h2 {
   justify-items: center;
   gap: 4px;
 }
+.table-header-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 3px;
+}
+.table-header-matriz-edit-plan {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  justify-items: center;
+  gap: 3px;
+}
+
+.fondo-alerta {
+  background-color: rgba(224, 224, 224, 0.4);
+  color: black;
+}
 
 .table-header-matriz > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+.table-header-matriz-edit > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+.table-header-matriz-edit-plan > div {
   width: 100%;
   padding: 10px 0;
   display: flex;
@@ -221,13 +260,52 @@ h2 {
   gap: 4px;
 }
 
+.table-body-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+.table-body-matriz-edit-plan {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
 .table-body-matriz:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+.table-body-matriz-edit:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+.table-body-matriz-edit-plan:hover {
   color: black;
   box-shadow: none;
   background-color: rgba(172, 172, 172, 0.2);
 }
 
 .table-body-matriz > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.table-body-matriz-edit-plan > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.table-body-matriz-edit > div {
   width: 100%;
   padding: 10px;
   display: flex;
@@ -243,6 +321,20 @@ h2 {
    font-family: 'Poppins', sans-serif;
    text-align: center;
 }
+.header-title-edit {
+   color: black;
+   font-size: 13px;
+   font-weight: 400;
+   font-family: 'Poppins', sans-serif;
+   text-align: center;
+}
+.header-title-edit-plan {
+   color: black;
+   font-size: 13px;
+   font-weight: 400;
+   font-family: 'Poppins', sans-serif;
+   text-align: center;
+}
 
 .riesgo-descripcion-style {
   font-size: 13px;
@@ -251,6 +343,7 @@ h2 {
   padding: 0 0px;
   font-family: 'Poppins';
   text-align: center;
+  overflow-wrap: break-word;
 }
 
 /*Fin table matriz*/

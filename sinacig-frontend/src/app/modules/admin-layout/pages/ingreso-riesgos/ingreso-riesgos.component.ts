@@ -244,8 +244,8 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     } else if (this.formCreateRiesgo.touched || this.formCreateControlInterno.touched) {
       this.confirm = Swal.fire({
         title: '¿Está seguro de salir?',
-        text: 'Perderá los datos ingresados.',
-        icon: "warning",
+        text: 'Perderá los datos ingresados',
+        icon: "question",
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Confirmar',
@@ -288,7 +288,7 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     //           id_matriz: this.id_matriz,
     //           usuario_registro: this.usuario.id_usuario
     //         }
-    //         //se crea el 
+    //         //se crea el
     //       })
     //     })
     //   } else {
@@ -377,7 +377,9 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
       err => {
         Swal.fire({
           icon: 'error',
-          text: 'Error al ingresar el registro!'
+          text: 'Error al ingresar el registro!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
         })
       })
   }
@@ -413,7 +415,9 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     if (this.controlInternoMemory2.includes(this.formCreateControlInterno.get('descripcion')?.value)) {
       Swal.fire({
         icon: 'warning',
-        text: 'Ya existe un registro con esta descripción!'
+        text: '¡Ya existe un registro con esta descripción!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
     } else {
       const newValue = {

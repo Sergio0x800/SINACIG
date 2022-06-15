@@ -167,7 +167,27 @@
               </div>
             </div>
           </form>
-          <div *ngIf="controlInternoMemory.length > 0" class="table-responsive table-hover">
+
+
+
+
+
+
+
+          <div *ngIf="controlInternoMemory.length > 0" class="table-matriz-edit mt-3">
+            <div class="table-body-matriz-edit" *ngFor="let controlInt of controlInternoMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteControlInterno(controlInt.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{controlInt.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="controlInternoMemory.length > 0" class="table-responsive table-hover">
             <table class="table">
               <tbody>
                 <tr *ngFor="let controlInt of controlInternoMemory">
@@ -186,7 +206,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
         </div>
         <div class="form-floating">
           <textarea maxlength="500" class="form-control" formControlName="observaciones"

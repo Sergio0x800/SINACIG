@@ -195,6 +195,42 @@
   font-family: 'Poppins';
 }
 
+.table-matriz-edit {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.table-body-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  text-align: start;
+  width: 100%;
+  padding: 0 0px;
+  font-family: 'Poppins';
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.table-body-matriz-edit > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+.table-body-matriz-edit:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
 /*Fin form control interno*/
 
 @media only screen and (max-width: 1219px) {

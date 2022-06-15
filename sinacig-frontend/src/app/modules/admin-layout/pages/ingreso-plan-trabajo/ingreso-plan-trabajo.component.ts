@@ -299,7 +299,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         title: '¡El registro se guardó correctamente!',
         icon: 'success',
         confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK!',
+        confirmButtonText: 'Aceptar',
       }).then((result) => {
         if (result.isConfirmed) {
 

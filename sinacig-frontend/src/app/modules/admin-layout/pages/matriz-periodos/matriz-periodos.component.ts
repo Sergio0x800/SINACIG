@@ -20,15 +20,6 @@ export class MatrizPeriodosComponent implements OnInit {
   //Datos usuario
   usuario: any = {}
 
-  //Configuracion mydatepicker
-  myDpOptions: IAngularMyDpOptions = {
-    dateRange: false,
-    dateFormat: 'yyyy-mm-dd'
-  };
-  myDateInit: boolean = true;
-  model: any = null;
-  locale: string = 'es'
-
   //Inicializando Catalogos
   unidadesEjecutoras: any = [];
   periodos: any = [];
@@ -77,7 +68,9 @@ export class MatrizPeriodosComponent implements OnInit {
 
       Swal.fire({
         icon: 'warning',
-        text: 'Actualmente existe un registro con estos parametros!'
+        text: '¡Actualmente existe un registro con estos parametros!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
       })
 
     }, err => {
@@ -88,7 +81,9 @@ export class MatrizPeriodosComponent implements OnInit {
       this.matrizService.createMatriz(newPeriodo).subscribe(() => {
         Swal.fire({
           icon: 'success',
-          text: 'El registro se agrego correctamente!'
+          text: '¡El registro se agrego correctamente!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
         })
         this.matrizService.getMatrizByParams(dataSearch).subscribe((value: any) => {
           this.showTablePeriodos = true;
@@ -98,7 +93,9 @@ export class MatrizPeriodosComponent implements OnInit {
         err => {
           Swal.fire({
             icon: 'error',
-            text: 'Error al ingresar el registro!'
+            text: '¡Error al ingresar el registro!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           })
         })
     })
@@ -131,12 +128,16 @@ export class MatrizPeriodosComponent implements OnInit {
           if (err.error.statusCode == 404) {
             Swal.fire({
               icon: 'error',
-              text: '¡No existe ningún registro con estos parámetros!'
+              text: '¡No existe ningún registro con estos parámetros!',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Aceptar'
             })
           } else {
             Swal.fire({
               icon: 'error',
-              text: '¡No se pudo realizar la búsqueda correctamente!'
+              text: '¡No se pudo realizar la búsqueda correctamente!',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Aceptar'
             })
           }
         })
@@ -167,7 +168,9 @@ export class MatrizPeriodosComponent implements OnInit {
         this.matrizService.deleteMatriz(id_matriz).subscribe((value: any) => {
           Swal.fire({
             icon: 'success',
-            text: '¡El registro se eliminó correctamente!'
+            text: '¡El registro se eliminó correctamente!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           });
           this.riesgoService.deleteRiesgoByIdMatriz(value[0]).subscribe((value: any) => {
             console.log(value)
@@ -176,7 +179,9 @@ export class MatrizPeriodosComponent implements OnInit {
         }, err => {
           Swal.fire({
             icon: 'error',
-            text: '¡No se pudo eliminar el registro!'
+            text: '¡No se pudo eliminar el registro!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
           })
         });
       }
