@@ -5,10 +5,9 @@ import { MatrizService } from 'src/app/services/matriz.service';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { RiesgosService } from 'src/app/services/riesgos.service';
-
-import { IAngularMyDpOptions } from 'angular-mydatepicker';
-import Swal from 'sweetalert2'
 import { UtilidadesService } from 'src/app/services/utilidades.service';
+
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-matriz-periodos',
@@ -203,20 +202,20 @@ export class MatrizPeriodosComponent implements OnInit {
   cerrarPeriodo(id_matriz: any) {
     if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
       Swal.fire({
-        title: '¿Está seguro de cerrar este registro?',
+        title: '¿Está seguro de validar este registro?',
         text: "¡Si realiza esta acción los riesgos solo podrán visualizarse!",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, cerrar registro!',
+        confirmButtonText: 'Si, validar registro!',
         cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
           this.matrizService.updateMatriz(id_matriz, 0).subscribe(() => {
             Swal.fire({
               icon: 'success',
-              text: '¡El registro se ha cerrado correctamente!',
+              text: '¡El registro se ha validado correctamente!',
               confirmButtonColor: '#3085d6',
               confirmButtonText: 'Aceptar'
             });
@@ -235,7 +234,7 @@ export class MatrizPeriodosComponent implements OnInit {
           }, err => {
             Swal.fire({
               icon: 'error',
-              text: '¡No se pudo cerrar el registro, ha ocurrido un error!',
+              text: '¡No se pudo validar el registro, ha ocurrido un error!',
               confirmButtonColor: '#3085d6',
               confirmButtonText: 'Aceptar'
             })
@@ -244,7 +243,7 @@ export class MatrizPeriodosComponent implements OnInit {
       })
     } else {
       Swal.fire({
-        text: 'El registro ya se encuentra cerrado',
+        text: 'El registro ya se encuentra validado',
         icon: 'warning',
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Aceptar'

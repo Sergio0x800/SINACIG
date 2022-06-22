@@ -87,7 +87,7 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
       .string('Ministerio de Salud Pública y Asistencia Social-MSPAS-')
       .style(header.tituloPrincipal);
     ws.cell(4, 5, 4, 10, true)
-      .string('Plan de trabajo')
+      .string('Plan de trabajo en evaluación de riesgos')
       .style(header.tituloSecundario);
 
     //Datos unidad ejecutora y periodo evaluación

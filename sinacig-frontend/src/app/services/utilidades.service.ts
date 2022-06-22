@@ -24,6 +24,14 @@ export class UtilidadesService {
     timerProgressBar: true,
   })
 
+  // private alertaExito = Swal.fire({
+  //   icon: 'success',
+  //   confirmButtonColor: '#3085d6',
+  //   confirmButtonText: 'Aceptar'
+  // })
+
+  // alertaExito()
+
   mostrarError(mensaje: string) {
     this.toast.fire({
       icon: 'error',
