@@ -145,6 +145,15 @@ select {
   text-align: center;
 }
 
+@media only screen and (max-width: 975px) {
+  .tabla-res {
+    overflow-x: scroll;
+  }
+  .table-matriz {
+    width: 900px;
+  }
+}
+
 @media only screen and (max-width: 840px) {
   .inputs-select-styles {
     width: 300px;

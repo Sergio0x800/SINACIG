@@ -45,7 +45,9 @@ export class UsuariosComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.obtenerUsuarios()
     this.catalogosService.getRoles().subscribe(roles => this.roles = roles)
-    this.catalogosService.getUnidadEjecutora().subscribe(unidad => this.unidades = unidad)
+    this.catalogosService.getUnidadEjecutora().subscribe(unidad => {
+      this.unidades = unidad.filter((value: any) => value.codigo_unidad < 999)
+    })
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuarioEncontrado = result
       this.formFiltroRiesgo.get('unidadFiltro')?.setValue(this.usuarioEncontrado.id_unidad_ejecutora)
@@ -127,14 +129,17 @@ export class UsuariosComponent implements OnInit {
         })
       }
     }, err => {
-      this.usuarioService.registrarUsuario(data).subscribe((result: any) => {
-        this.utils.mostrarExito("Usuario ingresado exitosamente!")
-        document.getElementById("ingresoUsuarioCloseButton")?.click();
-        this.limpiarCampos()
-        this.obtenerUsuarios()
-      }, err => {
-        this.utils.mostrarError("Error al ingresar el usuario")
-      })
+      if(err.status == 404) {
+        this.usuarioService.registrarUsuario(data).subscribe((result: any) => {
+          this.utils.showOk("Usuario ingresado", 'El usuario se ha registrado correctamente')
+          document.getElementById("ingresoUsuarioCloseButton")?.click();
+          this.limpiarCampos()
+          this.obtenerUsuarios()
+          this.formFiltroRiesgo.get('unidadFiltro')?.setValue(this.id_unidad_ejecutora)
+        }, err => {
+          this.utils.showError("Error al ingresar el usuario", 'Algo salio mal mientras se procesaba el registro')
+        })
+      }
     })
 
     // const RESPONSE_REGISTRO_USUARIO: any = await this.usuarioService.registrarUsuario(data)

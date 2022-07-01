@@ -1,51 +1,3 @@
-<!-- <div class="main-login">
-  <div class="header bg-login py-7 py-lg-8">
-    <div class="container">
-      <div class="header-body text-center mb-1">
-        <div class="row justify-content-center">
-          <div class="col-lg-5 col-md-6">
-            <h1 class="text-white">Bienvenido!</h1>
-            <p class="text-lead text-light">Accede con tus credenciales para ingresar al sistema de control de riesgos
-              SINACIG.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container mt--8 pb-8" (keyup.enter)="iniciarSesion()">
-    <div class="row justify-content-center">
-      <div class="col-lg-5 col-md-7">
-        <div class="card bg-secondary shadow border-0 mb">
-          <div class="card-body px-lg-5 py-lg-5">
-            <div class="text-center text-muted mb-5">
-              <small>Ingresa tus credenciales</small>
-            </div>
-            <div class="form-group mb-4">
-              <div class="input-group input-group-alternative">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-single-02"></i></span>
-                </div>
-                <input [(ngModel)]="usuario" class="form-control" placeholder="Usuario" type="text">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group input-group-alternative">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                </div>
-                <input [(ngModel)]="password" class="form-control" placeholder="Contraseña" type="password">
-              </div>
-            </div>
-            <div class="text-center">
-              <button type="button" class="btn btn-primary my-4 btn-size" (click)="iniciarSesion()"><i
-                  class="fa fa-sign-in" aria-hidden="true"></i> Iniciar Sesión</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div class="login">
   <div class="header-container">
     <div class="header__imgLogo">
@@ -63,17 +15,28 @@
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+            <span class="input-group-text" [ngClass]="{
+              'border-span': noAutorizado
+            }"><i class="ni ni-single-02"></i></span>
           </div>
-          <input [(ngModel)]="usuario" class="form-control" placeholder="Usuario" type="text">
+          <input [(ngModel)]="usuario" class="form-control" placeholder="Usuario" type="text" [ngClass]="{
+            'is-invalid': noAutorizado
+          }">
         </div>
       </div>
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+            <span class="input-group-text" [ngClass]="{
+              'border-span': noAutorizado
+            }"><i class="ni ni-lock-circle-open"></i></span>
           </div>
-          <input [(ngModel)]="password" class="form-control" placeholder="Contraseña" type="password">
+          <input [(ngModel)]="password" class="form-control" placeholder="Contraseña" type="password" [ngClass]="{
+            'is-invalid': noAutorizado
+          }">
+        </div>
+        <div *ngIf="noAutorizado" class="invalid-feed mt-1">
+          Usuario o contraseña incorrectos
         </div>
       </div>
       <div class="text-center mt-5">

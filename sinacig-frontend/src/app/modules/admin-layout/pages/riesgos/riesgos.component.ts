@@ -10,7 +10,6 @@ import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PlanRiesgosService } from 'src/app/services/plan-riesgos.service';
-import { CorrelativoService } from 'src/app/services/correlativo.service';
 import { LogsService } from 'src/app/services/logs.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import { MatrizService } from 'src/app/services/matriz.service';
@@ -161,7 +160,7 @@ export class RiesgosComponent implements OnInit {
   validarExistenciaPlan: any = {};
   usuario: any = {};
   matrizObtenida: any = {
-    periodo_abierto: 1
+    periodo_abierto: 0
   };
 
   constructor(

@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   usuario: any = undefined;
   password: any = undefined;
   token: any = '';
+  noAutorizado: any = false
 
 
   constructor(private router: Router, private utilidades: UtilidadesService, private usuarioService: UsuarioService) { }
@@ -25,11 +26,11 @@ export class LoginComponent implements OnInit {
 
   async iniciarSesion() {
     if (!this.usuario) {
-      this.utilidades.mostrarError('Debe ingresar el usuario')
+      this.utilidades.mostrarError('Debe ingresar un usuario')
       return
     }
     if (!this.password) {
-      this.utilidades.mostrarError('Debe ingresar la contraseña')
+      this.utilidades.mostrarError('Debe ingresar una contraseña')
       return
     }
 
@@ -39,16 +40,17 @@ export class LoginComponent implements OnInit {
     }).subscribe((usuarioAuth: any) => {
       this.token = usuarioAuth.token
       if (this.token) {
-        this.utilidades.mostrarExito("Bienvenido al sistema SINACIG")
         this.utilidades.setSessionStorageRol(usuarioAuth.id_rol)
         this.utilidades.setSessionStorageIdUsuario(usuarioAuth.id_usuario)
         this.utilidades.setSessionStorageUsuario(usuarioAuth.usuario)
         this.router.navigate(['/admin']); //redirigimos
       }
     },err => {
-      this.utilidades.mostrarError(
-        "El usuario o contraseña no son correctos."
-      )
+      if(err.status === 401) {
+        this.noAutorizado = true
+      } else {
+        this.utilidades.showError('Problemas con los servicios', 'Algo salio mal mientras se procesaba la solicitud')
+      }
     })
 
   }

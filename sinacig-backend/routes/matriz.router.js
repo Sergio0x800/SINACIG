@@ -39,22 +39,6 @@ router.get(
   }
 );
 
-//buscar encabezado matriz periodos por id_matriz
-router.get(
-  '/:id_matriz',
-  passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
-  async (req, res, next) => {
-    try {
-      const params = req.params;
-      const matrizPeriodos = await matrizService.findMatrizById(params);
-      res.json(matrizPeriodos);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
 //Encontrar encabezados matriz periodos con periodos abiertos
 router.get(
   '/periodoAbierto',
@@ -65,6 +49,22 @@ router.get(
     try {
       const result = await matrizService.findMatrizPeriodoAbierto(queryParams);
       res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+//buscar encabezado matriz periodos por id_matriz
+router.get(
+  '/:id_matriz',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2),
+  async (req, res, next) => {
+    try {
+      const params = req.params;
+      const matrizPeriodos = await matrizService.findMatrizById(params);
+      res.json(matrizPeriodos);
     } catch (error) {
       next(error);
     }

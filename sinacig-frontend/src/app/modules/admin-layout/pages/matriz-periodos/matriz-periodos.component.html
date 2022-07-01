@@ -34,49 +34,51 @@
     </div>
   </form>
 </div>
-<div *ngIf="showTablePeriodos" class="table-matriz ">
-  <div class="table-header-matriz">
-    <div class="header-title"><span
-        *ngIf="usuario.id_rol === 1 && matrizPeriodosEncontrados[0].periodo_abierto === 1">Acciones</span></div>
-    <div class="header-title">Unidad ejecutora</div>
-    <div class="header-title">Fecha inicio</div>
-    <div class="header-title">Fecha final</div>
-    <div class="header-title">Estado</div>
-    <div class="header-title">Riesgos</div>
-  </div>
-  <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
-    <div>
-      <button
-        *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 0 && periodoSeleccionado[0].periodo_abierto === 1"
-        class="btn btn-sm btn-warning" (click)="abrirPeriodo(matriz.id_matriz)">
-        <i class="fa-solid fa-lock-open"></i>
-      </button>
-      <button
-        *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
-        class="btn btn-sm btn-success" (click)="cerrarPeriodo(matriz.id_matriz)">
-        <i class="fa-solid fa-check"></i>
-      </button>
-      <button
-        *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
-        class="btn btn-sm btn-danger" (click)="deletePeriodoMatriz(matriz.id_matriz)">
-        <i class="fas fa-trash"></i>
-      </button>
+<div class="tabla-res">
+  <div *ngIf="showTablePeriodos" class="table-matriz ">
+    <div class="table-header-matriz">
+      <div class="header-title"><span
+          *ngIf="usuario.id_rol === 1 && matrizPeriodosEncontrados[0].periodo_abierto === 1">Acciones</span></div>
+      <div class="header-title">Unidad ejecutora</div>
+      <div class="header-title">Fecha inicio</div>
+      <div class="header-title">Fecha final</div>
+      <div class="header-title">Estado</div>
+      <div class="header-title">Riesgos</div>
     </div>
-    <div>
-      <span>{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
-    </div>
-    <div><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
-    </div>
-    <div><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
-    </div>
-    <div *ngIf="matriz.periodo_abierto === 1"><span>Abierto</span>
-    </div>
-    <div *ngIf="matriz.periodo_abierto === 0"><span>Validado</span>
-    </div>
-    <div>
-      <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
-        [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
-        riesgos</button>
+    <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
+      <div>
+        <button
+          *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 0 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-warning" (click)="abrirPeriodo(matriz.id_matriz)">
+          <i class="fa-solid fa-lock-open"></i>
+        </button>
+        <button
+          *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-success" (click)="cerrarPeriodo(matriz.id_matriz)">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <button
+          *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-danger" (click)="deletePeriodoMatriz(matriz.id_matriz)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div>
+        <span>{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
+      </div>
+      <div><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
+      </div>
+      <div><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
+      </div>
+      <div *ngIf="matriz.periodo_abierto === 1"><span>Abierto</span>
+      </div>
+      <div *ngIf="matriz.periodo_abierto === 0"><span>Validado</span>
+      </div>
+      <div>
+        <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
+          [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
+          riesgos</button>
+      </div>
     </div>
   </div>
 </div>

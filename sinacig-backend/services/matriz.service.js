@@ -25,6 +25,19 @@ class MatrizService {
     return result[0];
   }
 
+  //Encontrar la cantidad de encabezados matriz periodos abiertos
+  async findMatrizPeriodoAbierto(queryParams) {
+    const result = await models.Matriz.findAll({
+      where: {
+        periodo_abierto: 1,
+        fecha_periodo_inicio: queryParams.fecha_inicio,
+        fecha_periodo_fin: queryParams.fecha_fin,
+        estado_registro: 1,
+      },
+    });
+    return result.length;
+  }
+
   //Encontrar matriz por id_matriz
   async findMatrizById(params) {
     const result = await sequelize.query(
@@ -35,20 +48,6 @@ class MatrizService {
       throw boom.notFound('No hay registros');
     }
     return result[0];
-  }
-
-  //Encontrar la cantidad de encabezados matriz periodos abiertos
-  async findMatrizPeriodoAbierto(queryParams) {
-    console.log(queryParams);
-    const result = await models.Matriz.findAll({
-      where: {
-        periodo_abierto: 1,
-        fecha_periodo_inicio: queryParams.fecha_inicio,
-        fecha_periodo_fin: queryParams.fecha_fin,
-        estado_registro: 1,
-      },
-    });
-    return result.length;
   }
 
   //Actualizar el encabezado matriz periodo

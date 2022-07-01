@@ -90,6 +90,14 @@
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
+@media only screen and (max-width: 975px) {
+  .tabla-res {
+    overflow-x: scroll;
+  }
+  .table-matriz {
+    width: 900px;
+  }
+}
 @media only screen and (max-width: 840px) {
   .inputs-select-styles {
     width: 300px;

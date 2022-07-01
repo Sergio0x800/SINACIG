@@ -10,28 +10,16 @@ class UsuarioService {
   constructor() {}
 
   async autenticarUsuario(usuarioName) {
-    const result = await models.Usuario.findOne({
-      where: {
-        usuario: usuarioName,
-        estado_registro: 1,
-      },
-    });
-    return result.dataValues;
+    const result = await sequelize.query(
+      `EXEC sp_autenticar_usuario @usuario = "${usuarioName}";`
+    );
+    if (result[0].length == 0) {
+      return null;
+    } else {
+      return result[0][0];
+    }
   }
 
-  // async registrarUsuario(data) {
-  //   const result = await sequelize.query(
-  //     `EXEC sp_registrar_usuario
-  //       @id_rol = "${data.id_rol}",
-  //       @usuario = "${data.usuario}",
-  //       @cui = "${data.cui}",
-  //       @nombres = "${data.nombres}",
-  //       @apellidos = "${data.apellidos}",
-  //       @password = "${CryptoJS.MD5(data.password || '').toString()}",
-  //       @id_usuario_ingreso = "${data.id_usuario_ingreso}"`
-  //   );
-  //   return result[0];
-  // }
   async registrarUsuario(data) {
     const password = await bcrypt.hash(data.password, 10);
     const newUser = {
@@ -80,34 +68,8 @@ class UsuarioService {
       return result[0];
     } catch (error) {
       throw `${error}`;
-      // throw boom.internal('Error al actualizar el registro');
     }
   }
-
-  // async actualizarUsuario2(data) {
-  //   try {
-  //     const result = await sequelize.query(
-  //       `EXEC sp_actualizar_usuario
-  //             @id_usuario = ${data.id_usuario},
-  //             @id_rol = ${data.id_rol},
-  //             @cui = ${data.cui},
-  //             @nombres = ${data.nombres},
-  //             @apellidos = ${data.apellidos},
-  //             @password = "${
-  //               data.password
-  //                 ? bcrypt.hash(
-  //                     data.password,
-  //                     10
-  //                   ) /*CryptoJS.MD5(data.password || '').toString()*/
-  //                 : 'NULL'
-  //             }",
-  //             @id_usuario_ingreso = ${data.id_usuario_ingreso}`
-  //     );
-  //     return result[0];
-  //   } catch (error) {
-  //     throw boom.internal('Error al actualizar el registro');
-  //   }
-  // }
 
   async obtenerUsuarios() {
     // const result = await sequelize.query(`EXEC sp_obtener_usuarios`);

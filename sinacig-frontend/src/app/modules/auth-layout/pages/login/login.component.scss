@@ -13,6 +13,18 @@
     // background-color: #172b4d;
 }
 
+.invalid-feed {
+  color: red;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.border-span {
+  border-top: 1px solid #fb6340;
+  border-bottom: 1px solid #fb6340;
+  border-left: 1px solid #fb6340;
+}
+
 .header-container {
   width: 100%;
   padding: 5px 15px;
