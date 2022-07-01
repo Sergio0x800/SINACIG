@@ -51,7 +51,6 @@ export class PeriodosComponent implements OnInit {
       fecha_fin: fecha_fin
     }
     this.matrizService.findMatrizPeriodoAbierto(dataFindMatriz).subscribe((value: any) => {
-      console.log(value)
       if (value < 1) {
         Swal.fire({
           title: '¿Está seguro de cerrar este periodo?',
@@ -108,6 +107,8 @@ export class PeriodosComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         });
       }
+    }, err => {
+      this.utilidades.showError('Error en la solicitud', 'Algo ocurrio mal mientras se procesaba la solicitud')
     })
   }
   //   if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {

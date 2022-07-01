@@ -35,6 +35,7 @@ export class MatrizPeriodosComponent implements OnInit {
     id_periodo: new FormControl('', Validators.required),
   })
 
+  //Se hace la inyeccion de los servicios
   constructor(
     private catalogsService: CatalogosService,
     private matrizService: MatrizService,
@@ -44,24 +45,52 @@ export class MatrizPeriodosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
-    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
-      this.usuario = result
-      if (this.usuario.id_rol == 1) {
-        this.catalogsService.getUnidadEjecutora().subscribe(unidades => {
-          this.unidadesEjecutoras = unidades.filter((unidad: any) => unidad.codigo_unidad < 999)
-        });
-      } else {
-        this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
-          this.unidadesEjecutoras = unidades
-        })
-      }
+    //Se obtienen los periodos
+    this.catalogsService.getPeriodos().subscribe(resultPeriodos => {
+      this.periodos = resultPeriodos
+      //Se obtiene el usuario actual y en base a el se limitan las UE
+      this.usuarioService.obtenerUsuario().subscribe((resultUsuarios: any) => {
+        this.usuario = resultUsuarios
+        if (this.usuario.id_rol == 1) {
+          this.catalogsService.getUnidadEjecutora().subscribe(unidades => {
+            this.unidadesEjecutoras = unidades.filter((unidad: any) => unidad.codigo_unidad < 999)
+          }, err => {
+            this.utilidades.showErrorCatalogos();
+          });
+        } else {
+          this.catalogsService.getUnidadEjecutoraById(this.usuario.id_unidad_ejecutora).subscribe(unidades => {
+            this.unidadesEjecutoras = unidades
+          }, err => {
+            this.utilidades.showErrorCatalogos();
+          })
+        }
+      }, err => {
+        this.utilidades.showErrorCatalogos();
+      })
+    }, err => {
+      this.utilidades.showErrorCatalogos();
     })
+
+    //Se asigna el periodo seleccionado a la variable para saber si esta abierto o cerrado
     this.formSearchCreateMatrizPeriodo.get('id_periodo')?.valueChanges.subscribe((value: any) => {
       this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == value)
     })
   }
 
+
+  validarFormMatriz() {
+    if (this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.invalid) {
+      this.utilidades.showWarning('¡Faltan campos por llenar!', 'Por favor ingrese una unidad ejecutora')
+    } else if (this.formSearchCreateMatrizPeriodo.get('id_periodo')?.invalid) {
+      this.utilidades.showWarning('¡Faltan campos por llenar!', 'Por favor ingrese un periodo')
+    } else if (this.periodoSeleccionado[0].periodo_abierto == 0) {
+      this.utilidades.showWarning('¡Periodo cerrado!', 'El periodo ya se encuentra cerrado, no puede ingresar nuevos registros')
+    } else {
+      this.createNewMatrizPeriodo()
+    }
+  }
+
+  //Se agrega el metodo crear nueva matriz periodo para la creacion de los encabezados
   createNewMatrizPeriodo() {
     const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
     const dataSearch = {
@@ -69,59 +98,42 @@ export class MatrizPeriodosComponent implements OnInit {
       fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
       fecha_periodo_fin: periodoSeleccionado.fecha_fin
     }
+
+    //Se verifica que el encabezado no exista actualmente en la DB
     this.matrizService.getMatrizByParams(dataSearch).subscribe((value) => {
-
-      Swal.fire({
-        icon: 'warning',
-        text: '¡Actualmente existe un registro con estos parametros!',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar'
-      })
-
+      this.utilidades.showWarning('¡El registro ya existe!', 'Actualmente existe un registro con estos parametros')
     }, err => {
-      const newPeriodo = {
-        ...dataSearch,
-        usuario_registro: this.usuario.id_usuario
-      }
-      this.matrizService.createMatriz(newPeriodo).subscribe(() => {
-        Swal.fire({
-          icon: 'success',
-          text: '¡El registro se agrego correctamente!',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'Aceptar'
-        })
-        this.matrizService.getMatrizByParams(dataSearch).subscribe((value: any) => {
-          this.showTablePeriodos = true;
-          this.matrizPeriodosEncontrados = value;
-        })
-      },
-        err => {
+      if (err.error.statusCode == 404) {
+        const newPeriodo = {
+          ...dataSearch,
+          usuario_registro: this.usuario.id_usuario
+        }
+        this.matrizService.createMatriz(newPeriodo).subscribe(() => {
           Swal.fire({
-            icon: 'error',
-            text: '¡Error al ingresar el registro!',
+            icon: 'success',
+            text: '¡El registro se agrego correctamente!',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Aceptar'
           })
-        })
+          this.matrizService.getMatrizByParams(dataSearch).subscribe((value: any) => {
+            this.showTablePeriodos = true;
+            this.matrizPeriodosEncontrados = value;
+          })
+        },
+          err => {
+            Swal.fire({
+              icon: 'error',
+              text: '¡Error al ingresar el registro!',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Aceptar'
+            })
+          })
+      } else {
+        this.utilidades.showError('¡Error en el proceso de registro!', 'Ocurrió un error mientras se ingresaban los datos, por favor intente nuevamente')
+      }
     })
   }
 
-  validarFormMatriz() {
-    if (this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.invalid) {
-      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
-    } else if (this.formSearchCreateMatrizPeriodo.get('id_periodo')?.invalid) {
-      this.utilidades.mostrarError('Selecciona un periodo')
-    } else if (this.periodoSeleccionado[0].periodo_abierto == 0) {
-      Swal.fire({
-        text: '¡El periodo ya se encuentra cerrado, no puede ingresar nuevos registros!',
-        icon: 'warning',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar'
-      })
-    } else {
-      this.createNewMatrizPeriodo()
-    }
-  }
 
   findMatrizPeriodo() {
     const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)

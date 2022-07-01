@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const CatalogosService = require('../services/catalogos.service');
 const moment = require('moment');
+const path = require('path');
 
 const xl = require('excel4node');
-// const PdfPrinter = require("pdfmake");
-// const fs = require("fs");
 const {
   header,
   table,
@@ -69,9 +68,16 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     //Encabezado principal
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
     ws.addImage({
-      path: '/root/sinacig/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
-      //path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      path: path.join(
+        __dirname,
+        '..',
+        'utils',
+        'reports',
+        'img',
+        'logo_mspas_report.png'
+      ),
       type: 'picture',
       position: {
         type: 'absoluteAnchor',
@@ -101,9 +107,6 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
         .string(`${unidadEjecutoraData.codigo_unidad}`)
         .style(header.text);
     }
-    // ws.cell(7, 4, 7, 6, true)
-    //   .string(`${unidadEjecutoraData.codigo_unidad}`)
-    //   .style(header.text);
     ws.cell(8, 1, 8, 3, true)
       .string('Nombre de la Unidad Ejecutora:')
       .style(header.tituloInfoUnidad);
@@ -201,7 +204,6 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
       .then((resultado) => {
         //indicamos el número de fila donde se comenzará a escribir la información del reporte
         if (resultado[0].length > 0) {
-          console.log('dentro reporte');
           let totalRiesgos = resultado[0].length;
           let conteoRiesgosRecorridos = 0;
           let rowIndex = 18;
@@ -311,9 +313,5 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     next(error);
   }
 });
-
-// router.post('/evaluacion_riesgo_pdf', async (req, res, next) => {
-
-// })
 
 module.exports = router;

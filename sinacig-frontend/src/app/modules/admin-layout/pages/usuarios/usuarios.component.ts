@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
@@ -12,12 +13,14 @@ import Swal from 'sweetalert2';
 export class UsuariosComponent implements OnInit {
 
   usuarios: any = []
+  filtroUsuarios: any = []
   @ViewChild("ingresoUsuarioModal", { static: false }) ingresoUsuarioModal: TemplateRef<any> | undefined;
 
   RESPONSE_INACTIVAR_USUARIO: any = []
 
   roles: any = [];
   unidades: any = [];
+
 
   id_usuario: any
   id_rol: any = '-1'
@@ -30,6 +33,11 @@ export class UsuariosComponent implements OnInit {
   usuarioEncontrado: any = {}
   id_unidad_ejecutora: any = '-1'
 
+  formFiltroRiesgo = new FormGroup({
+    unidadFiltro: new FormControl(''),
+    usuarioFiltro: new FormControl(''),
+  })
+
 
 
   constructor(private usuarioService: UsuarioService, private utils: UtilidadesService, private catalogosService: CatalogosService) { }
@@ -40,6 +48,31 @@ export class UsuariosComponent implements OnInit {
     this.catalogosService.getUnidadEjecutora().subscribe(unidad => this.unidades = unidad)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuarioEncontrado = result
+      this.formFiltroRiesgo.get('unidadFiltro')?.setValue(this.usuarioEncontrado.id_unidad_ejecutora)
+    })
+
+    this.formFiltroRiesgo.get('unidadFiltro')?.valueChanges.subscribe(unidad => {
+      if (unidad == -1) {
+        this.filtroUsuarios = this.usuarios
+      } else {
+        this.filtroUsuarios = this.usuarios.filter((usuario: any) => usuario.id_unidad_ejecutora == unidad)
+      }
+    })
+    this.formFiltroRiesgo.get('usuarioFiltro')?.valueChanges.subscribe(usuarioFil => {
+      if (!usuarioFil) {
+        if (this.formFiltroRiesgo.get('unidadFiltro')?.value == -1) {
+          this.filtroUsuarios = this.usuarios
+        } else {
+          this.filtroUsuarios = this.usuarios.filter((usuario: any) => usuario.id_unidad_ejecutora == this.formFiltroRiesgo.get('unidadFiltro')?.value)
+        }
+      } else {
+        this.filtroUsuarios = this.filtroUsuarios.filter((usuario: any) => {
+          const nameUsuario = usuario.usuario.toLowerCase();
+          if (nameUsuario.includes(usuarioFil.toLowerCase())) {
+            return usuario
+          }
+        })
+      }
     })
   }
 

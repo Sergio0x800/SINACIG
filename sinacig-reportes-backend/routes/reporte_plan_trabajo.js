@@ -4,6 +4,7 @@ const xl = require('excel4node');
 const CatalogosService = require('../services/catalogos.service');
 const PlanTrabajoReporteService = require('../services/plan_trabajo_reporte.service');
 const moment = require('moment');
+const path = require('path');
 
 const {
   header,
@@ -71,8 +72,14 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
     ws.addImage({
-      path: '/root/sinacig/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
-      //path: 'C:/Users/sdperez/Desktop/SINACIG_V1.0/sinacig-reportes-backend/utils/reports/img/logo_mspas_report.png',
+      path: path.join(
+        __dirname,
+        '..',
+        'utils',
+        'reports',
+        'img',
+        'logo_mspas_report.png'
+      ),
       type: 'picture',
       position: {
         type: 'absoluteAnchor',

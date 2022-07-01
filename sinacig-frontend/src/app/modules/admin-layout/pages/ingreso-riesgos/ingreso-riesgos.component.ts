@@ -126,7 +126,7 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
     this.route.paramMap.subscribe((param: any) => {
       this.id_matriz = param.get('id_matriz');
       this.routerLinkRiesgo = '/admin/riesgos/' + this.id_matriz;
-      this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe(matriz => {
+      this.matrizService.getMatrizById(this.id_matriz).subscribe(matriz => {
         this.matrizEncontrada = matriz[0]
         this.concatCodigoUnidad = this.matrizEncontrada.codigo_unidad + '  -  ' +
           this.matrizEncontrada.nombre_unidad

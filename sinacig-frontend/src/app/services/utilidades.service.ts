@@ -24,13 +24,66 @@ export class UtilidadesService {
     timerProgressBar: true,
   })
 
-  // private alertaExito = Swal.fire({
-  //   icon: 'success',
-  //   confirmButtonColor: '#3085d6',
-  //   confirmButtonText: 'Aceptar'
-  // })
+  private alertaExito = Swal.mixin({
+    icon: 'success',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Aceptar'
+  })
+  private alertaError = Swal.mixin({
+    icon: 'error',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Aceptar'
+  })
 
-  // alertaExito()
+  private alertaWarning = Swal.mixin({
+    icon: 'warning',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Aceptar'
+  })
+
+  private alertaQuestion = Swal.mixin({
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, ¡eliminarlo!',
+    cancelButtonText: 'Cancelar'
+  })
+
+  showOk(mensaje: string, text: string) {
+    this.alertaExito.fire({
+      title: mensaje,
+      text: text
+    })
+  }
+
+  showError(mensaje: string, text: string) {
+    this.alertaError.fire({
+      title: mensaje,
+      text: text
+    })
+  }
+
+  showErrorCatalogos() {
+    this.alertaError.fire({
+      title: '¡No se cargaron los catálogos!',
+      text: 'Ocurrió un error mientras se cargaban los catálogos, por favor cargue nuevamente la pagina'
+    })
+  }
+
+  showWarning(mensaje: string, text: string) {
+    this.alertaWarning.fire({
+      title: mensaje,
+      text: text
+    })
+  }
+
+  showQuestion(mensaje: string, text: string) {
+    this.alertaQuestion.fire({
+      title: mensaje,
+      text: text
+    })
+  }
 
   mostrarError(mensaje: string) {
     this.toast.fire({

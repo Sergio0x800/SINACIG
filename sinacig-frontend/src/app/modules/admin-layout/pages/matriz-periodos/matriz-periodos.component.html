@@ -48,12 +48,12 @@
     <div>
       <button
         *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 0 && periodoSeleccionado[0].periodo_abierto === 1"
-        class="btn btn-sm btn-success" (click)="abrirPeriodo(matriz.id_matriz)">
+        class="btn btn-sm btn-warning" (click)="abrirPeriodo(matriz.id_matriz)">
         <i class="fa-solid fa-lock-open"></i>
       </button>
       <button
         *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
-        class="btn btn-sm btn-warning" (click)="cerrarPeriodo(matriz.id_matriz)">
+        class="btn btn-sm btn-success" (click)="cerrarPeriodo(matriz.id_matriz)">
         <i class="fa-solid fa-check"></i>
       </button>
       <button

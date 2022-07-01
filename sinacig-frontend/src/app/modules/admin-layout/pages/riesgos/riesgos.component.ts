@@ -181,7 +181,7 @@ export class RiesgosComponent implements OnInit {
     this.route.paramMap.subscribe(param => {
       this.id_matriz = param.get('id_matriz');
       this.linkMatrizPeriodos = `/admin/ingreso-riesgos/${this.id_matriz}`
-      this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe((result: any) => {
+      this.matrizService.getMatrizById(this.id_matriz).subscribe((result: any) => {
         this.matrizObtenida = result[0]
         this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
           this.riesgos = riesgos;

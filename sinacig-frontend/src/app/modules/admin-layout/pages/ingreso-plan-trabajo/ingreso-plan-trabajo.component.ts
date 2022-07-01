@@ -142,7 +142,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     this.catalogosService.getPrioridad().subscribe(prioridad => this.prioridades = prioridad)
     this.catalogosService.getPuestoResponsable().subscribe(puesto => this.puestos = puesto)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
-    this.matrizService.getMatrizByIdForm(this.id_matriz).subscribe(result => {
+    this.matrizService.getMatrizById(this.id_matriz).subscribe(result => {
       this.periodoObtenido = result
       const fechaInicio = this.periodoObtenido[0].fecha_periodo_inicio.split('-');
       const anioInicio = fechaInicio[0]

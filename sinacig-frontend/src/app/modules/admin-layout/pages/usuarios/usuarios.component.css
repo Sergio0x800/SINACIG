@@ -17,12 +17,38 @@
   width: 245px;
 }
 
+.cards-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: white;
+  padding: 30px;
+  border-radius: 7px;
+  margin-bottom: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+.cards-filter__inputs {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+}
+.cards-filter__inputs_inputs {
+  width: 350px;
+  height: 43px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  color: #32325d;
+}
+
 .btn-table-riesgo {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   gap: 15px;
 }
+
 .btns-modal {
   width: 100%;
   display: flex;
@@ -52,7 +78,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 64px;
 }
 
 .card-user {
@@ -85,12 +110,34 @@
     gap: 30px;
   }
 }
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: 1459px) {
   .container-cards-user {
     gap: 40px;
     justify-content: center;
   }
 }
+
+@media only screen and (max-width: 1459px) {
+  .cards-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 7px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  }
+  .cards-filter__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
 @media only screen and (max-width: 1024px) {
   .container-cards-user {
     justify-content: center;

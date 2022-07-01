@@ -1,5 +1,5 @@
 <div class="container-cards-user-title">
-  <div class="title-btns mb-3">
+  <div class="title-btns mb-5">
     <h2 class="usuario__title">Administración de usuarios:</h2>
     <div class="btn-table-riesgo">
       <button class="btn btn-success btn-size mt-3" (click)="limpiarCampos()" data-bs-toggle="modal"
@@ -9,8 +9,30 @@
     </div>
   </div>
 
+
+  <form [formGroup]="formFiltroRiesgo">
+    <div class="cards-filter">
+      <div class="cards-filter__title">
+        <h4>Filtros de busqueda</h4>
+      </div>
+
+      <div class="cards-filter__inputs">
+        <select formControlName="unidadFiltro" id="selectRol" name="selectRol"
+          class="form-select cards-filter__inputs_inputs">
+          <option value="-1">TODAS</option>
+          <option *ngFor="let unidad of unidades" [value]="unidad.id_unidad_ejecutora">
+            {{unidad.codigo_unidad+ " - " +unidad.nombre_unidad}}</option>
+        </select>
+        <input formControlName="usuarioFiltro" type="text" class="form-control cards-filter__inputs_inputs"
+          placeholder="Usuario" mask="S*">
+      </div>
+    </div>
+  </form>
+
+
+
   <div class="container-cards-user">
-    <div class="card card-stats card-user" *ngFor="let u of usuarios">
+    <div class="card card-stats card-user" *ngFor="let u of filtroUsuarios">
       <div class="card-body">
         <div class="">
           <div class="card-info-container">

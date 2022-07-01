@@ -4,7 +4,7 @@
   </div>
   <form [formGroup]="formSearchPeriodo" class="matrizFormFilter">
     <select formControlName="anioPeriodo" id="selectRol" name="selectRol" class="form-select">
-      <option value="-1"><span class="busquedaAnio">Busqueda por año</span></option>
+      <option value="-1"><span class="busquedaAnio">Todos los periodos</span></option>
       <option *ngFor="let periodo of periodos" [value]="periodo.anio">
         {{periodo.anio}}</option>
     </select>

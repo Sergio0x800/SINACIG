@@ -26,10 +26,15 @@
 select {
   width: 100%;
   font-size: 16px;
+  height: 43px;
+  font-family: "Poppins", sans-serif;
+  color: #32325d;
 }
 .busquedaAnio {
   color: #ACACAC;
 }
+
+
 
 .matriz-form__btns {
   display: flex;
