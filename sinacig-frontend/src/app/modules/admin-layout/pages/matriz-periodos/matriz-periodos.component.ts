@@ -70,11 +70,6 @@ export class MatrizPeriodosComponent implements OnInit {
     }, err => {
       this.utilidades.showErrorCatalogos();
     })
-
-    //Se asigna el periodo seleccionado a la variable para saber si esta abierto o cerrado
-    this.formSearchCreateMatrizPeriodo.get('id_periodo')?.valueChanges.subscribe((value: any) => {
-      this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == value)
-    })
   }
 
 
@@ -136,6 +131,11 @@ export class MatrizPeriodosComponent implements OnInit {
 
 
   findMatrizPeriodo() {
+
+    //Se asigna el periodo seleccionado a la variable para saber si esta abierto o cerrado
+    const valuePeriodo = this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value
+    this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == valuePeriodo)
+
     const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
     const dataSearch = {
       ...this.formSearchCreateMatrizPeriodo.value,

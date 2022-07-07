@@ -30,27 +30,28 @@
   </form>
 
 
-
-  <div class="container-cards-user">
-    <div class="card card-stats card-user" *ngFor="let u of filtroUsuarios">
-      <div class="card-body">
-        <div class="">
-          <div class="card-info-container">
-            <span class="h4 font-weight-bold mb-0"><i class="fa fa-user"></i> {{ u.usuario }}</span>
-            <span class="text-nowrap mr-2"> {{ u.apellidos }}, {{ u.nombres }}</span>
-            <span class="text-nowrap mr-2"><i class="fa fa-id-card"></i> {{ u.cui }}</span>
-          </div>
-        </div>
-        <div class="container-btns-cards">
+  <div class="container-cards-center">
+    <div class="container-cards-user">
+      <div class="card card-stats card-user" *ngFor="let u of filtroUsuarios">
+        <div class="card-body">
           <div class="">
-            <button class="btn btn-warning btn-size-card btn-editar" (click)="buscarUsuarioParaActualizar(u)">
-              <i class="fas fa-pencil"></i>
-            </button>
+            <div class="card-info-container">
+              <span class="h4 font-weight-bold mb-0"><i class="fa fa-user"></i> {{ u.usuario }}</span>
+              <span class="text-nowrap mr-2"> {{ u.apellidos }}, {{ u.nombres }}</span>
+              <span class="text-nowrap mr-2"><i class="fa fa-id-card"></i> {{ u.cui }}</span>
+            </div>
           </div>
-          <div class="">
-            <button class="btn btn-danger btn-size-card btn-editar" (click)="eliminarUsuario(u.id_usuario)">
-              <i class="fas fa-trash"></i>
-            </button>
+          <div class="container-btns-cards">
+            <div class="">
+              <button class="btn btn-warning btn-size-card btn-editar" (click)="buscarUsuarioParaActualizar(u)">
+                <i class="fas fa-pencil"></i>
+              </button>
+            </div>
+            <div class="">
+              <button class="btn btn-danger btn-size-card btn-editar" (click)="eliminarUsuario(u.id_usuario)">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>

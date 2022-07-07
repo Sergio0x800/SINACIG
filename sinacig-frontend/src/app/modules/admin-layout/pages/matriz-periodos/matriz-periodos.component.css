@@ -23,6 +23,16 @@
   gap: 20px;
 }
 
+.abierto {
+  background-color: rgba(0, 255, 34, 0.09);
+  color: black;
+}
+
+.cerrado {
+  color: black;
+  background-color: rgba(255, 0, 0, 0.09);
+}
+
 .container-btn {
   display: flex;
   align-items: center;

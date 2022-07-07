@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CatalogosService } from 'src/app/services/catalogos.service';
-import { EvaluacionRiesgoReporteService } from '../../services/evaluacion-riesgo/evaluacion-riesgo-reporte.service';
 import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2'
@@ -87,13 +86,10 @@ export class PlanTrabajoComponent implements OnInit {
         downloadlink.setAttribute('download', "Plan_de_trabajo.xlsx");
         document.body.appendChild(downloadlink)
         downloadlink.click();
+      }, err => {
+        this.utilidades.showError('¡Error al generar el reporte!', 'Algo salió mal mientras se procesaba la solicitud, por favor vuelva a intentarlo')
       });
     }
-
-
-
-
-
   }
 
   validarFormPlan() {

@@ -51,5 +51,8 @@ if (config.env == 'dev') {
     app
   );
   server.listen(port);
-  console.log('\nEl sistema SINACIG esta en funcionamiento');
+  console.log(
+    '\nEl sistema SINACIG se ha levantado en la dirección: https://sinacig.mspas.gob.gt:' +
+      port
+  );
 }

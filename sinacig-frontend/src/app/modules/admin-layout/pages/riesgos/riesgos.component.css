@@ -23,6 +23,21 @@
   color: red;
 }
 
+.tolerable {
+  color: black;
+  background-color: rgba(0, 255, 34, 0.09);
+}
+
+.gestionable {
+  color: black;
+  background-color: rgba(229, 255, 0, 0.09);
+}
+
+.noTolerable {
+  color: black;
+  background-color: rgba(255, 0, 0, 0.09);
+}
+
 .descripcion-recursos {
   width: 350px;
 }

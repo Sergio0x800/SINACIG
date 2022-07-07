@@ -145,6 +145,16 @@ select {
   text-align: center;
 }
 
+.abierto {
+  background-color: rgba(0, 255, 34, 0.09);
+  color: black;
+}
+
+.cerrado {
+  color: black;
+  background-color: rgba(255, 0, 0, 0.09);
+}
+
 @media only screen and (max-width: 975px) {
   .tabla-res {
     overflow-x: scroll;

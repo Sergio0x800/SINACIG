@@ -51,5 +51,8 @@ if (config.env == 'dev') {
     app
   );
   server.listen(config.port);
-  console.log('\nEl sistema SINACIG fue levantado con certificado https');
+  console.log(
+    '\nEl sistema SINACIG se ha levantado en la dirección: https://sinacig.mspas.gob.gt:' +
+      port
+  );
 }

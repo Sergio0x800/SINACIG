@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
+import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MapaRiesgoService } from '../services/mapa-riesgo/mapa-riesgo.service';
@@ -73,6 +73,8 @@ export class MapaRiesgoComponent implements OnInit {
       downloadlink.setAttribute('download', "Mapa_de_riesgo.xlsx");
       document.body.appendChild(downloadlink)
       downloadlink.click();
+    }, err => {
+      this.utilidades.showError('¡Error al generar el reporte!', 'Algo salió mal mientras se procesaba la solicitud, por favor vuelva a intentarlo')
     });
 
   }

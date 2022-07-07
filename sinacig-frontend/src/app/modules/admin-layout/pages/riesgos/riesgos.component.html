@@ -39,7 +39,11 @@
         </div>
         <div><span class="riesgo-descripcion-style">{{riesgo.riesgo_residual}}</span>
         </div>
-        <div><span class="riesgo-descripcion-style">{{ riesgo.medida_riesgo }}</span>
+        <div [ngClass]="{
+          'tolerable': riesgo.medida_riesgo === 'Tolerable',
+          'gestionable': riesgo.medida_riesgo === 'Gestionable',
+          'noTolerable': riesgo.medida_riesgo === 'No Tolerable'
+        }"><span class="riesgo-descripcion-style">{{ riesgo.medida_riesgo }}</span>
         </div>
         <div>
           <button class="btn btn_primary bg-primary btn-sm btn-plan-search" data-bs-toggle="modal"

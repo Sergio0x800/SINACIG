@@ -70,9 +70,9 @@
       </div>
       <div><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
       </div>
-      <div *ngIf="matriz.periodo_abierto === 1"><span>Abierto</span>
+      <div *ngIf="matriz.periodo_abierto === 1" class="abierto"><span>Abierto</span>
       </div>
-      <div *ngIf="matriz.periodo_abierto === 0"><span>Validado</span>
+      <div *ngIf="matriz.periodo_abierto === 0" class="cerrado"><span>Validado</span>
       </div>
       <div>
         <button class="btn btn_primary bg-primary btn-sm btn-plan-search"

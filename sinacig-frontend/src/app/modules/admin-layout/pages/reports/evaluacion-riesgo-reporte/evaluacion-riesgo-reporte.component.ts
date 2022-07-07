@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IAngularMyDpOptions, IMyDateModel } from 'angular-mydatepicker';
+import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { CatalogosService } from 'src/app/services/catalogos.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2'
@@ -62,11 +62,6 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
       fechaInicio: periodoSeleccionado.fecha_inicio,
       fechaFin: periodoSeleccionado.fecha_fin
     }
-    // const dataReporte = {
-    //   unidadEjecutora: this.generarReporte.get('unidadEjecutora')?.value,
-    //   fechaInicio: this.generarReporte.get('fechaInicio')?.value.singleDate.formatted,
-    //   fechaFin: this.generarReporte.get('fechaFin')?.value.singleDate.formatted,
-    // }
     const fechaCorrecta: boolean = this.validarFechas(dataSearch.fechaInicio, dataSearch.fechaFin);
     if (!fechaCorrecta) {
       Swal.fire({
@@ -87,6 +82,8 @@ export class EvaluacionRiesgoReporteComponent implements OnInit {
         downloadlink.setAttribute('download', "Matriz_evaluacion_riesgos.xlsx");
         document.body.appendChild(downloadlink)
         downloadlink.click();
+      }, err => {
+        this.utilidades.showError('¡Error al generar el reporte!', 'Algo salió mal mientras se procesaba la solicitud, por favor vuelva a intentarlo')
       });
     }
   }

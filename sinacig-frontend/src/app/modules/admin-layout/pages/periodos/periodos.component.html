@@ -28,9 +28,9 @@
       </div>
       <div><span>{{periodo.fecha_fin | date: 'dd/MM/yyyy'}}</span>
       </div>
-      <div *ngIf="periodo.periodo_abierto === 1"><span>Abierto</span>
+      <div *ngIf="periodo.periodo_abierto === 1" class="abierto"><span>Abierto</span>
       </div>
-      <div *ngIf="periodo.periodo_abierto=== 0"><span>Cerrado</span>
+      <div *ngIf="periodo.periodo_abierto=== 0" class="cerrado"><span>Cerrado</span>
       </div>
       <div>
         <button *ngIf="periodo.periodo_abierto === 1" class="btn btn_primary bg-warning btn-sm btn-plan-search"
