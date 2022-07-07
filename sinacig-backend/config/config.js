@@ -7,11 +7,8 @@ const config = {
   dbHost: process.env.DB_HOST,
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
-
-  dbUserOrc: process.env.DBORC_USER,
-  dbPasswordOrc: process.env.DBORC_PASSWORD,
-  dbOrcString: process.env.DBORC_ORC_STRING,
-  dbOrcRouteClient: process.env.DBORC_ROUTE_CLIENT,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtSecretRef: process.env.JWT_SECRET_REF,
 };
 
 module.exports = config;

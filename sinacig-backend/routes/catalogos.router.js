@@ -13,6 +13,26 @@ router.get('/unidad_ejecutora', async (req, res, next) => {
   }
 });
 
+router.get('/unidad_ejecutoraByid/:id_unidad', async (req, res, next) => {
+  try {
+    const { id_unidad } = req.params;
+    const unidadesEjecutoras =
+      await catalogosServiceI.findUnidadEjecutoraByCodigo(id_unidad);
+    res.json(unidadesEjecutoras);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/roles', async (req, res, next) => {
+  try {
+    const roles = await catalogosServiceI.findRoles();
+    res.json(roles);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/control_mitigador', async (req, res, next) => {
   try {
     const control = await catalogosServiceI.findControlMitigador();
@@ -25,6 +45,17 @@ router.get('/control_mitigador', async (req, res, next) => {
 router.get('/periodos', async (req, res, next) => {
   try {
     const periodos = await catalogosServiceI.findPeriodos();
+    res.json(periodos);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch('/periodos/:id_periodo', async (req, res, next) => {
+  const { id_periodo } = req.params;
+  const body = req.body;
+  try {
+    const periodos = await catalogosServiceI.cerrarPeriodo(id_periodo, body);
     res.json(periodos);
   } catch (error) {
     next(error);

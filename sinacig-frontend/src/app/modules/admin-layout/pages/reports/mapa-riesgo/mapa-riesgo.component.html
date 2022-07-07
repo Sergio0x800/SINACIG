@@ -1,0 +1,29 @@
+<div class="container-matriz mb-5">
+  <form [formGroup]="generarReporte" class="matriz-form">
+    <div>
+      <h2 class="matriz-form__title">Mapa de Riesgo</h2>
+    </div>
+    <div class="inputs-matriz-periodo">
+      <div class="form-floating">
+        <select class="form-select" id="unidadFindRiesgo" aria-label="unidadFindRiesgo"
+          formControlName="unidadEjecutora">
+          <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
+            {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
+        </select>
+        <label for="unidadFindRiesgo">Unidad Ejecutora</label>
+      </div>
+      <div class="form-floating">
+        <select class="form-select" id="periodoAnio" aria-label="periodoAnio" formControlName="id_periodo">
+          <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
+            {{periodo.anio}}</option>
+        </select>
+        <label for="periodoAnio">Periodo</label>
+      </div>
+      <div class="container-btn">
+        <button class="btn btn-primary btn-size" (click)="validarFormSearch()" type="button">
+          <i class="fa fa-line-chart" aria-hidden="true"></i> Generar reporte
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

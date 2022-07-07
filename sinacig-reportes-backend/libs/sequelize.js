@@ -9,10 +9,14 @@ const sequelize = new Sequelize(
     host: config.dbHost,
     dialect: 'mssql',
     logging: true, // aca se puede cambiar los mensajes por consola de sequelize
+    pool: {
+      max: 10,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
   }
 );
-
-
 
 sequelize
   .authenticate()

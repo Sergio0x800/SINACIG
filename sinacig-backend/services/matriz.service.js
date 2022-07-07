@@ -5,86 +5,75 @@ const boom = require('@hapi/boom');
 class MatrizService {
   constructor() {}
 
+  //Crear una matriz
   async createMatriz(dataRiesgo) {
-    try {
-      const matrizAgregada = await models.Matriz.create(dataRiesgo);
-      return matrizAgregada;
-    } catch (error) {
-      throw boom.internal('Error al ingresar el registro');
-    }
+    const result = await models.Matriz.create(dataRiesgo);
+    return result;
   }
 
-  async findMatrizById(id_matriz) {
-    const dataMatrizPeriodos = await sequelize.query(
-      `EXEC get_matriz_by_id
-    @id_matriz = ${id_matriz}`
-    );
-    if (dataMatrizPeriodos[0].length === 0) {
-      throw boom.notFound('No hay registros');
-    }
-    return dataMatrizPeriodos[0];
-  }
-
-  async findMatrizByIdForm(id_matriz) {
-    const dataMatrizPeriodos = await sequelize.query(
-      `EXEC get_matriz_by_id_form
-    @id_matriz = ${id_matriz}`
-    );
-    if (dataMatrizPeriodos[0].length === 0) {
-      throw boom.notFound('No hay registros');
-    }
-    return dataMatrizPeriodos[0];
-  }
-
-  async findMatrizByUnidadFecha(unidadE, fechaI, fechaF) {
-    const dataMatrizPeriodos = await sequelize.query(
+  //Encontrar matriz por parametros UE y Fecha
+  async findMatrizByUnidadFecha(queryParams) {
+    const result = await sequelize.query(
       `EXEC sp_get_matriz_by_params
-    @Unidad_Ejecutora = ${unidadE},
-    @FechaI = "${fechaI}",
-    @FechaF = "${fechaF}"`
+      @Unidad_Ejecutora = ${queryParams.id_unidad_ejecutora},
+      @FechaI = "${queryParams.fecha_periodo_inicio}",
+      @FechaF = "${queryParams.fecha_periodo_fin}"`
     );
-    if (dataMatrizPeriodos[0].length === 0) {
+    if (result[0].length === 0) {
       throw boom.notFound('No hay registros');
     }
-    return dataMatrizPeriodos[0];
+    return result[0];
   }
 
-  async deleteMatriz(id_matriz, changes) {
-    const matrizEncontrada = await models.Matriz.findOne({
-      where: { id_matriz: id_matriz },
+  //Encontrar la cantidad de encabezados matriz periodos abiertos
+  async findMatrizPeriodoAbierto(queryParams) {
+    const result = await models.Matriz.findAll({
+      where: {
+        periodo_abierto: 1,
+        fecha_periodo_inicio: queryParams.fecha_inicio,
+        fecha_periodo_fin: queryParams.fecha_fin,
+        estado_registro: 1,
+      },
     });
-    if (matrizEncontrada.length === 0) {
-      throw boom.notFound('No hay registros');
-    }
-    try {
-      const updatedMatriz = await models.Matriz.update(changes, {
-        where: {
-          id_matriz: id_matriz,
-        },
-      });
-      return updatedMatriz;
-    } catch (error) {
-      throw boom.internal('Error al actualizar el registro');
-    }
+    return result.length;
   }
 
-  async updateMatrizPeriodo(id_matriz, changes) {
-    const matrizEncontrada = await models.Matriz.findOne({
-      where: { id_matriz: id_matriz },
-    });
-    if (matrizEncontrada.length === 0) {
+  //Encontrar matriz por id_matriz
+  async findMatrizById(params) {
+    const result = await sequelize.query(
+      `EXEC sp_get_matriz_by_id
+      @id_matriz = ${params.id_matriz}`
+    );
+    if (result[0].length === 0) {
       throw boom.notFound('No hay registros');
     }
-    try {
-      const updateMatriz = await models.Matriz.update(changes, {
+    return result[0];
+  }
+
+  //Actualizar el encabezado matriz periodo
+  async updateMatrizPeriodo(params, body) {
+    const result = await models.Matriz.update(
+      { periodo_abierto: body.estado },
+      {
         where: {
-          id_matriz: id_matriz,
+          id_matriz: params.id_matriz,
         },
-      });
-      return updateMatriz;
-    } catch (error) {
-      throw boom.internal('Error al actualizar el registro');
-    }
+      }
+    );
+    return result;
+  }
+
+  //Eliminar el encabezado matriz periodo
+  async deleteMatriz(params) {
+    const result = await models.Matriz.update(
+      { estado_registro: 0 },
+      {
+        where: {
+          id_matriz: params.id_matriz,
+        },
+      }
+    );
+    return result;
   }
 }
 

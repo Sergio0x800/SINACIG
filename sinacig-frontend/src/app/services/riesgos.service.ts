@@ -21,9 +21,14 @@ export class RiesgosService {
     return result;
   }
 
-  getRiesgoByIdMatriz(id_riesgo: any) {
-    return this.http.get<any>(`${this.apiUrl}/${id_riesgo}`);
+  getRiesgoByIdMatriz(id_riesgo: any, offset: any) {
+    return this.http.get<any>(`${this.apiUrl}/${id_riesgo}/${offset}`);
   }
+
+  getRiesgoByIdMatrizRef() {
+    return this.http.get<any>(`${this.apiUrl}/updateRef`);
+  }
+
   getRiesgoById(id_riesgo: any) {
     return this.http.get<any>(`${this.apiUrl}/search/${id_riesgo}`);
   }
@@ -31,10 +36,14 @@ export class RiesgosService {
   deleteRiesgo(id_riesgo: any) {
     return this.http.patch<any>(`${this.apiUrl}/${id_riesgo}`, { estado_registro: 0 });
   }
+  deleteRiesgoByIdMatriz(id_matriz: any) {
+    return this.http.patch<any>(`${this.apiUrl}/matriz/${id_matriz}`, { estado_registro: 0 });
+  }
   ///update service riesgo
   updateRiesgo(id_riesgo: any, data: any) {
     return this.http.patch<any>(`${this.apiUrl}/update/${id_riesgo}`, data);
   }
+
   getRiesgoToEdit(id_riesgo: any) {
     return this.http.get<any>(`${this.apiUrl}/update/${id_riesgo}`);
   }

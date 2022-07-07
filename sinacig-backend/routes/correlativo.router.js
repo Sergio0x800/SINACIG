@@ -18,9 +18,8 @@ router.post('/', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   try {
-    const { id_matriz, id_tipo_objetivo } = req.query;
+    const { id_tipo_objetivo } = req.query;
     const correlativo = await correlativoService.findCorrelativo(
-      id_matriz,
       id_tipo_objetivo
     );
     res.json(correlativo);

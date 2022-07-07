@@ -9,7 +9,7 @@ const ControlInternoSchema = {
     primaryKey: true,
     type: DataTypes.INTEGER,
   },
-  id_riesgo_plan_trabajo: {
+  id_riesgo: {
     allowNull: false,
     type: DataTypes.INTEGER,
   },

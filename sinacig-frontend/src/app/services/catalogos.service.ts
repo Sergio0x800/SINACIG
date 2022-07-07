@@ -14,9 +14,20 @@ export class CatalogosService {
   getUnidadEjecutora() {
     return this.http.get<any>(this.apiUrl + '/unidad_ejecutora');
   }
+  getUnidadEjecutoraById(id_unidad: any) {
+    return this.http.get<any>(this.apiUrl + '/unidad_ejecutoraById/' + id_unidad);
+  }
+  getRoles() {
+    return this.http.get<any>(this.apiUrl + '/roles');
+  }
   getPeriodos() {
     return this.http.get<any>(this.apiUrl + '/periodos');
   }
+
+  cerrarPeriodo(id_periodo: any) {
+    return this.http.patch<any>(`${this.apiUrl}/periodos/${id_periodo}`, { cierre_periodo: 0 });
+  }
+
   getTipoObjetivo() {
     return this.http.get<any>(this.apiUrl + '/tipo_objetivo')
   }

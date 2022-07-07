@@ -17,6 +17,31 @@ class CatalogosService {
     return dataUnidad;
   }
 
+  async findUnidadEjecutoraByCodigo(id_unidad) {
+    const dataUnidad = await models.Unidad.findOne({
+      where: {
+        id_unidad_ejecutora: id_unidad,
+        estado_registro: 1,
+      },
+    });
+    if (dataUnidad.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return [dataUnidad];
+  }
+
+  async findRoles() {
+    const dataRoles = await models.Rol.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+    if (dataRoles.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataRoles;
+  }
+
   async findControlMitigador() {
     const dataControl = await models.ControlMitigador.findAll({
       where: {
@@ -59,6 +84,21 @@ class CatalogosService {
       throw boom.notFound('No hay registros');
     }
     return periodos[0];
+  }
+
+  async cerrarPeriodo(id_periodo, changes) {
+    const periodos = await models.Periodos.update(changes, {
+      where: {
+        id_periodo: id_periodo,
+      },
+    });
+
+    const periodo = await models.Periodos.findOne({
+      where: {
+        id_periodo: id_periodo,
+      },
+    });
+    return periodo;
   }
 
   async findAreaEvaluada() {

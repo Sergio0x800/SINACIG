@@ -1,0 +1,54 @@
+.container-matriz {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.matriz-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  padding-top: 50px;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;
+}
+
+.inputs-matriz-periodo {
+  display: grid;
+  grid-template-columns:  minmax(1fr);
+  gap: 20px;
+}
+
+.container-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-size {
+  width: 245px;
+}
+
+@media only screen and (max-width: 840px) {
+  .inputs-select-styles {
+    width: 300px;
+  }
+  .container-btn {
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .container-btn > button {
+    margin: 0;
+    width: 300px;
+  }
+  .matriz-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

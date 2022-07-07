@@ -46,3 +46,14 @@ h2 {
 //   background-color: black;
 //   color: black;
 // }
+
+.center-style {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

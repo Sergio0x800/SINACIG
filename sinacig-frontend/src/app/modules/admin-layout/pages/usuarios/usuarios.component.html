@@ -1,0 +1,250 @@
+<div class="container-cards-user-title">
+  <div class="title-btns mb-5">
+    <h2 class="usuario__title">Administración de usuarios:</h2>
+    <div class="btn-table-riesgo">
+      <button class="btn btn-success btn-size mt-3" (click)="limpiarCampos()" data-bs-toggle="modal"
+        data-bs-target="#nuevoUsuarioModal"><i class="fa fa-plus" aria-hidden="true"></i>
+        Nuevo
+        usuario</button>
+    </div>
+  </div>
+
+
+  <form [formGroup]="formFiltroRiesgo">
+    <div class="cards-filter">
+      <div class="cards-filter__title">
+        <h4>Filtros de busqueda</h4>
+      </div>
+
+      <div class="cards-filter__inputs">
+        <select formControlName="unidadFiltro" id="selectRol" name="selectRol"
+          class="form-select cards-filter__inputs_inputs">
+          <option value="-1">TODAS</option>
+          <option *ngFor="let unidad of unidades" [value]="unidad.id_unidad_ejecutora">
+            {{unidad.codigo_unidad+ " - " +unidad.nombre_unidad}}</option>
+        </select>
+        <input formControlName="usuarioFiltro" type="text" class="form-control cards-filter__inputs_inputs"
+          placeholder="Usuario" mask="S*">
+      </div>
+    </div>
+  </form>
+
+
+  <div class="container-cards-center">
+    <div class="container-cards-user">
+      <div class="card card-stats card-user" *ngFor="let u of filtroUsuarios">
+        <div class="card-body">
+          <div class="">
+            <div class="card-info-container">
+              <span class="h4 font-weight-bold mb-0"><i class="fa fa-user"></i> {{ u.usuario }}</span>
+              <span class="text-nowrap mr-2"> {{ u.apellidos }}, {{ u.nombres }}</span>
+              <span class="text-nowrap mr-2"><i class="fa fa-id-card"></i> {{ u.cui }}</span>
+            </div>
+          </div>
+          <div class="container-btns-cards">
+            <div class="">
+              <button class="btn btn-warning btn-size-card btn-editar" (click)="buscarUsuarioParaActualizar(u)">
+                <i class="fas fa-pencil"></i>
+              </button>
+            </div>
+            <div class="">
+              <button class="btn btn-danger btn-size-card btn-editar" (click)="eliminarUsuario(u.id_usuario)">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-labelledby="nuevoUsuarioModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="usuario__title" id="nuevoUsuarioModalLabel">Nuevo usuario</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            id="ingresoUsuarioCloseButton"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="selectRol" class="form-label">Rol<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_rol" id="selectRol" name="selectRol" class="form-select">
+                  <option value="-1">- Seleccione una Opción -</option>
+                  <option *ngFor="let rol of roles" [value]="rol.id_rol">
+                    {{rol.descripcion}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Usuario<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="usuario" type="text" class="form-control" placeholder="Usuario" mask="S*">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="password" type="password" class="form-control" placeholder="Contraseña">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Confirmar Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cpassword" type="password" class="form-control" placeholder="Confirmar Contraseña">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Nombres<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="nombres" type="text" class="form-control" placeholder="Usuario"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Apellidos<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="apellidos" type="text" class="form-control" placeholder="Apellidos"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="selectUnidad" class="form-label">Unidad ejecutora<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_unidad_ejecutora" id="selectUnidad" name="selectUnidad" class="form-select">
+                  <option value="-1">- Seleccione una Opción -</option>
+                  <option *ngFor="let unidad of unidades" [value]="unidad.id_unidad_ejecutora">
+                    {{unidad.codigo_unidad+ " - " +unidad.nombre_unidad}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">CUI/DPI<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cui" type="text" class="form-control" placeholder="CUI/DPI" mask="0{13}">
+              </div>
+            </div>
+
+            <!-- <div class="col-md-6">
+              <button type="submit" class="btn btn-primary btn-block" (click)="nuevoUsuario()"> Registrar Usuario
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button type="submit" class="btn btn-danger btn-block" data-bs-dismiss="modal"> Regresar </button>
+            </div> -->
+
+            <div class="btns-modal mt-5">
+              <div class="btns-modal-container">
+                <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"><i class="fa fa-ban"
+                    aria-hidden="true"></i> Cancelar</button>
+                <button type="button" class="btn btn-primary btn-size" (click)="nuevoUsuario()"><i class="fa fa-plus"
+                    aria-hidden="true"></i>
+                  Agregar</button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button [hidden]="true" id="mostrarModalEditar" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal"></button>
+
+  <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="editarUsuarioModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="usuario__title" id="editarUsuarioModalLabel">Editar usuario</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            id="editarUsuarioCloseButton"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="selectRol" class="form-label">Rol<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_rol" id="selectRol" name="selectRol" class="form-select">
+                  <option *ngFor="let rol of roles" [value]="rol.id_rol">
+                    {{rol.descripcion}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Usuario<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="usuario" type="text" class="form-control" placeholder="Usuario" mask="S*" disabled>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="password" type="password" class="form-control" placeholder="***********">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Confirmar Contraseña<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cpassword" type="password" class="form-control" placeholder="***********">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Nombres<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="nombres" type="text" class="form-control" placeholder="Usuario"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Apellidos<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="apellidos" type="text" class="form-control" placeholder="Apellidos"
+                  [dropSpecialCharacters]="false" mask="S* S* S* S* S*">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="selectUnidadE" class="form-label">Unidad ejecutora<span class="obligatorio">*</span></label>
+                <select [(ngModel)]="id_unidad_ejecutora" id="selectUnidadE" name="selectUnidadE" class="form-select">
+                  <option *ngFor="let unidad of unidades" [value]="unidad.id_unidad_ejecutora">
+                    {{unidad.codigo_unidad + ' - ' + unidad.nombre_unidad}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">CUI/DPI<span class="obligatorio">*</span></label>
+                <input [(ngModel)]="cui" type="text" class="form-control" placeholder="CUI/DPI" mask="0{13}">
+              </div>
+            </div>
+
+
+            <div class="btns-modal mt-5">
+              <div class="btns-modal-container">
+                <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"><i class="fa fa-ban"
+                    aria-hidden="true"></i> Cancelar</button>
+                <button type="button" class="btn btn-primary btn-size" (click)="actualizarUsuario()"><i
+                    class="fa fa-pencil" aria-hidden="true"></i>
+                  Actualizar</button>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-md-6">
+              <button type="button" class="btn btn-primary btn-block" (click)="actualizarUsuario()"> Actualizar Usuario
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-danger btn-block" data-bs-dismiss="modal"> Regresar </button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,100 +1,110 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+
 const MatrizService = require('../services/matriz.service');
+const { checkRoles } = require('../middlewares/auth.handler');
 
 const matrizService = new MatrizService();
 
-router.post('/', async (req, res, next) => {
-  try {
-    const dataMatriz = req.body;
-    // const dataMatrizFixed = {
-    //   ...dataMatriz,
-    //   id_unidad_ejecutora: parseInt(dataMatriz.id_unidad_ejecutora),
-    // };
-    const matrizAdded = await matrizService.createMatriz(dataMatriz);
-    res.json(matrizAdded);
-  } catch (error) {
-    next(error);
+//crear encabezado matriz periodos
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const result = await matrizService.createMatriz(body);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-router.get('/', async (req, res, next) => {
-  try {
-    const { id_unidad_ejecutora, fecha_periodo_inicio, fecha_periodo_fin } =
-      req.query;
-    const matrizPeriodos = await matrizService.findMatrizByUnidadFecha(
-      id_unidad_ejecutora,
-      fecha_periodo_inicio,
-      fecha_periodo_fin
-    );
-    res.json(matrizPeriodos);
-  } catch (error) {
-    next(error);
+//buscar encabezado matriz periodos por parametros
+router.get(
+  '/byParams',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2),
+  async (req, res, next) => {
+    try {
+      const queryParams = req.query;
+      const result = await matrizService.findMatrizByUnidadFecha(queryParams);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-router.get('/form/:id_matriz', async (req, res, next) => {
-  try {
-    const { id_matriz } = req.params;
-    const matrizPeriodos = await matrizService.findMatrizByIdForm(id_matriz);
-    res.json(matrizPeriodos);
-  } catch (error) {
-    next(error);
+//Encontrar encabezados matriz periodos con periodos abiertos
+router.get(
+  '/periodoAbierto',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2),
+  async (req, res, next) => {
+    const queryParams = req.query;
+    try {
+      const result = await matrizService.findMatrizPeriodoAbierto(queryParams);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-router.get('/update/:id_matriz', async (req, res, next) => {
-  try {
-    const { id_matriz } = req.params;
-    const matrizPeriodos = await matrizService.findMatrizById(id_matriz);
-    res.json(matrizPeriodos);
-  } catch (error) {
-    next(error);
+//buscar encabezado matriz periodos por id_matriz
+router.get(
+  '/:id_matriz',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2),
+  async (req, res, next) => {
+    try {
+      const params = req.params;
+      const matrizPeriodos = await matrizService.findMatrizById(params);
+      res.json(matrizPeriodos);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-router.patch('/update/:id_matriz', async (req, res, next) => {
-  try {
-    const { id_matriz } = req.params;
-    const dataMatriz = req.body;
-    const updatedMatriz = await matrizService.updateMatrizPeriodo(
-      id_matriz,
-      dataMatriz
-    );
-    res.json(updatedMatriz);
-  } catch (error) {
-    next(error);
+//Modificar encabezados matriz periodos
+router.patch(
+  '/update/:id_matriz',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1),
+  async (req, res, next) => {
+    try {
+      const params = req.params;
+      const body = req.body;
+      const updatedMatriz = await matrizService.updateMatrizPeriodo(
+        params,
+        body
+      );
+      res.json(updatedMatriz);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-router.patch('/:id_matriz', async (req, res, next) => {
-  try {
-    const { id_matriz } = req.params;
-    const dataMatriz = req.body;
-    const updatedMatriz = await matrizService.deleteMatriz(
-      id_matriz,
-      dataMatriz
-    );
-    res.json(updatedMatriz);
-  } catch (error) {
-    next(error);
+//Eliminacion encabezado matriz periodos
+router.patch(
+  '/:id_matriz',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1),
+  async (req, res, next) => {
+    try {
+      const params = req.params;
+      const result = await matrizService.deleteMatriz(params);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
-
-// router.patch('/:id_recurso', async (req, res, next) => {
-//   try {
-//     const { id_recurso } = req.params;
-//     const dataRecurso = req.body;
-//     const updateRecurso = await recursosService.deleteRecurso(
-//       id_recurso,
-//       dataRecurso
-//     );
-//     res.json({
-//       updateRecurso,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+);
 
 module.exports = router;

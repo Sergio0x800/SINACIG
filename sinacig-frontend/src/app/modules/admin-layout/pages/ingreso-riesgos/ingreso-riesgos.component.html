@@ -1,0 +1,226 @@
+<div class="container-encabezado">
+  <div class="container-info-periodo">
+    <div class="title-position">
+      <h2 class="matriz-form__title">Periodo evaluado</h2>
+    </div>
+    <div class="container-cards-periodo">
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Unidad Ejecutora:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{concatCodigoUnidad}}
+        </div>
+      </div>
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Fecha inicio:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{matrizEncontrada.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}
+        </div>
+      </div>
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Fecha fin:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{matrizEncontrada.fecha_periodo_fin | date: 'dd/MM/yyyy'}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-body-riesgo">
+  <div class="container_form_riesgos">
+    <form [formGroup]="formCreateRiesgo">
+      <div class="container-inputs-ingresoRiesgo">
+        <h2 class="matriz-form__title">Ingreso de riesgo</h2>
+        <div class="objetivo-area-container">
+          <div class="form-floating">
+            <select class="form-select is-valid" id="inputTipoObjetivo" aria-label="inputTipoObjetivo" [ngClass]="{
+              'is-invalid': tipoObjetivoInvalid,
+              'is-valid': tipoObjetivoValid
+            }" formControlName="id_tipo_objetivo">
+              <option *ngFor="let tipoObjetivo of tipoObjetivos" [value]="tipoObjetivo.id_tipo_objetivo">
+                {{tipoObjetivo.descripcion}}</option>
+            </select>
+            <label for="inputTipoObjetivo">Tipo de objetivo</label>
+            <div *ngIf="tipoObjetivoInvalid" class="invalid-feed">
+              Por favor ingresa un tipo de objetivo
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select" id="inputArea" aria-label="inputArea" formControlName="id_area_evaluada"
+              [ngClass]="{
+              'is-invalid': areaEvaluadaInvalid,
+              'is-valid': areaEvaluadaValid
+            }">
+              <option *ngFor="let area of areas_evaluadas" [value]="area.id_area_evaluada">
+                {{area.descripcion}}</option>
+            </select>
+            <label for="inputArea">Área evaluada</label>
+            <div *ngIf="areaEvaluadaInvalid" class="invalid-feed">
+              Por favor ingresa un área
+            </div>
+          </div>
+        </div>
+        <div class="form-floating">
+          <textarea maxlength="500" class="form-control" formControlName="id_eventos_identificados" [ngClass]="{
+            'is-invalid': eventosIdentificadosInvalid,
+            'is-valid': eventosIdentificadosValid
+          }" placeholder="Ingresa los eventos aqui" id="inputEventos" style="height: 130px"></textarea>
+          <label for="inputEventos">Eventos identificados</label>
+          <div *ngIf="eventosIdentificadosInvalid" class="invalid-feed">
+            Por favor ingresa un evento
+          </div>
+        </div>
+        <div class="form-floating">
+          <textarea maxlength="500" class="form-control" formControlName="descripcion_riesgo"
+            placeholder="Ingresa la descripción aqui" id="descripcionRiesgo" style="height: 130px" [ngClass]="{
+              'is-invalid': descripcionRiesgoInvalid,
+              'is-valid': descripcionRiesgoValid
+            }"></textarea>
+          <label for="descripcionRiesgo">Descripción de riesgo</label>
+          <div *ngIf="descripcionRiesgoInvalid" class="invalid-feed">
+            Por favor ingresa un riesgo
+          </div>
+        </div>
+        <div class="double-inputs-form">
+          <div class="form-floating">
+            <select class="form-select" id="inputProbabilidad" aria-label="inputProbabilidad" [ngClass]="{
+              'is-invalid': probabilidadInvalid,
+              'is-valid': probabilidadValid
+            }" formControlName="id_probabilidad">
+              <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+                {{probabilidad.nivel_probabilidad}}</option>
+            </select>
+            <label for="inputProbabilidad">Probabilidad</label>
+            <div *ngIf="probabilidadInvalid" class="invalid-feed">
+              Por favor ingresa un valor
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select" id="inputSeveridad" aria-label="inputSeveridad" formControlName="id_severidad"
+              [ngClass]="{
+              'is-invalid': severidadInvalid,
+              'is-valid': severidadValid
+            }">
+              <option *ngFor="let severidad of severidades" [value]="severidad.id_severidad">
+                {{severidad.nivel_severidad}}</option>
+            </select>
+            <label for="inputSeveridad">Severidad</label>
+            <div *ngIf="severidadInvalid" class="invalid-feed">
+              Por favor ingresa un valor
+            </div>
+          </div>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="riesgoRI" [value]="resultadoRI" [disabled]="true">
+            <label for="riesgoRI">Riesgo Inherente (RI)</label>
+          </div>
+          <div class="form-floating">
+            <select
+              *ngIf="formCreateRiesgo.get('id_probabilidad')?.dirty && formCreateRiesgo.get('id_severidad')?.dirty; else elseControlMitigador"
+              class="form-select" [ngClass]="{
+                  'is-invalid': controlMitigadorInvalid,
+                  'is-valid': controlMitigadorValid
+                }" id="valorMitigador" aria-label="valorMitigador" formControlName="id_control_mitigador">
+              <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+                {{probabilidad.nivel_probabilidad}}</option>
+            </select>
+            <ng-template #elseControlMitigador>
+              <input type="number" class="form-control" [value]="0" [disabled]="true">
+            </ng-template>
+            <label for="valorMitigador" class="">Control Mitigador</label>
+            <div *ngIf="controlMitigadorInvalid" class="invalid-feed">
+              Por favor ingresa un valor
+            </div>
+          </div>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="riesgoRR" [value]="resultadoRR" [disabled]="true">
+            <label for="riesgoRR">Riesgo Residual (RR)</label>
+          </div>
+          <div class="form-floating">
+            <input type="text" id="inputMedida" [value]="medidaRiesgoInput" [disabled]="true" [ngClass]="{
+              'form-control-bg': true,
+              'form-control': true,
+              'tolerable': medidaRiesgoEncontrado.id_medida_riesgo === 1,
+              'gestionable': medidaRiesgoEncontrado.id_medida_riesgo === 2,
+              'noTolerable': medidaRiesgoEncontrado.id_medida_riesgo === 3
+            }" class="form-control">
+            <label for="inputMedida">Medida de Riesgo</label>
+          </div>
+        </div>
+        <div>
+          <form [formGroup]="formCreateControlInterno">
+            <div class="form-floating container-btn-control">
+              <button [disabled]="formCreateControlInterno.invalid" type="button" class="btn btn-success btn-float"
+                (click)="pushControlInterno()">+</button>
+              <textarea maxlength="500" class="form-control" formControlName="descripcion" [ngClass]="{
+                'is-invalid': descripcionControlInvalid,
+                'is-valid': descripcionControlValid
+              }" placeholder="Ingresa los controles internos aqui" id="inputDescripcionInterno"
+                style="height: 130px"></textarea>
+              <label for="txt_observaciones">Controles internos para mitigar</label>
+              <div *ngIf="descripcionControlInvalid" class="invalid-feed">
+                Por favor ingresa al menos un control interno
+              </div>
+            </div>
+          </form>
+
+
+
+
+
+
+
+          <div *ngIf="controlInternoMemory.length > 0" class="table-matriz-edit mt-3">
+            <div class="table-body-matriz-edit" *ngFor="let controlInt of controlInternoMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteControlInterno(controlInt.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{controlInt.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="controlInternoMemory.length > 0" class="table-responsive table-hover">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let controlInt of controlInternoMemory">
+                  <th scope="row th-display">
+                    <div class="btn-delete">
+                      <button class="btn btn-sm btn-danger" (click)="deleteControlInterno(controlInt.descripcion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </th>
+                  <td class="pt-3 text-dark">
+                    <div class="select-control-mitigador">
+                      {{controlInt.descripcion}}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        </div>
+        <div class="form-floating">
+          <textarea maxlength="500" class="form-control" formControlName="observaciones"
+            placeholder="Ingresa las observaciones aqui" id="txt_observaciones" style="height: 130px"></textarea>
+          <label for="txt_observaciones">Observaciones</label>
+        </div>
+      </div>
+      <div class="container-btn-ingreso mt-5">
+        <button type="button" class="btn btn-danger btn-size" [routerLink]="routerLinkRiesgo"><i class="fa fa-ban"
+            aria-hidden="true"></i> Cancelar</button>
+        <button (click)="validarFormularioRiesgo()" type="button" class="btn btn-primary btn-size"><i
+            class="fa fa-arrow-right" aria-hidden="true"></i> Plan de
+          trabajo</button>
+      </div>
+    </form>
+  </div>
+</div>
