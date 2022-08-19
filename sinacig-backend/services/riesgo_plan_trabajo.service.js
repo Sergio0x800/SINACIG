@@ -6,25 +6,8 @@ class RiesgoPlanTrabajoService {
   constructor() {}
 
   async createRiesgoPlanTrabajo(dataRiesgoPlanTrabajo) {
-    try {
-      const riesgoPlanTrabajoAdded = await models.PlanTrabajo.create(
-        dataRiesgoPlanTrabajo
-      );
-      return riesgoPlanTrabajoAdded.dataValues;
-    } catch (error) {
-      throw `${error}`;
-    }
-  }
-
-  async findPlanTrabajoByIdRiesgo(id_riesgo) {
-    const dataPlanes = await sequelize.query(
-      `EXEC sp_get_planes_trabajo_by_riesgo
-    @Id_riesgo = ${id_riesgo}`
-    );
-    if (dataPlanes[0].length === 0) {
-      throw boom.notFound('No hay registros');
-    }
-    return dataPlanes[0];
+    const result = await models.PlanTrabajo.create(dataRiesgoPlanTrabajo);
+    return result.dataValues;
   }
 
   async findExistenciaPlanTrabajo(id_matriz) {
@@ -38,23 +21,34 @@ class RiesgoPlanTrabajoService {
     return result[0];
   }
 
+  async findPlanTrabajoByIdD(id_plan) {
+    const result = await models.PlanTrabajo.findByPk(id_plan);
+    if (result.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return result;
+  }
+
+  async findPlanTrabajoByIdRiesgo(id_riesgo) {
+    const result = await sequelize.query(
+      `EXEC sp_get_planes_trabajo_by_riesgo
+    @Id_riesgo = ${id_riesgo}`
+    );
+    if (result[0].length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return result[0];
+  }
+
   async findPlanTrabajoByIdSP(id_plan) {
-    const dataPlanes = await sequelize.query(
+    const result = await sequelize.query(
       `EXEC sp_get_planes_trabajo_by_id
     @Id_riesgo = ${id_plan}`
     );
-    if (dataPlanes[0].length === 0) {
+    if (result[0].length === 0) {
       throw boom.notFound('No hay registros');
     }
-    return dataPlanes[0];
-  }
-
-  async findPlanTrabajoByIdD(id_plan) {
-    const dataPlanes = await models.PlanTrabajo.findByPk(id_plan);
-    if (dataPlanes.length === 0) {
-      throw boom.notFound('No hay registros');
-    }
-    return dataPlanes;
+    return result[0];
   }
 
   async updatePlan(id_plan, changes) {
@@ -86,29 +80,16 @@ class RiesgoPlanTrabajoService {
 
   async deletePlanTrabajoByIdRiesgo(id_riesgo, changes) {
     try {
-      const planTrabajo = await models.PlanTrabajo.update(changes, {
+      const result = await models.PlanTrabajo.update(changes, {
         where: {
           id_riesgo: id_riesgo,
         },
       });
-      return planTrabajo;
+      return result;
     } catch (error) {
       throw boom.internal('Error al actualizar el registro');
     }
   }
-
-  // async RiesgoPlanTrabajo(unidad, fechaI, fechaF) {
-  //   const dataRiesgosEncontrados = await sequelize.query(
-  //     `EXEC sp_get_riesgos_by_fecha
-  //   @Unidad_Ejecutora = ${unidad},
-  //   @FechaI = "${fechaI}",
-  //   @FechaF = "${fechaF}"`
-  //   );
-  //   if (dataRiesgosEncontrados[0].length === 0) {
-  //     throw boom.notFound('No hay registros');
-  //   }
-  //   return dataRiesgosEncontrados[0];
-  // }
 }
 
 module.exports = RiesgoPlanTrabajoService;
