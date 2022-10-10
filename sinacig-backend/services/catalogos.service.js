@@ -16,6 +16,29 @@ class CatalogosService {
     }
     return dataUnidad;
   }
+  async findFrecuenciaMonitoreo() {
+    const dataFrecuencia = await models.FrecuenciaMonitoreo.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+
+    if (dataFrecuencia.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataFrecuencia;
+  }
+  async findNivelTolerancia() {
+    const dataNiveles = await models.NivelTolerancia.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+    if (dataNiveles.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataNiveles;
+  }
 
   async findUnidadEjecutoraByCodigo(id_unidad) {
     const dataUnidad = await models.Unidad.findOne({

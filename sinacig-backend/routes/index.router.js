@@ -11,6 +11,8 @@ const matrizRouter = require('./matriz.router');
 const correlativoRouter = require('./correlativo.router');
 const authRouter = require('./auth.router');
 const logRouter = require('./logs.router');
+const matrizContinuidad = require('./matriz_continuidad.router');
+const monitoreo = require('./monitoreo.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -27,6 +29,8 @@ function routerApi(app) {
   router.use('/correlativo', correlativoRouter);
   router.use('/auth', authRouter);
   router.use('/log', logRouter);
+  router.use('/matriz_continuidad', matrizContinuidad);
+  router.use('/metodo_monitoreo', monitoreo);
 }
 
 module.exports = routerApi;

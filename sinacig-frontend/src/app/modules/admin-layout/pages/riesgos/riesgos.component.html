@@ -14,12 +14,12 @@
   <div class="tabla-res">
     <div *ngIf="showTablePlanesTrabajo" class="table-matriz mt-5">
       <div class="table-header-matriz">
-        <div class="header-title">Opciones</div>
+        <div class="header-title">Editar</div>
         <div class="header-title">Descripción</div>
         <div class="header-title">R.I</div>
         <div class="header-title">R.R</div>
         <div class="header-title">Medida riesgo</div>
-        <div class="header-title">Plan asignado</div>
+        <div class="header-title">Plan</div>
       </div>
       <div class="table-body-matriz" *ngFor="let riesgo of riesgos">
         <div>
@@ -45,10 +45,21 @@
           'noTolerable': riesgo.medida_riesgo === 'No Tolerable'
         }"><span class="riesgo-descripcion-style">{{ riesgo.medida_riesgo }}</span>
         </div>
-        <div>
+        <div class="btns-plan-continuidad">
           <button class="btn btn_primary bg-primary btn-sm btn-plan-search" data-bs-toggle="modal"
             data-bs-target="#planModal" (click)="editPlanTrabajoControlesRecursos(riesgo.id_riesgo)">Ver plan</button>
+
+
+
+          <!-- <button class="btn btn_primary bg-primary btn-sm btn-plan-search" data-bs-toggle="modal"
+            data-bs-target="#planModal"
+            (click)="editPlanTrabajoControlesRecursos(riesgo.id_riesgo)">Continuidad</button> -->
         </div>
+        <!-- <div>
+          <button class="btn btn_primary bg-primary btn-sm btn-plan-search" data-bs-toggle="modal"
+            data-bs-target="#planModal"
+            (click)="editPlanTrabajoControlesRecursos(riesgo.id_riesgo)">Continuidad</button>
+        </div> -->
       </div>
     </div>
   </div>

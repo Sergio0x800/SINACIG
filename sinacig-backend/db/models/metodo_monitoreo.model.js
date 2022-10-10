@@ -1,19 +1,19 @@
 const { Model, DataTypes } = require('sequelize');
 
-const SEVERIDAD_TABLE = 'tc_severidad';
+const MONITOREO_TABLE = 'tt_detalle_monitoreo';
 
-const SeveridadSchema = {
-  id_severidad: {
+const MonitoreoSchema = {
+  id_detalle_monitoreo: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER,
   },
-  nivel_severidad: {
-    allowNull: true,
+  id_riesgo_continuidad: {
+    allowNull: false,
     type: DataTypes.INTEGER,
   },
-  descripcion: {
+  descripcion_monitoreo: {
     allowNull: true,
     type: DataTypes.STRING,
   },
@@ -21,9 +21,17 @@ const SeveridadSchema = {
     allowNull: true,
     type: DataTypes.INTEGER,
   },
+  usuario_registro: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+  },
+  fecha_registro: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
 };
 
-class Severidad extends Model {
+class Monitoreo extends Model {
   static associate() {
     // associate
   }
@@ -31,14 +39,14 @@ class Severidad extends Model {
   static config(sequelize) {
     return {
       sequelize,
-      tableName: SEVERIDAD_TABLE,
-      modelName: 'Severidad',
+      tableName: MONITOREO_TABLE,
+      modelName: 'Monitoreo',
       timestamps: false,
     };
   }
 }
 
 module.exports = {
-  Severidad, //modelo
-  SeveridadSchema, //, esquema
+  Monitoreo, //modelo
+  MonitoreoSchema, //, esquema
 };

@@ -1,16 +1,12 @@
 const { Model, DataTypes } = require('sequelize');
 
-const SEVERIDAD_TABLE = 'tc_severidad';
+const NIVEL_TOLERANCIA = 'tc_nivel_tolerancia';
 
-const SeveridadSchema = {
-  id_severidad: {
+const NivelToleranciaSchema = {
+  id_nivel_tolerancia: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
-  },
-  nivel_severidad: {
-    allowNull: true,
     type: DataTypes.INTEGER,
   },
   descripcion: {
@@ -23,7 +19,7 @@ const SeveridadSchema = {
   },
 };
 
-class Severidad extends Model {
+class NivelTolerancia extends Model {
   static associate() {
     // associate
   }
@@ -31,14 +27,14 @@ class Severidad extends Model {
   static config(sequelize) {
     return {
       sequelize,
-      tableName: SEVERIDAD_TABLE,
-      modelName: 'Severidad',
+      tableName: NIVEL_TOLERANCIA,
+      modelName: 'NivelTolerancia',
       timestamps: false,
     };
   }
 }
 
 module.exports = {
-  Severidad, //modelo
-  SeveridadSchema, //, esquema
+  NivelTolerancia, //modelo
+  NivelToleranciaSchema, //, esquema
 };

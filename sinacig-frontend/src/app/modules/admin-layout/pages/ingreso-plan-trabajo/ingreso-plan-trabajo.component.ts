@@ -133,7 +133,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(param => {
       this.id_riesgo = param.get('id_riesgo');
-      this.id_matriz = param.get('id_matriz')
+      this.id_matriz = param.get('id_matriz');
       this.linkPlan = `/admin/riesgos/${this.id_matriz}`
       this.riesgosService.getRiesgoById(this.id_riesgo).subscribe(riesgoObtenido => {
         this.riesgo = riesgoObtenido[0]
@@ -243,10 +243,6 @@ export class IngresoPlanTrabajoComponent implements OnInit {
     this.planRiesgoService.createPlanRiesgo(newRiesgoPlan).subscribe((value) => {
       this.id_riesgo_plan_trabajo = value;
 
-
-
-
-
       this.recursosMemory.map((recursosObt: any) => {
         const recursos = {
           ...recursosObt,
@@ -268,23 +264,6 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         })
       })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       this.controlImplementacionMemory.map((controlObt: any) => {
         const newControlesImp = {
           ...controlObt,
@@ -294,17 +273,18 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         this.planRiesgoService.createControlImplementacion(newControlesImp).subscribe(value => {
         })
       })
-      this.router.navigate(['/admin/riesgos/', this.id_matriz]);
-      Swal.fire({
-        title: '¡El registro se guardó correctamente!',
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar',
-      }).then((result) => {
-        if (result.isConfirmed) {
+      this.router.navigate(['/admin/ingreso-continuidad', this.id_riesgo, this.id_matriz]);
+      // this.router.navigate(['/admin/riesgos/', this.id_matriz]);
+      // Swal.fire({
+      //   title: '¡El registro se guardó correctamente!',
+      //   icon: 'success',
+      //   confirmButtonColor: '#3085d6',
+      //   confirmButtonText: 'Aceptar',
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
 
-        }
-      })
+      //   }
+      // })
     })
   }
 

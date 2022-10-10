@@ -27,6 +27,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
 import { PeriodosComponent } from './pages/periodos/periodos.component';
+import { ContinuidadComponent } from './pages/continuidad/continuidad.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { PeriodosComponent } from './pages/periodos/periodos.component';
     LayoutComponent,
     SidebarComponent,
     NavbarComponent,
-    PeriodosComponent
+    PeriodosComponent,
+    ContinuidadComponent
   ],
   imports: [
     AdminLayoutRoutingModule,

@@ -1,5 +1,13 @@
 const { Unidad, UnidadSchema } = require('./catalogosModels/unidad.model');
 const {
+  FrecuenciaMonitoreo,
+  FrecuenciaMonitoreoSchema,
+} = require('./catalogosModels/frecuenciaMonitoreo.model');
+const {
+  NivelTolerancia,
+  NivelToleranciaSchema,
+} = require('./catalogosModels/nivelTolerancia.model');
+const {
   TipoObjetivo,
   TipoObjetivoSchema,
 } = require('./catalogosModels/tipoObjetivos.model');
@@ -39,6 +47,11 @@ const {
   PlanTrabajoSchema,
 } = require('./riesgo_plan_trabajo.model');
 const {
+  MatrizContinuidad,
+  MatrizContinuidadSchema,
+} = require('./matriz_continuidad.model');
+const { Monitoreo, MonitoreoSchema } = require('./metodo_monitoreo.model');
+const {
   ControlInterno,
   ControlInternoSchema,
 } = require('./riesgo_control_interno.model');
@@ -62,6 +75,14 @@ const { Usuario, UsuarioSchema } = require('./usuario.model');
 
 function setupModels(sequelize) {
   Unidad.init(UnidadSchema, Unidad.config(sequelize));
+  FrecuenciaMonitoreo.init(
+    FrecuenciaMonitoreoSchema,
+    FrecuenciaMonitoreo.config(sequelize)
+  );
+  NivelTolerancia.init(
+    NivelToleranciaSchema,
+    NivelTolerancia.config(sequelize)
+  );
   TipoObjetivo.init(TipoObjetivoSchema, TipoObjetivo.config(sequelize));
   Severidad.init(SeveridadSchema, Severidad.config(sequelize));
   AreaEvaluada.init(AreaEvaluadaSchema, AreaEvaluada.config(sequelize));
@@ -69,6 +90,11 @@ function setupModels(sequelize) {
   Medida.init(MedidaRiesgoSchema, Medida.config(sequelize));
   Riesgo.init(RiesgoSchema, Riesgo.config(sequelize));
   PlanTrabajo.init(PlanTrabajoSchema, PlanTrabajo.config(sequelize));
+  MatrizContinuidad.init(
+    MatrizContinuidadSchema,
+    MatrizContinuidad.config(sequelize)
+  );
+  Monitoreo.init(MonitoreoSchema, Monitoreo.config(sequelize));
   Prioridad.init(PrioridadSchema, Prioridad.config(sequelize));
   Periodos.init(PeriodosSchema, Periodos.config(sequelize));
   Rol.init(RolSchema, Rol.config(sequelize));

@@ -13,6 +13,25 @@ router.get('/unidad_ejecutora', async (req, res, next) => {
   }
 });
 
+router.get('/nivel_tolerancia', async (req, res, next) => {
+  try {
+    const nivel_tolerancia = await catalogosServiceI.findNivelTolerancia();
+    res.json(nivel_tolerancia);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/frecuencia_monitoreo', async (req, res, next) => {
+  try {
+    const frecuencias_monitoreo =
+      await catalogosServiceI.findFrecuenciaMonitoreo();
+    res.json(frecuencias_monitoreo);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/unidad_ejecutoraByid/:id_unidad', async (req, res, next) => {
   try {
     const { id_unidad } = req.params;

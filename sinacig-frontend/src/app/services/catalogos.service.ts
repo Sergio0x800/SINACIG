@@ -14,6 +14,12 @@ export class CatalogosService {
   getUnidadEjecutora() {
     return this.http.get<any>(this.apiUrl + '/unidad_ejecutora');
   }
+  getFrecuenciaMonitoreo() {
+    return this.http.get<any>(this.apiUrl + '/frecuencia_monitoreo');
+  }
+  getNivelTolerancia() {
+    return this.http.get<any>(this.apiUrl + '/nivel_tolerancia');
+  }
   getUnidadEjecutoraById(id_unidad: any) {
     return this.http.get<any>(this.apiUrl + '/unidad_ejecutoraById/' + id_unidad);
   }

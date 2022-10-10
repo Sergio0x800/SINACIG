@@ -1,0 +1,147 @@
+<div class="container-encabezado">
+  <div class="container-info-riesgo">
+    <div class="title-position">
+      <h2 class="matriz-form__title">Riesgo evaluado</h2>
+    </div>
+    <div class="container-cards-riesgo">
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Descripción:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{riesgo.descripcion_riesgo}}
+        </div>
+      </div>
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Área evaluada:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{riesgo.area_evaluada}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-body-plan">
+  <div class="container_form_plan">
+    <form [formGroup]="formMatrizContinuidad">
+      <div class="container-inputs-ingresoPlan">
+        <h2 class="matriz-form__title">Ingreso de matriz de continuidad</h2>
+
+
+        <div class="form-floating">
+          <textarea maxlength="500" class="form-control" formControlName="subtema" [ngClass]="{
+            'is-invalid': subtemaInvalid,
+            'is-valid': subtemaValid
+          }" placeholder="Ingresa un subtema aquí" id="subtemaTxt" style="height: 130px"></textarea>
+          <label for="subtemaTxt">Subtema matriz de continuidad</label>
+          <div *ngIf="subtemaInvalid" class="invalid-feed">
+            Por favor ingresa un tipo de severidad
+          </div>
+        </div>
+
+
+        <div class="prioridad-puesto">
+          <div class="form-floating">
+            <select class="form-select" id="inputseveridad" aria-label="inputseveridad" [ngClass]="{
+              'is-invalid': severidadInvalid,
+              'is-valid': severidadValid
+            }" formControlName="id_severidad">
+              <option *ngFor="let severidad of severidad" [value]="severidad.id_severidad">
+                {{severidad.descripcion}}</option>
+            </select>
+            <label for="inputseveridad">Severidad</label>
+            <div *ngIf="severidadInvalid" class="invalid-feed">
+              Por favor ingresa un tipo de severidad
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select" id="inputPuesto" aria-label="inputPuesto" [ngClass]="{
+              'is-invalid': puestoInvalid,
+              'is-valid': puestoValid
+            }" formControlName="id_puesto_responsable">
+              <option *ngFor="let puesto of puestos" [value]="puesto.id_puesto_responsable">
+                {{puesto.descripcion}}</option>
+            </select>
+            <label for="inputPuesto">Puesto responsable</label>
+            <div *ngIf="puestoInvalid" class="invalid-feed">
+              Por favor ingresa un puesto
+            </div>
+          </div>
+        </div>
+
+        <div class="prioridad-puesto">
+          <div class="form-floating">
+            <select class="form-select" id="frecuenciaMonitoreo" aria-label="frecuenciaMonitoreo" [ngClass]="{
+              'is-invalid': frecuenciaInvalid,
+              'is-valid': frecuenciaValid
+            }" formControlName="id_frecuencia_monitoreo">
+              <option *ngFor="let frecuencia of frecuenciaMonitoreo" [value]="frecuencia.id_frecuencia_monitoreo">
+                {{frecuencia.descripcion}}</option>
+            </select>
+            <label for="frecuenciaMonitoreo">Frecuencia de Monitoreo</label>
+            <div *ngIf="frecuenciaInvalid" class="invalid-feed">
+              Por favor ingresa un tipo de severidad
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select" id="inputNivelTolerancia" aria-label="inputNivelTolerancia" [ngClass]="{
+              'is-invalid': toleranciaInvalid,
+              'is-valid': toleranciaValid
+            }" formControlName="id_nivel_tolerancia">
+              <option *ngFor="let nivel of nivelTolerancia" [value]="nivel.id_nivel_tolerancia">
+                {{nivel.descripcion}}</option>
+            </select>
+            <label for="inputNivelTolerancia">Nivel de tolerancia</label>
+            <div *ngIf="toleranciaInvalid" class="invalid-feed">
+              Por favor ingresa un nivel de tolerancia
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <!-- Ingreso de Metodos de monitoreo-->
+        <form [formGroup]="formMetodoMonitoreo" class="form-recursos">
+          <h3 class="">Ingreso de metodos de monitoreo</h3>
+          <div class="form-floating container-btn-recursos">
+            <button [disabled]="formMetodoMonitoreo.invalid" type="button" class="btn btn-success btn-float-recursos"
+              (click)="createNewMetodoMonitoreoToMemory()">+</button>
+            <textarea maxlength="500" class="form-control" formControlName="descripcion_monitoreo" [ngClass]="{
+                  'is-invalid': descripcionMetodoMonitoreoInvalid,
+                  'is-valid': descripcionMetodoMonitoreoValid
+                }" placeholder="Ingresa los metodos aquí" id="inputMetodoMonitoreo" style="height: 130px"></textarea>
+            <label for="inputMetodoMonitoreo">Metodos de monitoreo</label>
+            <div *ngIf="metodoMonitoreoMemory.length === 0 && descripcionMetodoMonitoreoInvalid" class="invalid-feed">
+              Por favor ingresa al menos un metodo de monitoreo
+            </div>
+          </div>
+
+          <div *ngIf="showTableMetodoMonitoreo" class="table-matriz-edit">
+            <div class="table-body-matriz-edit" *ngFor="let metodo of metodoMonitoreoMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteMetodoMonitoreoFromMemory(metodo.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style"> {{metodo.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="container-btn-agregar mt-5 mb-5">
+          <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPageRiesgo"><i class="fa fa-ban"
+              aria-hidden="true"></i> Cancelar</button>
+          <button (click)="validarFormContinuidad()" type="button" class="btn btn-primary btn-size"><i
+              class="fa-sharp fa-solid fa-flag-checkered" aria-hidden="true"></i> Finalizar registro</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

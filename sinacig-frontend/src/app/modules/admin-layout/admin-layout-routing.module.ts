@@ -8,6 +8,7 @@ import { MapaRiesgoComponent } from './pages/reports/mapa-riesgo/mapa-riesgo.com
 import { IngresoRiesgosComponent } from './pages/ingreso-riesgos/ingreso-riesgos.component';
 import { RiesgosComponent } from './pages/riesgos/riesgos.component';
 import { IngresoPlanTrabajoComponent } from './pages/ingreso-plan-trabajo/ingreso-plan-trabajo.component';
+import { ContinuidadComponent } from './pages/continuidad/continuidad.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ExitGuard } from './guards/exit.guard';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -49,6 +50,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         // canDeactivate: [ExitGuard],
         component: IngresoPlanTrabajoComponent
+      },
+      {
+        path: 'ingreso-continuidad/:id_riesgo/:id_matriz',
+        canActivate: [AuthGuard],
+        // canDeactivate: [ExitGuard],
+        component: ContinuidadComponent
       },
       {
         path: 'usuarios',

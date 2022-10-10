@@ -316,9 +316,10 @@
           <label for="comentarioTxt">Comentario plan de trabajo</label>
         </div>
         <div class="container-btn-agregar mt-5 mb-5">
-          <button (click)="validarFormPlanRiesgo()" type="button" class="btn btn-primary btn-size"><i class="fa fa-flag"
-              aria-hidden="true"></i> Finalizar
-            registro</button>
+          <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPlan"><i class="fa fa-ban"
+              aria-hidden="true"></i> Cancelar</button>
+          <button (click)="validarFormPlanRiesgo()" type="button" class="btn btn-primary btn-size"><i
+              class="fa fa-arrow-right" aria-hidden="true"></i> Matriz de continuidad</button>
         </div>
       </div>
     </form>
