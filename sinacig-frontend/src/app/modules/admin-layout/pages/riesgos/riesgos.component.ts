@@ -154,6 +154,21 @@ export class RiesgosComponent implements OnInit {
     descripcion: new FormControl('', Validators.required),
     usuario_registro: new FormControl(''),
   })
+  formMatrizContinuidad = new FormGroup({
+    id_riesgo: new FormControl(''),
+    subtema: new FormControl('', Validators.required),
+    id_nivel_tolerancia: new FormControl('', Validators.required),
+    id_frecuencia_monitoreo: new FormControl('', Validators.required),
+    id_puesto_responsable: new FormControl('', Validators.required),
+    id_severidad: new FormControl('', Validators.required),
+    usuario_registro: new FormControl('')
+  })
+
+  formMetodoMonitoreo = new FormGroup({
+    id_riesgo_continuidad: new FormControl(''),
+    descripcion_monitoreo: new FormControl('', Validators.required),
+    usuario_registro: new FormControl('')
+  })
 
   medidaRiesgoInput: any = '';
   riesgoEncontrado: any = {};
@@ -941,20 +956,34 @@ export class RiesgosComponent implements OnInit {
   }
 
   verificarPlanes() {
-    this.planService.getExistenciaPlanTrabajo(this.id_matriz).subscribe((result: any) => {
+    this.planService.getExistenciaPlanTrabajoPendiente(this.id_matriz).subscribe((result: any) => {
+      if (result > 0) {
+        Swal.fire({
+          icon: 'warning',
+          text: `¡Planes de trabajo pedientes de ingresar!`,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
+        })
+      } else {
+        this.router.navigate(['/admin/ingreso-riesgos/', this.id_matriz])
+      }
+    }, err => {
       Swal.fire({
         icon: 'warning',
-        text: `¡Planes de trabajo pedientes de ingresar!`,
+        text: `¡Algo salio mal al procesar la solicitud, por favor intente de nuevo!`,
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Aceptar'
       })
-    }, err => {
-      this.router.navigate(['/admin/ingreso-riesgos/', this.id_matriz])
     })
   }
 
   resetVariables() {
     this.validarExistenciaPlan = {}
+  }
+
+  goToMatrizContinuidad(riesgoGrid: any) {
+    // this.linkMatrizContinuidad = `/admin/grid-continuidad/${riesgoGrid}/${this.id_matriz}`
+    this.router.navigate(['/admin/grid-continuidad/', riesgoGrid, this.id_matriz])
   }
 
   aumentarOffset() {

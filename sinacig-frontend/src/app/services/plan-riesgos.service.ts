@@ -36,7 +36,7 @@ export class PlanRiesgosService {
   getPlanTrabajoByIdRiesgo(id_riesgo: any) {
     return this.http.get<any>(`${this.apiUrl}/riesgo_plan_trabajo/${id_riesgo}`);
   }
-  getExistenciaPlanTrabajo(id_matriz: any) {
+  getExistenciaPlanTrabajoPendiente(id_matriz: any) {
     return this.http.get<any>(`${this.apiUrl}/riesgo_plan_trabajo/existencia_plan/${id_matriz}`);
   }
   getRecursos(id_plan: any) {

@@ -28,6 +28,7 @@ import { InterceptorService } from 'src/app/services/interceptor.service';
 import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
 import { PeriodosComponent } from './pages/periodos/periodos.component';
 import { ContinuidadComponent } from './pages/continuidad/continuidad.component';
+import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continuidad.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ContinuidadComponent } from './pages/continuidad/continuidad.component'
     SidebarComponent,
     NavbarComponent,
     PeriodosComponent,
-    ContinuidadComponent
+    ContinuidadComponent,
+    GridContinuidadComponent
   ],
   imports: [
     AdminLayoutRoutingModule,

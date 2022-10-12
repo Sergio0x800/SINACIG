@@ -1,6 +1,7 @@
 const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
+const { QueryTypes } = require('sequelize');
 
 class RiesgoPlanTrabajoService {
   constructor() {}
@@ -13,12 +14,10 @@ class RiesgoPlanTrabajoService {
   async findExistenciaPlanTrabajo(id_matriz) {
     const result = await sequelize.query(
       `EXEC sp_get_existencia_plan
-    @id_matriz = ${id_matriz}`
+    @id_matriz = ${id_matriz}`,
+      { type: QueryTypes.SELECT }
     );
-    if (result[0].length === 0) {
-      throw boom.notFound('No hay registros');
-    }
-    return result[0];
+    return result[0].Existencia;
   }
 
   async findPlanTrabajoByIdD(id_plan) {

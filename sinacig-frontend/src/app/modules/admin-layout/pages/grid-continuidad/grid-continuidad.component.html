@@ -1,0 +1,53 @@
+<div class="container-riego-table">
+  <div class="title-btns">
+    <h2 class="riesgo__title">Matriz de continuidad - Subtemas: </h2>
+    <div class="btn-table-riesgo">
+      <button class="btn btn-danger btn-size" [routerLink]="linkRiesgos"><i class="fa fa-arrow-left"
+          aria-hidden="true"></i>
+        Regresar</button>
+      <button *ngIf="matrizObtenida.periodo_abierto === 1" [routerLink]="linkMatrizContinuidad"
+        class="btn btn-success btn-size"><i class="fa fa-plus" aria-hidden="true"></i>
+        Nuevo subtema
+      </button>
+    </div>
+  </div>
+  <div class="tabla-res">
+    <div *ngIf="showTable" class="table-matriz mt-5">
+      <div class="table-header-matriz">
+        <div class="header-title">Editar</div>
+        <div class="header-title">Subtema</div>
+        <div class="header-title">Nivel de tolerancia</div>
+        <div class="header-title">Frecuencia de monitoreo</div>
+        <div class="header-title">Severidad</div>
+      </div>
+      <div class="table-body-matriz" *ngFor="let matrices of matricesContinuidad">
+        <div>
+          <button class="btn btn-sm btn-size-card" data-bs-toggle="modal" [ngClass]="{
+              'btn-primary': matrizObtenida.periodo_abierto === 0,
+              'btn-warning': matrizObtenida.periodo_abierto === 1
+            }" data-bs-target="#riesgoModal" (click)=" editMatrizContinuidad(matrices.id_riesgo_continuidad)">
+            <i class="fas fa-pencil" *ngIf="matrizObtenida.periodo_abierto === 1; else elseIconShow"></i>
+            <ng-template #elseIconShow>
+              <i class="fa-solid fa-eye"></i>
+            </ng-template>
+          </button>
+        </div>
+        <div><span class="riesgo-descripcion-style">{{matrices.subtema}}</span>
+        </div>
+        <div [ngClass]="{
+          'tolerable': matrices.nivel_tolerancia === 'Básico',
+          'gestionable': matrices.nivel_tolerancia === 'Gestionable',
+          'noTolerable': matrices.nivel_tolerancia === 'No Tolerable'
+        }"><span class="riesgo-descripcion-style">{{ matrices.nivel_tolerancia }}</span>
+        </div>
+        <div><span class="riesgo-descripcion-style">{{matrices.frecuencia_monitoreo}}</span>
+        </div>
+        <div><span class="riesgo-descripcion-style">{{matrices.severidad}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="btn-offset mt-5" *ngIf="showBtnOffset && riesgos.length >= 10">
+    <button class="btn btn-outline-success btn-lg btn-block" (click)="aumentarOffset()">Cargar mas</button>
+  </div> -->
+</div>

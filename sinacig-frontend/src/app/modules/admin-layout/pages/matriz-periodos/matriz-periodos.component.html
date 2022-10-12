@@ -75,7 +75,7 @@
       <div *ngIf="matriz.periodo_abierto === 0" class="cerrado"><span>Validado</span>
       </div>
       <div>
-        <button class="btn btn_primary bg-primary btn-sm btn-plan-search"
+        <button class="btn btn_primary bg-primary btn-sm btn-plan-search" (click)="saveInCache()"
           [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
           riesgos</button>
       </div>

@@ -22,6 +22,7 @@ export class PeriodosComponent implements OnInit {
     private utilidades: UtilidadesService, private matrizService: MatrizService, private riesgoService: RiesgosService) { }
 
   ngOnInit(): void {
+    this.utilidades.removeItem();
     this.catalogsService.getPeriodos().subscribe(periodos => {
       this.periodos = periodos
       this.periodosTabla = periodos

@@ -44,6 +44,7 @@ export class ContinuidadComponent implements OnInit {
   nivelTolerancia: any = [];
   severidad: any = [];
 
+  actualizarContinuidad: boolean = false;
   severidadInvalid = false;
   severidadValid = false;
   frecuenciaInvalid = false;
@@ -56,9 +57,17 @@ export class ContinuidadComponent implements OnInit {
   subtemaValid = false;
   descripcionMetodoMonitoreoInvalid = false;
   descripcionMetodoMonitoreoValid = false;
+  metodoMonitoreoDB: any = [];
   metodoMonitoreoMemory: any = [];
   showTableMetodoMonitoreo: boolean = false;
   id_matriz_continuidad: any;
+  id_riesgo_continuidad: string | null = '';
+  showTableMetodoMonitoreoDB: boolean = false;
+  actualizar: boolean = false;
+  metodoMonitoreoDBdelete: any = [];
+  matrizObtenida: any = {
+    periodo_abierto: 0
+  };
 
   constructor(
     private catalogosService: CatalogosService,
@@ -72,24 +81,43 @@ export class ContinuidadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //Parametros URL
     this.route.paramMap.subscribe(param => {
+      this.id_riesgo_continuidad = param.get('id_riesgo_continuidad');
       this.id_riesgo = param.get('id_riesgo');
       this.id_matriz = param.get('id_matriz');
-      this.linkPageRiesgo = `/admin/riesgos/${this.id_matriz}`
+      this.linkPageRiesgo = `/admin/grid-continuidad/${this.id_riesgo}/${this.id_matriz}`
       this.riesgosService.getRiesgoById(this.id_riesgo).subscribe(riesgoObtenido => {
         this.riesgo = riesgoObtenido[0]
       })
+
+      this.matrizService.getMatrizById(this.id_matriz).subscribe((result: any) => {
+        this.matrizObtenida = result[0]
+      })
     })
+
+    //Setear datos para actualizar
+    if (this.id_riesgo_continuidad) {
+      this.matrizContinuidadService.getMatrizContinuidadById(this.id_riesgo_continuidad).subscribe((result: any) => {
+        this.formMatrizContinuidad.patchValue(result);
+        this.matrizContinuidadService.getMetodoMonitoreoByIdRiesgoContinuidad(this.id_riesgo_continuidad).subscribe((result: any) => {
+          this.metodoMonitoreoDB = result;
+          this.showTableMetodoMonitoreoDB = true;
+          this.actualizar = true;
+        })
+      })
+    }
+
+    //Catalogos
     this.catalogosService.getPuestoResponsable().subscribe(puesto => this.puestos = puesto);
     this.catalogosService.getSeveridad().subscribe((result: any) => this.severidad = result)
     this.catalogosService.getFrecuenciaMonitoreo().subscribe((result: any) => {
       this.frecuenciaMonitoreo = result
     })
     this.catalogosService.getNivelTolerancia().subscribe((result: any) => this.nivelTolerancia = result)
-    this.usuarioService.obtenerUsuario().subscribe((result: any) => {
-      this.usuario = result
-    });
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result);
 
+    //Validaciones
     this.formMatrizContinuidad.get('subtema')?.valueChanges.subscribe((value: any) => {
       if (this.subtemaInvalid && this.formMatrizContinuidad.get('subtema')?.dirty) {
         this.subtemaValid = true
@@ -120,20 +148,18 @@ export class ContinuidadComponent implements OnInit {
         this.severidadInvalid = false
       }
     })
-
     this.formMetodoMonitoreo.get('descripcion_monitoreo')?.valueChanges.subscribe((value: any) => {
       if (this.descripcionMetodoMonitoreoInvalid && this.metodoMonitoreoMemory.length > 0) {
         this.descripcionMetodoMonitoreoValid = true
         this.descripcionMetodoMonitoreoInvalid = false
       }
     })
-
   }
 
   createNewMetodoMonitoreoToMemory() {
     const newValue = {
       ...this.formMetodoMonitoreo.value,
-      descripcion: `- ${this.formMetodoMonitoreo.get('descripcion_monitoreo')?.value}`
+      descripcion_monitoreo: `- ${this.formMetodoMonitoreo.get('descripcion_monitoreo')?.value}`
     }
     this.metodoMonitoreoMemory.push(newValue)
     this.formMetodoMonitoreo.get('descripcion_monitoreo')?.reset();
@@ -143,6 +169,18 @@ export class ContinuidadComponent implements OnInit {
   deleteMetodoMonitoreoFromMemory(descripcion: any) {
     const id = this.metodoMonitoreoMemory.findIndex((metodo: any) => metodo.descripcion === descripcion)
     this.metodoMonitoreoMemory.splice(id, 1)
+  }
+
+  deleteMetodoMonitoreoFromDB(id_detalle_monitoreo: any) {
+    const id = this.metodoMonitoreoDB.findIndex((metodo: any) => metodo.id_detalle_monitoreo == id_detalle_monitoreo)
+    this.metodoMonitoreoDB.splice(id, 1)
+
+    this.metodoMonitoreoDBdelete.push(id_detalle_monitoreo);
+
+    // this.matrizContinuidadService.deleteLogicoMetodoMonitoreo(id_detalle_monitoreo).subscribe((result: any) => {
+
+    // });
+
   }
 
   validarFormContinuidad() {
@@ -164,10 +202,14 @@ export class ContinuidadComponent implements OnInit {
       this.descripcionMetodoMonitoreoInvalid = true
     }
 
-    if (this.metodoMonitoreoMemory.length < 1 || this.formMatrizContinuidad.invalid) {
+    if ((this.metodoMonitoreoMemory.length < 1 && this.metodoMonitoreoDB.length < 1) || this.formMatrizContinuidad.invalid) {
       this.utilidades.mostrarError("Por favor llene los campos obligatorios")
     } else {
-      this.createNewMatrizContinuidad()
+      if (this.actualizar) {
+        this.actualizarMatrizContinuidad();
+      } else {
+        this.createNewMatrizContinuidad();
+      }
     }
   }
 
@@ -190,10 +232,41 @@ export class ContinuidadComponent implements OnInit {
         this.matrizContinuidadService.createMetodoMonitoreo(metodoMonitoreo).subscribe(value => {
         })
       })
-
-      this.router.navigate(['/admin/riesgos/', this.id_matriz]);
+      this.formMatrizContinuidad.reset();
+      this.metodoMonitoreoMemory = [];
+      // this.router.navigate([`/admin/ingreso-continuidad/${this.id_riesgo}/${this.id_matriz}`]);
       Swal.fire({
         title: '¡El registro se guardó correctamente!',
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+        }
+      })
+    })
+  }
+
+  actualizarMatrizContinuidad() {
+    this.matrizContinuidadService.updateMatrizContinuidad(this.id_riesgo_continuidad, this.formMatrizContinuidad.value).subscribe((result: any) => {
+      this.metodoMonitoreoMemory.map((metodoObt: any) => {
+        const metodoMonitoreo = {
+          ...metodoObt,
+          id_riesgo_continuidad: this.id_riesgo_continuidad,
+          usuario_registro: this.usuario.id_usuario,
+        }
+        this.matrizContinuidadService.createMetodoMonitoreo(metodoMonitoreo).subscribe(value => {
+        })
+      })
+
+      this.metodoMonitoreoDBdelete.map((idMetodoMonitoreo: any) => {
+        this.matrizContinuidadService.deleteLogicoMetodoMonitoreo(idMetodoMonitoreo).subscribe(value => {
+        })
+      })
+      this.router.navigate([`/admin/grid-continuidad/${this.id_riesgo}/${this.id_matriz}`]);
+      Swal.fire({
+        title: '¡El registro se actualizó correctamente!',
         icon: 'success',
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Aceptar',

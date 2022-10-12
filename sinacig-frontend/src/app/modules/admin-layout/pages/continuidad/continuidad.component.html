@@ -109,27 +109,44 @@
         <form [formGroup]="formMetodoMonitoreo" class="form-recursos">
           <h3 class="">Ingreso de metodos de monitoreo</h3>
           <div class="form-floating container-btn-recursos">
-            <button [disabled]="formMetodoMonitoreo.invalid" type="button" class="btn btn-success btn-float-recursos"
-              (click)="createNewMetodoMonitoreoToMemory()">+</button>
+            <button *ngIf="matrizObtenida.periodo_abierto === 1" [disabled]="formMetodoMonitoreo.invalid" type="button"
+              class="btn btn-success btn-float-recursos" (click)="createNewMetodoMonitoreoToMemory()">+</button>
             <textarea maxlength="500" class="form-control" formControlName="descripcion_monitoreo" [ngClass]="{
                   'is-invalid': descripcionMetodoMonitoreoInvalid,
                   'is-valid': descripcionMetodoMonitoreoValid
                 }" placeholder="Ingresa los metodos aquí" id="inputMetodoMonitoreo" style="height: 130px"></textarea>
             <label for="inputMetodoMonitoreo">Metodos de monitoreo</label>
-            <div *ngIf="metodoMonitoreoMemory.length === 0 && descripcionMetodoMonitoreoInvalid" class="invalid-feed">
+            <div
+              *ngIf="metodoMonitoreoMemory.length === 0 && metodoMonitoreoDB.length === 0 && descripcionMetodoMonitoreoInvalid"
+              class="invalid-feed">
               Por favor ingresa al menos un metodo de monitoreo
+            </div>
+          </div>
+
+          <div *ngIf="showTableMetodoMonitoreoDB" class="table-matriz-edit">
+            <div class="table-body-matriz-edit" *ngFor="let metodo of metodoMonitoreoDB">
+              <div>
+                <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-sm btn-danger"
+                  (click)="deleteMetodoMonitoreoFromDB(metodo.id_detalle_monitoreo)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style"> {{metodo.descripcion_monitoreo}}</span>
+              </div>
             </div>
           </div>
 
           <div *ngIf="showTableMetodoMonitoreo" class="table-matriz-edit">
             <div class="table-body-matriz-edit" *ngFor="let metodo of metodoMonitoreoMemory">
               <div>
-                <button class="btn btn-sm btn-danger" (click)="deleteMetodoMonitoreoFromMemory(metodo.descripcion)">
+                <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-sm btn-danger"
+                  (click)="deleteMetodoMonitoreoFromMemory(metodo.descripcion_monitoreo)">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
               <div>
-                <span class="riesgo-descripcion-style"> {{metodo.descripcion}}</span>
+                <span class="riesgo-descripcion-style"> {{metodo.descripcion_monitoreo}}</span>
               </div>
             </div>
           </div>
@@ -138,8 +155,16 @@
         <div class="container-btn-agregar mt-5 mb-5">
           <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPageRiesgo"><i class="fa fa-ban"
               aria-hidden="true"></i> Cancelar</button>
-          <button (click)="validarFormContinuidad()" type="button" class="btn btn-primary btn-size"><i
-              class="fa-sharp fa-solid fa-flag-checkered" aria-hidden="true"></i> Finalizar registro</button>
+          <button *ngIf="!actualizar && matrizObtenida.periodo_abierto === 1" (click)="validarFormContinuidad()"
+            type="button" class="btn btn-primary btn-size"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+            Guardar y continuar</button>
+          <button *ngIf="actualizar && matrizObtenida.periodo_abierto === 1" (click)="validarFormContinuidad()"
+            type="button" class="btn btn-primary btn-size"><i class="fa fa-pencil" aria-hidden="true"></i>
+            Actualizar</button>
+          <button *ngIf="!actualizar && matrizObtenida.periodo_abierto === 1" [routerLink]="linkPageRiesgo"
+            type="button" class="btn btn-primary btn-size"><i class="fa-sharp fa-solid fa-flag-checkered"
+              aria-hidden="true"></i>
+            Finalizar</button>
         </div>
       </div>
     </form>

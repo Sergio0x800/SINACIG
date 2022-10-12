@@ -43,6 +43,7 @@ export class UsuariosComponent implements OnInit {
   constructor(private usuarioService: UsuarioService, private utils: UtilidadesService, private catalogosService: CatalogosService) { }
 
   async ngOnInit(): Promise<void> {
+    this.utils.removeItem();
     await this.obtenerUsuarios()
     this.catalogosService.getRoles().subscribe(roles => this.roles = roles)
     this.catalogosService.getUnidadEjecutora().subscribe(unidad => {
@@ -129,7 +130,7 @@ export class UsuariosComponent implements OnInit {
         })
       }
     }, err => {
-      if(err.status == 404) {
+      if (err.status == 404) {
         this.usuarioService.registrarUsuario(data).subscribe((result: any) => {
           this.utils.showOk("Usuario ingresado", 'El usuario se ha registrado correctamente')
           document.getElementById("ingresoUsuarioCloseButton")?.click();

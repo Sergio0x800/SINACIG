@@ -8,6 +8,8 @@ import { RiesgosService } from 'src/app/services/riesgos.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 import Swal from 'sweetalert2'
+import { PlanRiesgosService } from 'src/app/services/plan-riesgos.service';
+import { MatrizContinuidadService } from 'src/app/services/matriz-continuidad.service';
 
 @Component({
   selector: 'app-matriz-periodos',
@@ -41,13 +43,22 @@ export class MatrizPeriodosComponent implements OnInit {
     private matrizService: MatrizService,
     private usuarioService: UsuarioService,
     private utilidades: UtilidadesService,
-    private riesgoService: RiesgosService
+    private riesgoService: RiesgosService,
+    private planService: PlanRiesgosService,
+    private matrizContinuidadService: MatrizContinuidadService
   ) { }
 
   ngOnInit(): void {
     //Se obtienen los periodos
     this.catalogsService.getPeriodos().subscribe(resultPeriodos => {
       this.periodos = resultPeriodos
+      if (sessionStorage.getItem('Unidad') && sessionStorage.getItem('Periodo')) {
+        this.formSearchCreateMatrizPeriodo.setValue({
+          id_unidad_ejecutora: sessionStorage.getItem('Unidad'),
+          id_periodo: sessionStorage.getItem('Periodo')
+        })
+        this.validarFormBusqueda();
+      }
       //Se obtiene el usuario actual y en base a el se limitan las UE
       this.usuarioService.obtenerUsuario().subscribe((resultUsuarios: any) => {
         this.usuario = resultUsuarios
@@ -70,6 +81,11 @@ export class MatrizPeriodosComponent implements OnInit {
     }, err => {
       this.utilidades.showErrorCatalogos();
     })
+  }
+
+  saveInCache() {
+    sessionStorage.setItem('Unidad', this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.value)
+    sessionStorage.setItem('Periodo', this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
   }
 
 
@@ -212,55 +228,69 @@ export class MatrizPeriodosComponent implements OnInit {
   }
 
   cerrarPeriodo(id_matriz: any) {
-    if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
-      Swal.fire({
-        title: '¿Está seguro de validar este registro?',
-        text: "¡Si realiza esta acción los riesgos solo podrán visualizarse!",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, validar registro!',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.matrizService.updateMatriz(id_matriz, 0).subscribe(() => {
-            Swal.fire({
-              icon: 'success',
-              text: '¡El registro se ha validado correctamente!',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Aceptar'
-            });
+    this.planService.getExistenciaPlanTrabajoPendiente(id_matriz).subscribe((resultPlan: any) => {
 
-            const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
-            const dataSearch = {
-              ...this.formSearchCreateMatrizPeriodo.value,
-              fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
-              fecha_periodo_fin: periodoSeleccionado.fecha_fin
-            }
-            this.matrizService.getMatrizByParams(dataSearch)
-              .subscribe(matriz => {
-                this.showTablePeriodos = true;
-                this.matrizPeriodosEncontrados = matriz;
-              })
-          }, err => {
+      this.matrizContinuidadService.getExistenciaMatrizContinuidad(id_matriz).subscribe((resultMatrizContinuidad: any) => {
+        if (resultPlan > 0 || resultMatrizContinuidad > 0) {
+          Swal.fire({
+            icon: 'warning',
+            text: `¡Aún existen planes de trabajo y matrices de continuidad por ingresar!`,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+          })
+        } else {
+          if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
             Swal.fire({
-              icon: 'error',
-              text: '¡No se pudo validar el registro, ha ocurrido un error!',
+              title: '¿Está seguro de validar este registro?',
+              text: "¡Si realiza esta acción los riesgos solo podrán visualizarse!",
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Si, validar registro!',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.matrizService.updateMatriz(id_matriz, 0).subscribe(() => {
+                  Swal.fire({
+                    icon: 'success',
+                    text: '¡El registro se ha validado correctamente!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar'
+                  });
+
+                  const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
+                  const dataSearch = {
+                    ...this.formSearchCreateMatrizPeriodo.value,
+                    fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
+                    fecha_periodo_fin: periodoSeleccionado.fecha_fin
+                  }
+                  this.matrizService.getMatrizByParams(dataSearch)
+                    .subscribe(matriz => {
+                      this.showTablePeriodos = true;
+                      this.matrizPeriodosEncontrados = matriz;
+                    })
+                }, err => {
+                  Swal.fire({
+                    icon: 'error',
+                    text: '¡No se pudo validar el registro, ha ocurrido un error!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar'
+                  })
+                });
+              }
+            })
+          } else {
+            Swal.fire({
+              text: 'El registro ya se encuentra validado',
+              icon: 'warning',
               confirmButtonColor: '#3085d6',
               confirmButtonText: 'Aceptar'
             })
-          });
+          }
         }
       })
-    } else {
-      Swal.fire({
-        text: 'El registro ya se encuentra validado',
-        icon: 'warning',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar'
-      })
-    }
+    })
   }
 
   abrirPeriodo(id_matriz: any) {

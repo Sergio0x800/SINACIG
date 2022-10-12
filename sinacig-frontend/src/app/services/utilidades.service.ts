@@ -50,6 +50,11 @@ export class UtilidadesService {
     cancelButtonText: 'Cancelar'
   })
 
+  removeItem() {
+    sessionStorage.removeItem('Unidad');
+    sessionStorage.removeItem('Periodo');
+  }
+
   showOk(mensaje: string, text: string) {
     this.alertaExito.fire({
       title: mensaje,

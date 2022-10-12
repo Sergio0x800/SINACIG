@@ -273,8 +273,8 @@ export class IngresoPlanTrabajoComponent implements OnInit {
         this.planRiesgoService.createControlImplementacion(newControlesImp).subscribe(value => {
         })
       })
-      this.router.navigate(['/admin/ingreso-continuidad', this.id_riesgo, this.id_matriz]);
-      // this.router.navigate(['/admin/riesgos/', this.id_matriz]);
+      // this.router.navigate(['/admin/ingreso-continuidad', this.id_riesgo, this.id_matriz]);
+      this.router.navigate(['/admin/riesgos/', this.id_matriz]);
       // Swal.fire({
       //   title: '¡El registro se guardó correctamente!',
       //   icon: 'success',

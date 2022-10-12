@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private utilidades: UtilidadesService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
+    this.utilidades.removeItem();
     return
   }
 
@@ -45,8 +46,8 @@ export class LoginComponent implements OnInit {
         this.utilidades.setSessionStorageUsuario(usuarioAuth.usuario)
         this.router.navigate(['/admin']); //redirigimos
       }
-    },err => {
-      if(err.status === 401) {
+    }, err => {
+      if (err.status === 401) {
         this.noAutorizado = true
       } else {
         this.utilidades.showError('Problemas con los servicios', 'Algo salio mal mientras se procesaba la solicitud')

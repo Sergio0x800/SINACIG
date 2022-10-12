@@ -219,7 +219,7 @@ h2 {
 
 .table-header-matriz {
   display: grid;
-  grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
   justify-items: center;
   gap: 4px;
 }
@@ -271,7 +271,7 @@ h2 {
 
 .table-body-matriz {
   display: grid;
-  grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
   justify-items: center;
   gap: 4px;
 }

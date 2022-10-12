@@ -40,6 +40,7 @@ export class PlanTrabajoComponent implements OnInit {
   locale: string = 'es'
 
   ngOnInit(): void {
+    this.utilidades.removeItem();
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuario = result

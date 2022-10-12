@@ -13,7 +13,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ExitGuard } from './guards/exit.guard';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PeriodosComponent } from './pages/periodos/periodos.component';
-
+import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continuidad.component';
 const routes: Routes = [
   {
     path: '',
@@ -52,7 +52,19 @@ const routes: Routes = [
         component: IngresoPlanTrabajoComponent
       },
       {
+        path: 'grid-continuidad/:id_riesgo/:id_matriz',
+        canActivate: [AuthGuard],
+        // canDeactivate: [ExitGuard],
+        component: GridContinuidadComponent
+      },
+      {
         path: 'ingreso-continuidad/:id_riesgo/:id_matriz',
+        canActivate: [AuthGuard],
+        // canDeactivate: [ExitGuard],
+        component: ContinuidadComponent
+      },
+      {
+        path: 'ingreso-continuidad-update/:id_riesgo_continuidad/:id_riesgo/:id_matriz',
         canActivate: [AuthGuard],
         // canDeactivate: [ExitGuard],
         component: ContinuidadComponent

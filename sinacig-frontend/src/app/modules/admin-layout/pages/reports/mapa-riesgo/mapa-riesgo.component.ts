@@ -36,6 +36,7 @@ export class MapaRiesgoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.utilidades.removeItem();
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuario = result
