@@ -50,7 +50,7 @@
               'is-valid': severidadValid
             }" formControlName="id_severidad">
               <option *ngFor="let severidad of severidad" [value]="severidad.id_severidad">
-                {{severidad.descripcion}}</option>
+                {{severidad.nivel_severidad + ' - ' + severidad.descripcion}}</option>
             </select>
             <label for="inputseveridad">Severidad</label>
             <div *ngIf="severidadInvalid" class="invalid-feed">

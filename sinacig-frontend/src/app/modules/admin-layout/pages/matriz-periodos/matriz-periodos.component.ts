@@ -160,8 +160,17 @@ export class MatrizPeriodosComponent implements OnInit {
     }
     this.matrizService.getMatrizByParams(dataSearch)
       .subscribe(matriz => {
-        this.showTablePeriodos = true;
-        this.matrizPeriodosEncontrados = matriz;
+        if (matriz.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            text: '¡No existe ningún registro con estos parámetros!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+          })
+        } else {
+          this.showTablePeriodos = true;
+          this.matrizPeriodosEncontrados = matriz;
+        }
       },
         err => {
           this.showTablePeriodos = false;

@@ -110,7 +110,9 @@ export class ContinuidadComponent implements OnInit {
 
     //Catalogos
     this.catalogosService.getPuestoResponsable().subscribe(puesto => this.puestos = puesto);
-    this.catalogosService.getSeveridad().subscribe((result: any) => this.severidad = result)
+    this.catalogosService.getSeveridad().subscribe((result: any) => {
+      this.severidad = result
+    })
     this.catalogosService.getFrecuenciaMonitoreo().subscribe((result: any) => {
       this.frecuenciaMonitoreo = result
     })

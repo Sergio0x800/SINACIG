@@ -14,6 +14,7 @@ import { ExitGuard } from './guards/exit.guard';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PeriodosComponent } from './pages/periodos/periodos.component';
 import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continuidad.component';
+import { MatrizContinuidadReporteComponent } from './pages/reports/matriz-continuidad-reporte/matriz-continuidad-reporte.component';
 const routes: Routes = [
   {
     path: '',
@@ -78,6 +79,11 @@ const routes: Routes = [
         path: 'evaluacion-riesgo-reporte',
         canActivate: [AuthGuard],
         component: EvaluacionRiesgoReporteComponent
+      },
+      {
+        path: 'matriz-continuidad-reporte',
+        canActivate: [AuthGuard],
+        component: MatrizContinuidadReporteComponent
       },
       {
         path: 'plan-trabajo-reporte',

@@ -52,7 +52,6 @@ class MatrizcontinuidadService {
     @id_matriz = ${id_matriz}`,
       { type: QueryTypes.SELECT }
     );
-
     return result[0].Existencia;
   }
 }

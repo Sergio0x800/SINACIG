@@ -29,6 +29,7 @@ import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
 import { PeriodosComponent } from './pages/periodos/periodos.component';
 import { ContinuidadComponent } from './pages/continuidad/continuidad.component';
 import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continuidad.component';
+import { MatrizContinuidadReporteComponent } from './pages/reports/matriz-continuidad-reporte/matriz-continuidad-reporte.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continui
     NavbarComponent,
     PeriodosComponent,
     ContinuidadComponent,
-    GridContinuidadComponent
+    GridContinuidadComponent,
+    MatrizContinuidadReporteComponent
   ],
   imports: [
     AdminLayoutRoutingModule,
