@@ -278,20 +278,46 @@ router.post('/matriz_continuidad', async (req, res, next) => {
 
                 if (totalMatrices == conteoMatricesRocorrido) {
                   //Pie de página
-                  ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
-                    .string('Conclusión:')
-                    .style(tableFooter.footerTitle1);
-
-                  ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                  //Conclusión
+                  ws.cell(rowIndex + 2, 1, rowIndex + 2, 2, true)
+                    .string('Elaborado por:')
+                    .style(header.tituloInfoUnidad);
+                  ////////////
+                  ws.cell(rowIndex + 3, 1, rowIndex + 3, 2, true)
                     .string('Firma')
                     .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 8, 3, rowIndex + 8, 8, true).style(
+                  ws.cell(rowIndex + 3, 3, rowIndex + 3, 8, true).style(
                     tableFooter.footerBoxText
                   );
-                  ws.row(rowIndex + 8).setHeight(20);
+                  ws.row(rowIndex + 3).setHeight(20);
 
-                  ws.cell(rowIndex + 9, 1, rowIndex + 9, 2, true)
+                  ws.cell(rowIndex + 4, 1, rowIndex + 4, 2, true)
                     .string('Nombre del responsable')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 4, 3, rowIndex + 4, 8, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 4).setHeight(20);
+
+                  ws.cell(rowIndex + 5, 1, rowIndex + 5, 2, true)
+                    .string('Puesto')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 5, 3, rowIndex + 5, 8, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 5).setHeight(20);
+                  //////////////
+                  // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
+                  //   .string('Conclusión:')
+                  //   .style(tableFooter.footerTitle1);
+
+                  ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                    .string('Visto bueno:')
+                    .style(header.tituloInfoUnidad);
+
+                  ////////////
+                  ws.cell(rowIndex + 9, 1, rowIndex + 9, 2, true)
+                    .string('Firma')
                     .style(tableFooter.footerTitle2);
                   ws.cell(rowIndex + 9, 3, rowIndex + 9, 8, true).style(
                     tableFooter.footerBoxText
@@ -299,12 +325,21 @@ router.post('/matriz_continuidad', async (req, res, next) => {
                   ws.row(rowIndex + 9).setHeight(20);
 
                   ws.cell(rowIndex + 10, 1, rowIndex + 10, 2, true)
-                    .string('Puesto')
+                    .string('Nombre del responsable')
                     .style(tableFooter.footerTitle2);
                   ws.cell(rowIndex + 10, 3, rowIndex + 10, 8, true).style(
                     tableFooter.footerBoxText
                   );
                   ws.row(rowIndex + 10).setHeight(20);
+
+                  ws.cell(rowIndex + 11, 1, rowIndex + 11, 2, true)
+                    .string('Puesto')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 11, 3, rowIndex + 11, 8, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 11).setHeight(20);
+                  //////////////
 
                   wb.write('Plan_de_trabajo.xlsx', res);
                 }

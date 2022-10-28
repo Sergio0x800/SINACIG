@@ -83,26 +83,37 @@ export class MatrizPeriodosComponent implements OnInit {
     })
   }
 
-  saveInCache() {
-    sessionStorage.setItem('Unidad', this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.value)
-    sessionStorage.setItem('Periodo', this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
-  }
-
-
   validarFormMatriz() {
+    const valuePeriodo = this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value
+    this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == valuePeriodo)
+    const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
     if (this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.invalid) {
       this.utilidades.showWarning('¡Faltan campos por llenar!', 'Por favor ingrese una unidad ejecutora')
     } else if (this.formSearchCreateMatrizPeriodo.get('id_periodo')?.invalid) {
       this.utilidades.showWarning('¡Faltan campos por llenar!', 'Por favor ingrese un periodo')
-    } else if (this.periodoSeleccionado[0].periodo_abierto == 0) {
+    } else if (periodoSeleccionado.periodo_abierto == 0) {
       this.utilidades.showWarning('¡Periodo cerrado!', 'El periodo ya se encuentra cerrado, no puede ingresar nuevos registros')
     } else {
       this.createNewMatrizPeriodo()
     }
   }
 
+  validarFormBusqueda() {
+    const valuePeriodo = this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value
+    this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == valuePeriodo)
+    if (this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.invalid) {
+      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
+    } else if (this.formSearchCreateMatrizPeriodo.get('id_periodo')?.invalid) {
+      this.utilidades.mostrarError('Selecciona un periodo')
+    } else {
+      this.findMatrizPeriodo()
+    }
+  }
+
   //Se agrega el metodo crear nueva matriz periodo para la creacion de los encabezados
   createNewMatrizPeriodo() {
+    const valuePeriodo = this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value
+    this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == valuePeriodo)
     const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
     const dataSearch = {
       ...this.formSearchCreateMatrizPeriodo.value,
@@ -112,9 +123,7 @@ export class MatrizPeriodosComponent implements OnInit {
 
     //Se verifica que el encabezado no exista actualmente en la DB
     this.matrizService.getMatrizByParams(dataSearch).subscribe((value) => {
-      this.utilidades.showWarning('¡El registro ya existe!', 'Actualmente existe un registro con estos parametros')
-    }, err => {
-      if (err.error.statusCode == 404) {
+      if (value.existencia == 0) {
         const newPeriodo = {
           ...dataSearch,
           usuario_registro: this.usuario.id_usuario
@@ -128,7 +137,7 @@ export class MatrizPeriodosComponent implements OnInit {
           })
           this.matrizService.getMatrizByParams(dataSearch).subscribe((value: any) => {
             this.showTablePeriodos = true;
-            this.matrizPeriodosEncontrados = value;
+            this.matrizPeriodosEncontrados = value.res;
           })
         },
           err => {
@@ -139,9 +148,11 @@ export class MatrizPeriodosComponent implements OnInit {
               confirmButtonText: 'Aceptar'
             })
           })
-      } else {
-        this.utilidades.showError('¡Error en el proceso de registro!', 'Ocurrió un error mientras se ingresaban los datos, por favor intente nuevamente')
+      } else if (value.existencia == 1) {
+        this.utilidades.showWarning('¡El registro ya existe!', 'Actualmente existe un registro con estos parametros')
       }
+    }, err => {
+      this.utilidades.showError('¡Error en el proceso de registro!', 'Ocurrió un error mientras se ingresaban los datos, por favor intente nuevamente')
     })
   }
 
@@ -160,46 +171,29 @@ export class MatrizPeriodosComponent implements OnInit {
     }
     this.matrizService.getMatrizByParams(dataSearch)
       .subscribe(matriz => {
-        if (matriz.length == 0) {
+        if (matriz.existencia == 0) {
+          this.showTablePeriodos = false;
           Swal.fire({
             icon: 'error',
             text: '¡No existe ningún registro con estos parámetros!',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Aceptar'
           })
-        } else {
+        } else if (matriz.existencia == 1) {
           this.showTablePeriodos = true;
-          this.matrizPeriodosEncontrados = matriz;
+          this.matrizPeriodosEncontrados = matriz.res;
         }
       },
         err => {
           this.showTablePeriodos = false;
-          if (err.error.statusCode == 404) {
-            Swal.fire({
-              icon: 'error',
-              text: '¡No existe ningún registro con estos parámetros!',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Aceptar'
-            })
-          } else {
-            Swal.fire({
-              icon: 'error',
-              text: '¡No se pudo realizar la búsqueda correctamente!',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Aceptar'
-            })
-          }
-        })
-  }
+          Swal.fire({
+            icon: 'error',
+            text: '¡No se pudo realizar la búsqueda correctamente!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+          })
 
-  validarFormBusqueda() {
-    if (this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.invalid) {
-      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
-    } else if (this.formSearchCreateMatrizPeriodo.get('id_periodo')?.invalid) {
-      this.utilidades.mostrarError('Selecciona un periodo')
-    } else {
-      this.findMatrizPeriodo()
-    }
+        })
   }
 
   deletePeriodoMatriz(id_matriz: any) {
@@ -277,7 +271,7 @@ export class MatrizPeriodosComponent implements OnInit {
                   this.matrizService.getMatrizByParams(dataSearch)
                     .subscribe(matriz => {
                       this.showTablePeriodos = true;
-                      this.matrizPeriodosEncontrados = matriz;
+                      this.matrizPeriodosEncontrados = matriz.res;
                     })
                 }, err => {
                   Swal.fire({
@@ -332,7 +326,7 @@ export class MatrizPeriodosComponent implements OnInit {
             this.matrizService.getMatrizByParams(dataSearch)
               .subscribe(matriz => {
                 this.showTablePeriodos = true;
-                this.matrizPeriodosEncontrados = matriz;
+                this.matrizPeriodosEncontrados = matriz.res;
               })
           }, err => {
             Swal.fire({
@@ -353,4 +347,10 @@ export class MatrizPeriodosComponent implements OnInit {
       })
     }
   }
+
+  saveInCache() {
+    sessionStorage.setItem('Unidad', this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.value)
+    sessionStorage.setItem('Periodo', this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
+  }
+
 }

@@ -34,9 +34,15 @@ class RiesgoPlanTrabajoService {
     @Id_riesgo = ${id_riesgo}`
     );
     if (result[0].length === 0) {
-      throw boom.notFound('No hay registros');
+      // throw boom.notFound('No hay registros');
+      return {
+        existencia: 0,
+      };
     }
-    return result[0];
+    return {
+      existencia: 1,
+      res: result[0],
+    };
   }
 
   async findPlanTrabajoByIdSP(id_plan) {

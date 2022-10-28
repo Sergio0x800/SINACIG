@@ -172,7 +172,7 @@ export class RiesgosComponent implements OnInit {
 
   medidaRiesgoInput: any = '';
   riesgoEncontrado: any = {};
-  validarExistenciaPlan: any = {};
+  validarExistenciaPlan: boolean = false;
   usuario: any = {};
   matrizObtenida: any = {
     periodo_abierto: 0
@@ -198,17 +198,26 @@ export class RiesgosComponent implements OnInit {
       this.matrizService.getMatrizById(this.id_matriz).subscribe((result: any) => {
         this.matrizObtenida = result[0]
         this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-          this.riesgos = riesgos;
-          this.showBtnOffset = true;
+          if (riesgos.existencia == 1) {
+            this.riesgos = riesgos.res;
+            this.showBtnOffset = true;
+          } else if (riesgos.existencia == 0) {
+            Swal.fire({
+              icon: 'warning',
+              text: '¡No existen registros para mostrar!',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Aceptar'
+            })
+            this.showTablePlanesTrabajo = false
+            this.showBtnOffset = false;
+          }
         }, err => {
           Swal.fire({
             icon: 'warning',
-            text: '¡No existen registros para mostrar!',
+            text: '¡Algo salió mal al buscar los registros, por favor vuelva a intentarlo!',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Aceptar'
           })
-          this.showTablePlanesTrabajo = false
-          this.showBtnOffset = false;
         })
       })
     })
@@ -646,7 +655,7 @@ export class RiesgosComponent implements OnInit {
 
 
       this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
-        this.riesgos = riesgo
+        this.riesgos = riesgo.res
       })
     },
       err => {
@@ -679,7 +688,7 @@ export class RiesgosComponent implements OnInit {
             confirmButtonText: 'Aceptar'
           });
           this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-            this.riesgos = riesgos
+            this.riesgos = riesgos.res
           }, err => {
             this.showTablePlanesTrabajo = false
           })
@@ -809,24 +818,28 @@ export class RiesgosComponent implements OnInit {
 
     //llenamos el formulario del plan y  llenamos la variave id_riesgo_plan_trabajo
     this.planService.getPlanTrabajoByIdRiesgo(id_riesgo).subscribe(plan => {
-      this.formUpdatePlan.patchValue(plan[0])
-      this.id_riesgo_plan_trabajo = plan[0].id_riesgo_plan_trabajo
-      this.validarExistenciaPlan = plan[0]
-      //llenamos la variable controles con los controles obtenidos, adicional mostramos la tabla
-      this.planService.getControlImplementacionByIdRiesgo(id_riesgo).subscribe(controlesImple => {
-        this.controlesImplementacionObtenidos = controlesImple;
-        this.tableModalController = true
-      })
-      //llenamos la variable recursos con los recursos obtenidos, adicional mostamos la tabla
-      this.planService.getRecursosByIdRiesgo(id_riesgo).subscribe(recursos => {
-        this.recursosObtenidos = recursos
-        this.tableModalRecursos = true
-      })
+      if (plan.existencia == 1) {
+        this.formUpdatePlan.patchValue(plan.res[0])
+        this.id_riesgo_plan_trabajo = plan.res[0].id_riesgo_plan_trabajo
+        this.validarExistenciaPlan = true;
+        //llenamos la variable controles con los controles obtenidos, adicional mostramos la tabla
+        this.planService.getControlImplementacionByIdRiesgo(id_riesgo).subscribe(controlesImple => {
+          this.controlesImplementacionObtenidos = controlesImple;
+          this.tableModalController = true
+        })
+        //llenamos la variable recursos con los recursos obtenidos, adicional mostamos la tabla
+        this.planService.getRecursosByIdRiesgo(id_riesgo).subscribe(recursos => {
+          this.recursosObtenidos = recursos
+          this.tableModalRecursos = true
+        })
 
-      this.planService.getControlInternoPlanByIdRiesgo(id_riesgo).subscribe(controles => {
-        this.controlesInternosPlanObtenidos = controles
-        this.tableModalControlesInternosPlan = true
-      })
+        this.planService.getControlInternoPlanByIdRiesgo(id_riesgo).subscribe(controles => {
+          this.controlesInternosPlanObtenidos = controles
+          this.tableModalControlesInternosPlan = true
+        })
+      } else if (plan.existencia == 0) {
+        this.validarExistenciaPlan = false;
+      }
     })
 
   }
@@ -978,7 +991,7 @@ export class RiesgosComponent implements OnInit {
   }
 
   resetVariables() {
-    this.validarExistenciaPlan = {}
+    this.validarExistenciaPlan = false;
   }
 
   goToMatrizContinuidad(riesgoGrid: any) {
@@ -990,7 +1003,7 @@ export class RiesgosComponent implements OnInit {
     this.offset += 10;
     const countRiesgos = this.riesgos.length
     this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-      this.riesgos = riesgos;
+      this.riesgos = riesgos.res;
       if (countRiesgos == riesgos.length) {
         this.showBtnOffset = false;
         Swal.fire({

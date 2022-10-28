@@ -271,7 +271,7 @@
           aria-label="Close"></button>
       </div>
       <div class="modal-body mb-5">
-        <div *ngIf="validarExistenciaPlan.id_prioridad; else ingresarPlanTrabajo">
+        <div *ngIf="validarExistenciaPlan; else ingresarPlanTrabajo">
           <!-- ------Planes------------- -->
           <h3>Plan de trabajo:</h3>
           <form [formGroup]="formUpdatePlan">

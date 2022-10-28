@@ -20,9 +20,15 @@ class MatrizService {
       @FechaF = "${queryParams.fecha_periodo_fin}"`
     );
     if (result[0].length === 0) {
-      throw boom.notFound('No hay registros');
+      // throw boom.notFound('No hay registros');
+      return {
+        existencia: 0,
+      };
     }
-    return result[0];
+    return {
+      existencia: 1,
+      res: result[0],
+    };
   }
 
   //Encontrar la cantidad de encabezados matriz periodos abiertos

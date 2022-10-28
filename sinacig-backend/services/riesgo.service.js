@@ -44,9 +44,16 @@ class RiesgoService {
     @next = ${offset}`
     );
     if (result[0].length === 0) {
-      throw boom.notFound('No hay registros');
+      return {
+        existencia: 0,
+      };
+      // throw boom.notFound('No hay registros');
     }
-    return result[0];
+    return {
+      existencia: 1,
+      res: result[0],
+    };
+    // result[0];
   }
 
   async deleteRiesgo(id_matriz, changes) {

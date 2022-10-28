@@ -56,16 +56,25 @@ export class GridContinuidadComponent implements OnInit {
         this.matrizObtenida = result[0]
 
         this.matrizContinuidadService.getMatrizContinuidadByIdRiesgo(this.id_riesgo).subscribe(matrices => {
-          this.matricesContinuidad = matrices;
+          if (matrices.existencia == 1) {
+            this.matricesContinuidad = matrices.res;
+          } else if (matrices.existencia == 0) {
+            Swal.fire({
+              icon: 'warning',
+              text: '¡No existen registros para mostrar!',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Aceptar'
+            })
+            this.showTable = false
+          }
         }, err => {
           Swal.fire({
             icon: 'warning',
-            text: '¡No existen registros para mostrar!',
+            text: '¡Algo salió mal al buscar los registros, por favor vuelva a intentarlo!',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Aceptar'
           })
           this.showTable = false
-
         })
       })
     })
