@@ -37,6 +37,8 @@ export class UsuariosComponent implements OnInit {
     unidadFiltro: new FormControl(''),
     usuarioFiltro: new FormControl(''),
   })
+  unidadFiltroSelec: any;
+  usuarioFiltroSelec: any;
 
 
 
@@ -55,13 +57,21 @@ export class UsuariosComponent implements OnInit {
     })
 
     this.formFiltroRiesgo.get('unidadFiltro')?.valueChanges.subscribe(unidad => {
+      this.unidadFiltroSelec = unidad;
+      console.log(this.unidadFiltroSelec)
+      console.log(this.usuarioFiltroSelec)
       if (unidad == -1) {
         this.filtroUsuarios = this.usuarios
       } else {
         this.filtroUsuarios = this.usuarios.filter((usuario: any) => usuario.id_unidad_ejecutora == unidad)
       }
     })
+
+
     this.formFiltroRiesgo.get('usuarioFiltro')?.valueChanges.subscribe(usuarioFil => {
+      this.usuarioFiltroSelec = usuarioFil;
+      console.log(this.unidadFiltroSelec)
+      console.log(this.usuarioFiltroSelec)
       if (!usuarioFil) {
         if (this.formFiltroRiesgo.get('unidadFiltro')?.value == -1) {
           this.filtroUsuarios = this.usuarios
@@ -77,11 +87,17 @@ export class UsuariosComponent implements OnInit {
         })
       }
     })
+
+
+
   }
 
-  async obtenerUsuarios() {
-    const RESPONSE_USUARIOS: any = await this.usuarioService.obtenerUsuarios()
-    this.usuarios = RESPONSE_USUARIOS
+  obtenerUsuarios() {
+    this.usuarioService.obtenerUsuarios().subscribe((result: any) => {
+      this.usuarios = result
+      this.formFiltroRiesgo.get('unidadFiltro')?.setValue(this.unidadFiltroSelec);
+      this.formFiltroRiesgo.get('usuarioFiltro')?.setValue(this.usuarioFiltroSelec);
+    })
   }
 
   limpiarCampos() {

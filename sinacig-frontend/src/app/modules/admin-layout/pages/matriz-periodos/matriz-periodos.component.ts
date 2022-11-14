@@ -234,13 +234,28 @@ export class MatrizPeriodosComponent implements OnInit {
     this.planService.getExistenciaPlanTrabajoPendiente(id_matriz).subscribe((resultPlan: any) => {
 
       this.matrizContinuidadService.getExistenciaMatrizContinuidad(id_matriz).subscribe((resultMatrizContinuidad: any) => {
-        if (resultPlan > 0 || resultMatrizContinuidad > 0) {
+        if (resultPlan > 0 && resultMatrizContinuidad > 0) {
           Swal.fire({
             icon: 'warning',
-            text: `¡Aún existen planes de trabajo y matrices de continuidad por ingresar!`,
+            text: `¡Aún existen planes de trabajo y matrices de continuidad pendientes de ingresar!`,
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Aceptar'
           })
+        } else if (resultPlan > 0 && resultMatrizContinuidad == 0) {
+          Swal.fire({
+            icon: 'warning',
+            text: `¡Aún existen planes de trabajo pendientes de ingresar!`,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+          })
+        } else if (resultPlan == 0 && resultMatrizContinuidad > 0) {
+          Swal.fire({
+            icon: 'warning',
+            text: `¡Aún existen matrices de continuidad pendientes de ingresar!`,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+          })
+
         } else {
           if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
             Swal.fire({

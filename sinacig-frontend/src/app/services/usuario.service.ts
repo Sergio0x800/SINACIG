@@ -17,7 +17,7 @@ export class UsuarioService {
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   obtenerUsuarios() {
-    return this.http.get(`${this.apiUrl}/usuario`).toPromise();
+    return this.http.get(`${this.apiUrl}/usuario`);
   }
 
   obtenerUsuariosByCui(data: any) {
@@ -28,9 +28,9 @@ export class UsuarioService {
 
   obtenerUsuario() {
     return this.http.get(`${this.apiUrl}/usuario/profile`)
-    .pipe(
-      tap((user: any) => this.user.next(user))
-    );
+      .pipe(
+        tap((user: any) => this.user.next(user))
+      );
   }
 
   registrarUsuario(data: any) {
