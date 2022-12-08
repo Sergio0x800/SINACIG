@@ -1,5 +1,8 @@
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
+const LogService = require('./logs.service');
+
+const logService = new LogService();
 
 class RiesgoControlInternoService {
   constructor() {}
@@ -23,17 +26,30 @@ class RiesgoControlInternoService {
   }
 
   async deleteControlInterno(id_control, changes) {
-    const result = await models.ControlInterno.findOne({
+    const resultAntes = await models.ControlInterno.findOne({
       where: { id_riesgo_control_interno: id_control },
     });
-    if (result.length === 0) {
+
+    const resultEncontrado = await models.ControlInterno.findOne({
+      where: { id_riesgo_control_interno: id_control },
+    });
+
+    if (resultAntes.length === 0) {
       throw boom.notFound('No hay registros');
     }
-    const resultUpdate = await models.ControlInterno.update(changes, {
+    const resultUpdate = await resultEncontrado.update(changes, {
       where: {
         id_riesgo_control_interno: id_control,
       },
     });
+    const newLog = {
+      nombre_tabla: 'tt_riesgo_control_interno',
+      id_registro: id_control,
+      antes: JSON.stringify(resultAntes),
+      despues: JSON.stringify(resultUpdate),
+      id_usuario_modifico: changes.usuario_registro,
+    };
+    await logService.createLog(newLog);
     return resultUpdate;
   }
 }

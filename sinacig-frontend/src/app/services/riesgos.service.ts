@@ -21,12 +21,17 @@ export class RiesgosService {
     return result;
   }
 
+
+  getRiesgosByFiltros(filtro: any) {
+    return this.http.get<any>(`${this.apiUrl}/filtro`, { params: filtro });
+  }
+
   getRiesgoByIdMatriz(id_riesgo: any, offset: any) {
     return this.http.get<any>(`${this.apiUrl}/${id_riesgo}/${offset}`);
   }
 
-  getRiesgoByIdMatrizRef() {
-    return this.http.get<any>(`${this.apiUrl}/updateRef`);
+  getRiesgoByIdMatrizRef(periodo_anio: any) {
+    return this.http.get<any>(`${this.apiUrl}/updateRef/${periodo_anio}`);
   }
 
   getRiesgoById(id_riesgo: any) {
@@ -34,7 +39,7 @@ export class RiesgosService {
   }
 
   deleteRiesgo(id_riesgo: any) {
-    return this.http.patch<any>(`${this.apiUrl}/${id_riesgo}`, { estado_registro: 0 });
+    return this.http.patch<any>(`${this.apiUrl}/delete/${id_riesgo}`, { estado_registro: 0 });
   }
   deleteRiesgoByIdMatriz(id_matriz: any) {
     return this.http.patch<any>(`${this.apiUrl}/matriz/${id_matriz}`, { estado_registro: 0 });

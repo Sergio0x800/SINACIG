@@ -66,17 +66,17 @@ export class PlanRiesgosService {
   deletePlan(id_plan: any) {
     return this.http.patch<any>(`${this.apiUrl}/riesgo_plan_trabajo/${id_plan}`, { estado_registro: 0 });
   }
-  deleteRecursos(id_plan: any) {
-    return this.http.patch<any>(`${this.apiUrl}/recursos/${id_plan}`, { estado_registro: 0 });
+  deleteRecursos(id_plan: any, changes: any) {
+    return this.http.patch<any>(`${this.apiUrl}/recursos/${id_plan}`, changes);
   }
-  deleteControlInternoPlan(id_plan: any) {
-    return this.http.patch<any>(`${this.apiUrl}/controlInternoPlan/${id_plan}`, { estado_registro: 0 });
+  deleteControlInternoPlan(id_plan: any, changes: any) {
+    return this.http.patch<any>(`${this.apiUrl}/controlInternoPlan/${id_plan}`, changes);
   }
-  deleteControlInterno(id_plan: any) {
-    return this.http.patch<any>(`${this.apiUrl}/riesgo_control_interno/${id_plan}`, { estado_registro: 0 });
+  deleteControlInterno(id_plan: any, changes: any) {
+    return this.http.patch<any>(`${this.apiUrl}/riesgo_control_interno/${id_plan}`, changes);
   }
-  deleteControlImplementacion(id_plan: any) {
-    return this.http.patch<any>(`${this.apiUrl}/implementacion/${id_plan}`, { estado_registro: 0 });
+  deleteControlImplementacion(id_plan: any, changes: any) {
+    return this.http.patch<any>(`${this.apiUrl}/implementacion/${id_plan}`, changes);
   }
 
   ///Update

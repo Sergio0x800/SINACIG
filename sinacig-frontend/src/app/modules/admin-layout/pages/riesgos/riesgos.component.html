@@ -1,9 +1,9 @@
 <div class="container-riego-table">
   <div class="title-btns">
-    <h2 class="riesgo__title">Matriz evaluación de riesgos: </h2>
+    <h2 class="riesgo__title">Matriz de evaluación de riesgos: </h2>
     <div class="btn-table-riesgo">
-      <button class="btn btn-danger btn-size" routerLink="/admin/matriz"><i class="fa fa-arrow-left"
-          aria-hidden="true"></i>
+      <button class="btn btn-danger btn-size" (click)="removeCache()" routerLink="/admin/matriz"><i
+          class="fa fa-arrow-left" aria-hidden="true"></i>
         Regresar</button>
       <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-success btn-size"
         (click)="verificarPlanes()"><i class="fa fa-plus" aria-hidden="true"></i>
@@ -11,10 +11,58 @@
         riesgo</button>
     </div>
   </div>
+
+
+  <!-- CAMPOS DE BUSQUEDA -->
+  <form [formGroup]="formFiltroRiesgo">
+    <div class="cards-filter">
+      <div class="cards-filter__title">
+        <h4>Filtros de busqueda</h4>
+      </div>
+
+      <div class="cards-filter__inputs">
+        <select formControlName="medida_riesgo" id="selectRol" name="selectRol"
+          class="form-select cards-filter__inputs_inputs">
+          <option value="-1">--Medidas de Riesgo--</option>
+          <option *ngFor="let medidas of medidasRiesgo" [value]="medidas.id_medida_riesgo">
+            {{medidas.descripcion}}</option>
+        </select>
+        <div class="form-check">
+          <input formControlName="plan_faltante" class="form-check-input" type="checkbox" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Planes de trabajo pendientes
+          </label>
+        </div>
+        <div class="form-check">
+          <input formControlName="matriz_continuidad_faltante" class="form-check-input" type="checkbox"
+            id="flexCheckChecked">
+          <label class="form-check-label" for="flexCheckChecked">
+            Matrices de continuidad pendientes
+          </label>
+        </div>
+        <!-- <div class="checksFilters">
+        </div> -->
+      </div>
+
+      <!-- <button class="btn btn-primary btn-size" type="button" (click)="validarFormBusqueda()"><i class="fa fa-search"
+          aria-hidden="true"></i>
+        Buscar
+      </button> -->
+      <!-- <div class="btn-offset">
+        <button class="btn btn-outline-primary btn-lg btn-block" (click)="aumentarOffset()"><i class="fa fa-search"
+            aria-hidden="true"></i> Aplicar Filtros</button>
+      </div> -->
+
+    </div>
+  </form>
+  <!-- CAMPOS DE BUSQUEDA -->
+
+
+
   <div class="tabla-res">
     <div *ngIf="showTablePlanesTrabajo" class="table-matriz mt-5">
       <div class="table-header-matriz">
-        <div class="header-title">Editar riesgo</div>
+        <div class="header-title">Opciones</div>
         <div class="header-title">Descripción</div>
         <div class="header-title">R.I</div>
         <div class="header-title">R.R</div>
@@ -23,7 +71,7 @@
         <div class="header-title">M. Continuidad</div>
       </div>
       <div class="table-body-matriz" *ngFor="let riesgo of riesgos">
-        <div>
+        <div class="opciones-buttons">
           <button class="btn btn-sm btn-size-card" data-bs-toggle="modal" [ngClass]="{
               'btn-primary': matrizObtenida.periodo_abierto === 0,
               'btn-warning': matrizObtenida.periodo_abierto === 1
@@ -33,6 +81,19 @@
               <i class="fa-solid fa-eye"></i>
             </ng-template>
           </button>
+
+
+          <button *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3) && matrizObtenida.periodo_abierto === 1"
+            (click)=" deleteRiesgo(riesgo.id_riesgo)" class="btn btn-sm btn-danger" data-bs-toggle="modal">
+            <i class="fas fa-trash"></i>
+          </button>
+
+          <!-- <button
+          *ngIf="usuario.id_rol === 1 && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-danger" (click)="deletePeriodoMatriz(matriz.id_matriz)">
+          <i class="fas fa-trash"></i>
+          </button> -->
+
         </div>
         <div><span class="riesgo-descripcion-style">{{riesgo.descripcion_riesgo}}</span>
         </div>

@@ -5,15 +5,8 @@ class LogService {
   constructor() {}
 
   async createLog(data) {
-    const newLog = {
-      nombre_tabla: data.tabla,
-      id_registro: data.id_registro,
-      antes: JSON.stringify(data.antes),
-      despues: JSON.stringify(data.despues),
-      id_usuario_modifico: data.despues.usuario_registro,
-    };
     try {
-      const result = await models.Log.create(newLog);
+      const result = await models.Log.create(data);
       return result;
     } catch (error) {
       throw `${error}`;

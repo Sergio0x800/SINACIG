@@ -277,16 +277,12 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
                     .string('Conclusión:')
                     .style(tableFooter.footerTitle1);
 
-                  ws.cell(rowIndex + 8, 1, rowIndex + 8, 3, true)
-                    .string('Firma')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 8, 4, rowIndex + 8, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 8).setHeight(20);
-
+                  ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                    .string('Elaborado por:')
+                    .style(header.tituloInfoUnidad);
+                  ////////////
                   ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
-                    .string('Nombre del responsable')
+                    .string('Firma')
                     .style(tableFooter.footerTitle2);
                   ws.cell(rowIndex + 9, 4, rowIndex + 9, 14, true).style(
                     tableFooter.footerBoxText
@@ -294,12 +290,53 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
                   ws.row(rowIndex + 9).setHeight(20);
 
                   ws.cell(rowIndex + 10, 1, rowIndex + 10, 3, true)
-                    .string('Puesto')
+                    .string('Nombre del responsable')
                     .style(tableFooter.footerTitle2);
                   ws.cell(rowIndex + 10, 4, rowIndex + 10, 14, true).style(
                     tableFooter.footerBoxText
                   );
                   ws.row(rowIndex + 10).setHeight(20);
+
+                  ws.cell(rowIndex + 11, 1, rowIndex + 11, 3, true)
+                    .string('Puesto')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 11, 4, rowIndex + 11, 14, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 11).setHeight(20);
+                  //////////////
+                  // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
+                  //   .string('Conclusión:')
+                  //   .style(tableFooter.footerTitle1);
+
+                  ws.cell(rowIndex + 14, 1, rowIndex + 14, 2, true)
+                    .string('Visto bueno:')
+                    .style(header.tituloInfoUnidad);
+
+                  ////////////
+                  ws.cell(rowIndex + 15, 1, rowIndex + 15, 3, true)
+                    .string('Firma')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 15, 4, rowIndex + 15, 14, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 15).setHeight(20);
+
+                  ws.cell(rowIndex + 16, 1, rowIndex + 16, 3, true)
+                    .string('Nombre del responsable')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 16, 4, rowIndex + 16, 14, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 16).setHeight(20);
+
+                  ws.cell(rowIndex + 17, 1, rowIndex + 17, 3, true)
+                    .string('Puesto')
+                    .style(tableFooter.footerTitle2);
+                  ws.cell(rowIndex + 17, 4, rowIndex + 17, 14, true).style(
+                    tableFooter.footerBoxText
+                  );
+                  ws.row(rowIndex + 17).setHeight(20);
 
                   wb.write('Matriz_evaluacion_riesgos.xlsx', res);
                 }

@@ -2,6 +2,9 @@ const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
 const { QueryTypes } = require('sequelize');
+const LogService = require('./logs.service');
+
+const logService = new LogService();
 
 class MatrizcontinuidadService {
   constructor() {}
@@ -44,12 +47,29 @@ class MatrizcontinuidadService {
   }
 
   async updateMatrizContinuidad(changes, id_riesgo_continuidad) {
-    const result = await models.MatrizContinuidad.update(changes, {
-      raw: true,
+    const resultAntes = await models.MatrizContinuidad.findOne({
       where: {
         id_riesgo_continuidad,
       },
     });
+    const resultDespues = await models.MatrizContinuidad.findOne({
+      where: {
+        id_riesgo_continuidad,
+      },
+    });
+    const result = await resultDespues.update(changes, {
+      where: {
+        id_riesgo_continuidad,
+      },
+    });
+    const newLog = {
+      nombre_tabla: 'tt_riesgo_continuidad',
+      id_registro: id_riesgo_continuidad,
+      antes: JSON.stringify(resultAntes),
+      despues: JSON.stringify(result),
+      id_usuario_modifico: changes.usuario_registro,
+    };
+    await logService.createLog(newLog);
     return result;
   }
 

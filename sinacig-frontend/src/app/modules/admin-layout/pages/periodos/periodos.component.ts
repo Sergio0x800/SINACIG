@@ -46,7 +46,7 @@ export class PeriodosComponent implements OnInit {
   }
 
 
-  cerrarPeriodo(id_periodo: any, fecha_inicio: any, fecha_fin: any) {
+  cerrarPeriodo(id_periodo: any, fecha_inicio: any, fecha_fin: any, periodo_anio: any) {
     const dataFindMatriz = {
       fecha_inicio: fecha_inicio,
       fecha_fin: fecha_fin
@@ -65,27 +65,27 @@ export class PeriodosComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.catalogsService.cerrarPeriodo(id_periodo).subscribe((value: any) => {
-              let contadorE = 0
-              let contadorO = 0
-              let contadorCN = 0
-              let contadorI = 0
+              // let contadorE = 0;
+              // let contadorO = 0;
+              // let contadorCN = 0;
+              // let contadorI = 0;
 
-              this.riesgoService.getRiesgoByIdMatrizRef().subscribe((value: any) => {
-                value.forEach((riesgo: any) => {
-                  if (riesgo.codigo_referencia === 'E-') {
-                    contadorE++
-                    this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `E-${contadorE}` }).subscribe((value: any) => { })
-                  } else if (riesgo.codigo_referencia === 'O-') {
-                    contadorO++
-                    this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `O-${contadorO}` }).subscribe((value: any) => { })
-                  } else if (riesgo.codigo_referencia === 'CN-') {
-                    contadorCN++
-                    this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `CN-${contadorCN}` }).subscribe((value: any) => { })
-                  } else if (riesgo.codigo_referencia === 'I-') {
-                    contadorI++
-                    this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `I-${contadorI}` }).subscribe((value: any) => { })
-                  }
-                })
+              this.riesgoService.getRiesgoByIdMatrizRef(periodo_anio).subscribe((value: any) => {
+                // value.forEach((riesgo: any) => {
+                //   if (riesgo.codigo_referencia === 'E-') {
+                //     contadorE++
+                //     this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `E-${contadorE}` }).subscribe((value: any) => { })
+                //   } else if (riesgo.codigo_referencia === 'O-') {
+                //     contadorO++
+                //     this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `O-${contadorO}` }).subscribe((value: any) => { })
+                //   } else if (riesgo.codigo_referencia === 'CN-') {
+                //     contadorCN++
+                //     this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `CN-${contadorCN}` }).subscribe((value: any) => { })
+                //   } else if (riesgo.codigo_referencia === 'I-') {
+                //     contadorI++
+                //     this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `I-${contadorI}` }).subscribe((value: any) => { })
+                //   }
+                // })
                 this.catalogsService.getPeriodos().subscribe(periodos => {
                   this.periodos = periodos
                   this.periodosTabla = periodos
@@ -96,6 +96,8 @@ export class PeriodosComponent implements OnInit {
                   confirmButtonColor: '#3085d6',
                   confirmButtonText: 'Aceptar'
                 });
+              }, err => {
+                this.utilidades.showError('Error en la solicitud', 'Algo salio mal mientras se procesaba la solicitud')
               })
             })
           }
@@ -109,75 +111,7 @@ export class PeriodosComponent implements OnInit {
         });
       }
     }, err => {
-      this.utilidades.showError('Error en la solicitud', 'Algo ocurrio mal mientras se procesaba la solicitud')
+      this.utilidades.showError('Error en la solicitud', 'Algo salio mal mientras se procesaba la solicitud')
     })
   }
-  //   if (this.matrizPeriodosEncontrados[0].periodo_abierto === 1) {
-  //     Swal.fire({
-  //       title: 'Esta seguro de cerrar este periodo?',
-  //       text: "¡No podra revertir ni realizar alguna acción que no sea visualizar los registros!",
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#3085d6',
-  //       cancelButtonColor: '#d33',
-  //       confirmButtonText: 'Si, ¡cerrar periodo!',
-  //       cancelButtonText: 'Cancelar'
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         this.matrizService.updateMatriz(id_matriz).subscribe(() => {
-  //           Swal.fire({
-  //             icon: 'success',
-  //             text: '¡El periodo se ha cerrado correctamente!'
-  //           });
-  //           let contadorE = 0
-  //           let contadorO = 0
-  //           let contadorCN = 0
-  //           let contadorI = 0
-  //           this.riesgoService.getRiesgoByIdMatrizRef(id_matriz).subscribe((value: any) => {
-  //             value.forEach((riesgo: any) => {
-  //               if (riesgo.codigo_referencia === 'E-') {
-  //                 contadorE++
-  //                 this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `E-${contadorE}` }).subscribe((value: any) => { })
-  //               } else if (riesgo.codigo_referencia === 'O-') {
-  //                 contadorO++
-  //                 this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `O-${contadorO}` }).subscribe((value: any) => { })
-  //               } else if (riesgo.codigo_referencia === 'CN-') {
-  //                 contadorCN++
-  //                 this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `CN-${contadorCN}` }).subscribe((value: any) => { })
-  //               } else if (riesgo.codigo_referencia === 'I-') {
-  //                 contadorI++
-  //                 this.riesgoService.updateRiesgo(riesgo.id_riesgo, { codigo_referencia: `I-${contadorI}` }).subscribe((value: any) => { })
-  //               }
-  //             })
-  //           })
-
-  //           const periodoSeleccionado = this.periodos.find((value: any) => value.id_periodo == this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
-  //           const dataSearch = {
-  //             ...this.formSearchCreateMatrizPeriodo.value,
-  //             fecha_periodo_inicio: periodoSeleccionado.fecha_inicio,
-  //             fecha_periodo_fin: periodoSeleccionado.fecha_fin
-  //           }
-  //           this.matrizService.getMatrizByParams(dataSearch)
-  //             .subscribe(matriz => {
-  //               this.showTablePeriodos = true;
-  //               this.matrizPeriodosEncontrados = matriz;
-  //             })
-  //         }, err => {
-  //           Swal.fire({
-  //             icon: 'error',
-  //             text: '¡No se pudo cerrar el registro, ha ocurrido un error!'
-  //           })
-  //         });
-  //       }
-  //     })
-  //   } else {
-  //     Swal.fire({
-  //       text: 'El periodo ya se encuentra cerrado',
-  //       icon: 'warning',
-  //       confirmButtonColor: '#3085d6',
-  //       confirmButtonText: 'Aceptar'
-  //     })
-  //   }
-  // }
-
 }

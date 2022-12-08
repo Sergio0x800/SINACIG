@@ -55,6 +55,12 @@ export class UtilidadesService {
     sessionStorage.removeItem('Periodo');
   }
 
+  removeFiltroCache() {
+    sessionStorage.removeItem('medida_riesgo');
+    sessionStorage.removeItem('planes_trabajo');
+    sessionStorage.removeItem('matrices_continuidad');
+  }
+
   showOk(mensaje: string, text: string) {
     this.alertaExito.fire({
       title: mensaje,

@@ -21,6 +21,11 @@ export const ROUTES_DIGITADOR: RouteInfo[] = [
   { path: 'matriz', title: 'Matriz de riesgos', icon: 'ni-chart-bar-32 text-default', class: '' }
 ];
 
+export const ROUTES_COMISION: RouteInfo[] = [
+  { path: 'matriz', title: 'Matriz de riesgos', icon: 'ni-chart-bar-32 text-default', class: '' },
+  { path: 'periodos', title: 'Periodos', icon: 'ni-calendar-grid-58 text-default', class: '' },
+];
+
 export const ROUTES_REPORT: RouteInfo[] = [
   { path: 'evaluacion-riesgo-reporte', title: 'Evaluación Riesgo', icon: '', class: '' },
   { path: 'plan-trabajo-reporte', title: 'Plan de Trabajo', icon: '', class: '' },
@@ -47,8 +52,10 @@ export class SidebarComponent implements OnInit {
       this.usuario = result
       if (this.usuario.id_rol == 1) {
         this.menuItems = ROUTES
-      } else {
+      } else if (this.usuario.id_rol == 2) {
         this.menuItems = ROUTES_DIGITADOR
+      } else {
+        this.menuItems = ROUTES_COMISION
       }
       this.menuItemsReport = ROUTES_REPORT
       this.router.events.subscribe((event) => {

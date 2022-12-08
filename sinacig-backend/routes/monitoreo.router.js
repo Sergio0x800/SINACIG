@@ -10,7 +10,7 @@ const monitoreoService = new MonitoreoService();
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const data = req.body;
@@ -25,7 +25,7 @@ router.post(
 router.get(
   '/update/:id_riesgo_continuidad',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo_continuidad } = req.params;
@@ -43,7 +43,7 @@ router.get(
 router.patch(
   '/delete/:id_detalle_monitoreo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_detalle_monitoreo } = req.params;

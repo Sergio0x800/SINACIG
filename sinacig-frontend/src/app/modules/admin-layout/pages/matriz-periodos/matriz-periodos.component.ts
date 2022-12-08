@@ -50,6 +50,7 @@ export class MatrizPeriodosComponent implements OnInit {
 
   ngOnInit(): void {
     //Se obtienen los periodos
+    this.utilidades.removeFiltroCache();
     this.catalogsService.getPeriodos().subscribe(resultPeriodos => {
       this.periodos = resultPeriodos
       if (sessionStorage.getItem('Unidad') && sessionStorage.getItem('Periodo')) {
@@ -62,7 +63,7 @@ export class MatrizPeriodosComponent implements OnInit {
       //Se obtiene el usuario actual y en base a el se limitan las UE
       this.usuarioService.obtenerUsuario().subscribe((resultUsuarios: any) => {
         this.usuario = resultUsuarios
-        if (this.usuario.id_rol == 1) {
+        if (this.usuario.id_rol == 1 || this.usuario.id_rol == 3) {
           this.catalogsService.getUnidadEjecutora().subscribe(unidades => {
             this.unidadesEjecutoras = unidades.filter((unidad: any) => unidad.codigo_unidad < 999)
           }, err => {

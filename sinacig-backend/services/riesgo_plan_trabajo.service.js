@@ -2,6 +2,9 @@ const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
 const { QueryTypes } = require('sequelize');
+const LogService = require('./logs.service');
+
+const logService = new LogService();
 
 class RiesgoPlanTrabajoService {
   constructor() {}
@@ -60,24 +63,32 @@ class RiesgoPlanTrabajoService {
     const planAntes = await models.PlanTrabajo.findOne({
       where: { id_riesgo_plan_trabajo: id_plan },
     });
+
     const planEncontrado = await models.PlanTrabajo.findOne({
       where: { id_riesgo_plan_trabajo: id_plan },
     });
+
     if (planEncontrado.length === 0) {
       throw boom.notFound('No hay registros');
     }
+
     try {
       const updatedPlan = await planEncontrado.update(changes, {
         where: {
           id_riesgo_plan_trabajo: id_plan,
         },
       });
-      return {
-        tabla: 'tt_riesgo_plan_trabajo',
+
+      const newLog = {
+        nombre_tabla: 'tt_riesgo_plan_trabajo',
         id_registro: updatedPlan.id_riesgo_plan_trabajo,
-        antes: planAntes,
-        despues: updatedPlan,
+        antes: JSON.stringify(planAntes),
+        despues: JSON.stringify(updatedPlan),
+        id_usuario_modifico: changes.usuario_registro,
       };
+      await logService.createLog(newLog);
+
+      return updatedPlan;
     } catch (error) {
       throw boom.internal('Error al actualizar el registro');
     }

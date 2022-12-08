@@ -10,7 +10,7 @@ const matrizContinuidadService = new MatrizcontinuidadService();
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const data = req.body;
@@ -27,7 +27,7 @@ router.post(
 router.get(
   '/existencia/:id_matriz',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_matriz } = req.params;
@@ -45,7 +45,7 @@ router.get(
 router.get(
   '/update/:id_riesgo_continuidad',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo_continuidad } = req.params;
@@ -62,7 +62,7 @@ router.get(
 router.get(
   '/:id_riesgo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo } = req.params;
@@ -80,7 +80,7 @@ router.get(
 router.patch(
   '/updateData/:id_riesgo_continuidad',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo_continuidad } = req.params;

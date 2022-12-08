@@ -34,7 +34,8 @@
       </div>
       <div>
         <button *ngIf="periodo.periodo_abierto === 1" class="btn btn_primary bg-warning btn-sm btn-plan-search"
-          (click)="cerrarPeriodo(periodo.id_periodo, periodo.fecha_inicio, periodo.fecha_fin)">Cerrar periodo</button>
+          (click)="cerrarPeriodo(periodo.id_periodo, periodo.fecha_inicio, periodo.fecha_fin, periodo.anio)">Cerrar
+          periodo</button>
       </div>
     </div>
   </div>

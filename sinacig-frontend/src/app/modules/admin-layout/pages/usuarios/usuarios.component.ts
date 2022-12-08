@@ -58,8 +58,6 @@ export class UsuariosComponent implements OnInit {
 
     this.formFiltroRiesgo.get('unidadFiltro')?.valueChanges.subscribe(unidad => {
       this.unidadFiltroSelec = unidad;
-      console.log(this.unidadFiltroSelec)
-      console.log(this.usuarioFiltroSelec)
       if (unidad == -1) {
         this.filtroUsuarios = this.usuarios
       } else {
@@ -70,8 +68,6 @@ export class UsuariosComponent implements OnInit {
 
     this.formFiltroRiesgo.get('usuarioFiltro')?.valueChanges.subscribe(usuarioFil => {
       this.usuarioFiltroSelec = usuarioFil;
-      console.log(this.unidadFiltroSelec)
-      console.log(this.usuarioFiltroSelec)
       if (!usuarioFil) {
         if (this.formFiltroRiesgo.get('unidadFiltro')?.value == -1) {
           this.filtroUsuarios = this.usuarios

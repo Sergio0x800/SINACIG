@@ -35,8 +35,8 @@ export class MatrizContinuidadService {
     return this.http.get<any>(`${this.apiUrl}/metodo_monitoreo/update/${id_riesgo_continuidad}`);
   }
 
-  deleteLogicoMetodoMonitoreo(id_detalle_monitoreo: any) {
-    return this.http.patch<any>(`${this.apiUrl}/metodo_monitoreo/delete/${id_detalle_monitoreo}`, { estado_registro: 0 });
+  deleteLogicoMetodoMonitoreo(id_detalle_monitoreo: any, changes: any) {
+    return this.http.patch<any>(`${this.apiUrl}/metodo_monitoreo/delete/${id_detalle_monitoreo}`, changes);
   }
 
   updateMatrizContinuidad(id_riesgo_continuidad: any, changes: any) {

@@ -1,6 +1,9 @@
 const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
+const LogService = require('./logs.service');
+
+const logService = new LogService();
 
 class RiesgoControlImplementacionService {
   constructor() {}
@@ -31,17 +34,28 @@ class RiesgoControlImplementacionService {
   }
 
   async deletecontrolImplementacion(id_control, changes) {
-    const result = await models.ControlImplementacion.findOne({
+    const resultAntes = await models.ControlImplementacion.findOne({
       where: { id_riesgo_plan_control_implementacion: id_control },
     });
-    if (result.length === 0) {
+    const resultDespues = await models.ControlImplementacion.findOne({
+      where: { id_riesgo_plan_control_implementacion: id_control },
+    });
+    if (resultDespues.length === 0) {
       throw boom.notFound('No hay registros');
     }
-    const resultUpdate = await models.ControlImplementacion.update(changes, {
+    const resultUpdate = await resultDespues.update(changes, {
       where: {
         id_riesgo_plan_control_implementacion: id_control,
       },
     });
+    const newLog = {
+      nombre_tabla: 'tt_riesgo_plan_control_implementacion',
+      id_registro: id_control,
+      antes: JSON.stringify(resultAntes),
+      despues: JSON.stringify(resultUpdate),
+      id_usuario_modifico: changes.usuario_registro,
+    };
+    await logService.createLog(newLog);
     return resultUpdate;
   }
 }

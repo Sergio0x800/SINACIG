@@ -10,7 +10,7 @@ const controlService = new ControlInternoPlanService();
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const body = req.body;
@@ -25,7 +25,7 @@ router.post(
 router.get(
   '/riesgos/:id_riesgo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo } = req.params;
@@ -42,7 +42,7 @@ router.get(
 router.patch(
   '/:id_plan',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_plan } = req.params;

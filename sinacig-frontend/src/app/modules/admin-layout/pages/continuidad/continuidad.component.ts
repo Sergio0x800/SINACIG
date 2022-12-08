@@ -200,7 +200,8 @@ export class ContinuidadComponent implements OnInit {
     }
 
     //controles
-    if (this.metodoMonitoreoMemory.length < 1) {
+
+    if (this.metodoMonitoreoMemory.length < 1 && !this.actualizar) {
       this.descripcionMetodoMonitoreoInvalid = true
     }
 
@@ -224,6 +225,20 @@ export class ContinuidadComponent implements OnInit {
 
     this.matrizContinuidadService.createMatrizContinuidad(newContinuidad).subscribe((value: any) => {
       this.id_matriz_continuidad = value;
+
+      this.subtemaInvalid = false
+      this.subtemaValid = false
+      this.toleranciaInvalid = false
+      this.toleranciaValid = false
+      this.frecuenciaInvalid = false
+      this.frecuenciaValid = false
+      this.puestoInvalid = false
+      this.puestoValid = false
+      this.severidadInvalid = false
+      this.severidadValid = false
+      this.descripcionMetodoMonitoreoInvalid = false
+      this.descripcionMetodoMonitoreoValid = false
+
 
       this.metodoMonitoreoMemory.map((metodoObt: any) => {
         const metodoMonitoreo = {
@@ -263,7 +278,7 @@ export class ContinuidadComponent implements OnInit {
       })
 
       this.metodoMonitoreoDBdelete.map((idMetodoMonitoreo: any) => {
-        this.matrizContinuidadService.deleteLogicoMetodoMonitoreo(idMetodoMonitoreo).subscribe(value => {
+        this.matrizContinuidadService.deleteLogicoMetodoMonitoreo(idMetodoMonitoreo, { estado_registro: 0, usuario_registro: this.usuario.id_usuario }).subscribe(value => {
         })
       })
       this.router.navigate([`/admin/grid-continuidad/${this.id_riesgo}/${this.id_matriz}`]);

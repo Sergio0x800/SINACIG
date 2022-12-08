@@ -282,25 +282,57 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
                         conteoPlanesRecorridos++;
 
                         if (totalPlanes == conteoPlanesRecorridos) {
-                          //Pie de página
-                          ws.cell(rowIndex + 2, 1, rowIndex + 6, 14, true)
-                            .string('Conclusión:')
-                            .style(tableFooter.footerTitle1);
-
-                          ws.cell(rowIndex + 8, 1, rowIndex + 8, 3, true)
+                          ws.cell(rowIndex + 2, 1, rowIndex + 2, 2, true)
+                            .string('Elaborado por:')
+                            .style(header.tituloInfoUnidad);
+                          ////////////
+                          ws.cell(rowIndex + 3, 1, rowIndex + 3, 3, true)
                             .string('Firma')
                             .style(tableFooter.footerTitle2);
                           ws.cell(
-                            rowIndex + 8,
+                            rowIndex + 3,
                             4,
-                            rowIndex + 8,
+                            rowIndex + 3,
                             14,
                             true
                           ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 8).setHeight(20);
+                          ws.row(rowIndex + 3).setHeight(20);
 
-                          ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
+                          ws.cell(rowIndex + 4, 1, rowIndex + 4, 3, true)
                             .string('Nombre del responsable')
+                            .style(tableFooter.footerTitle2);
+                          ws.cell(
+                            rowIndex + 4,
+                            4,
+                            rowIndex + 4,
+                            14,
+                            true
+                          ).style(tableFooter.footerBoxText);
+                          ws.row(rowIndex + 4).setHeight(20);
+
+                          ws.cell(rowIndex + 5, 1, rowIndex + 5, 3, true)
+                            .string('Puesto')
+                            .style(tableFooter.footerTitle2);
+                          ws.cell(
+                            rowIndex + 5,
+                            4,
+                            rowIndex + 5,
+                            14,
+                            true
+                          ).style(tableFooter.footerBoxText);
+                          ws.row(rowIndex + 5).setHeight(20);
+                          //////////////
+                          // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
+                          //   .string('Conclusión:')
+                          //   .style(tableFooter.footerTitle1);
+
+                          ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                            .string('Visto bueno:')
+                            .style(header.tituloInfoUnidad);
+
+                          ////////////
+                          ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
+                            .string('Firma')
                             .style(tableFooter.footerTitle2);
                           ws.cell(
                             rowIndex + 9,
@@ -312,7 +344,7 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
                           ws.row(rowIndex + 9).setHeight(20);
 
                           ws.cell(rowIndex + 10, 1, rowIndex + 10, 3, true)
-                            .string('Puesto')
+                            .string('Nombre del responsable')
                             .style(tableFooter.footerTitle2);
                           ws.cell(
                             rowIndex + 10,
@@ -322,6 +354,18 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
                             true
                           ).style(tableFooter.footerBoxText);
                           ws.row(rowIndex + 10).setHeight(20);
+
+                          ws.cell(rowIndex + 11, 1, rowIndex + 11, 3, true)
+                            .string('Puesto')
+                            .style(tableFooter.footerTitle2);
+                          ws.cell(
+                            rowIndex + 11,
+                            4,
+                            rowIndex + 11,
+                            14,
+                            true
+                          ).style(tableFooter.footerBoxText);
+                          ws.row(rowIndex + 11).setHeight(20);
 
                           wb.write('Plan_de_trabajo.xlsx', res);
                         }

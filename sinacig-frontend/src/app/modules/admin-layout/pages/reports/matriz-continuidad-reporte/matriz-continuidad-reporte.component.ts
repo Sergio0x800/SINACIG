@@ -44,7 +44,7 @@ export class MatrizContinuidadReporteComponent implements OnInit {
     this.catalogsService.getPeriodos().subscribe(periodos => this.periodos = periodos)
     this.usuarioService.obtenerUsuario().subscribe((result: any) => {
       this.usuario = result
-      if (this.usuario.id_rol == 1) {
+      if (this.usuario.id_rol == 1 || this.usuario.id_rol == 3) {
         this.catalogsService.getUnidadEjecutora().subscribe(unidades => {
           let todas = []
           todas = unidades.filter((unidad: any) => unidad.codigo_unidad == 999)

@@ -1,6 +1,9 @@
 const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
+const LogService = require('./logs.service');
+
+const logService = new LogService();
 
 class RecursosService {
   constructor() {}
@@ -33,17 +36,28 @@ class RecursosService {
   }
 
   async deleteRecurso(id_recurso, changes) {
-    const result = await models.Recursos.findOne({
+    const resultAntes = await models.Recursos.findOne({
       where: { id_recursos: id_recurso },
     });
-    if (result.length === 0) {
+    const resultDespues = await models.Recursos.findOne({
+      where: { id_recursos: id_recurso },
+    });
+    if (resultAntes.length === 0) {
       throw boom.notFound('No hay registros');
     }
-    const resultUpdate = await models.Recursos.update(changes, {
+    const resultUpdate = await resultDespues.update(changes, {
       where: {
         id_recursos: id_recurso,
       },
     });
+    const newLog = {
+      nombre_tabla: 'tt_recursos',
+      id_registro: id_recurso,
+      antes: JSON.stringify(resultAntes),
+      despues: JSON.stringify(resultUpdate),
+      id_usuario_modifico: changes.usuario_registro,
+    };
+    await logService.createLog(newLog);
     return resultUpdate;
   }
 }

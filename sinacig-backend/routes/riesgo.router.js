@@ -10,7 +10,7 @@ const riesgoService = new RiesgoService();
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const dataRiesgo = req.body;
@@ -23,9 +23,24 @@ router.post(
 );
 
 router.get(
+  '/filtro',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2, 3),
+  async (req, res, next) => {
+    try {
+      const filtro = req.query;
+      const riesgo = await riesgoService.findRiesgoByFiltro(filtro);
+      res.json(riesgo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
   '/update/:id_riesgo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo } = req.params;
@@ -38,13 +53,16 @@ router.get(
 );
 
 router.get(
-  '/updateRef',
+  '/updateRef/:periodo_anio/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 3),
   async (req, res, next) => {
     try {
-      const result = await riesgoService.findRiesgoByIdMatrizUpdateRef();
-      res.json(result);
+      const { periodo_anio } = req.params;
+      await riesgoService.findRiesgoByIdMatrizUpdateRef(periodo_anio);
+      res.json({
+        message: 'ok',
+      });
     } catch (error) {
       next(error);
     }
@@ -54,7 +72,7 @@ router.get(
 router.get(
   '/search/:id_riesgo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo } = req.params;
@@ -69,7 +87,7 @@ router.get(
 router.get(
   '/:id_matriz/:offset',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_matriz, offset } = req.params;
@@ -87,7 +105,7 @@ router.get(
 router.patch(
   '/matriz/:id_matriz',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_matriz } = req.params;
@@ -103,12 +121,28 @@ router.patch(
 router.patch(
   '/update/:id_riesgo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo } = req.params;
       const data = req.body;
       const result = await riesgoService.updateRiesgo(id_riesgo, data);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.patch(
+  '/delete/:id_riesgo',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 3),
+  async (req, res, next) => {
+    try {
+      const { id_riesgo } = req.params;
+      const data = req.body;
+      const result = await riesgoService.deleteRiesgo(id_riesgo, data);
       res.json(result);
     } catch (error) {
       next(error);

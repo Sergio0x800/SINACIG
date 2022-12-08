@@ -1,3 +1,6 @@
+/* .btn {
+  margin-right: 0;
+} */
 .btn-size {
   width: 245px;
 }
@@ -79,6 +82,45 @@
 .btn-table-plan:hover {
   transform: scale(1.1);
 }
+
+/* filtros de busqueda */
+.cards-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: white;
+  padding: 30px 80px;
+  border-radius: 7px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+
+
+.cards-filter__inputs {
+  width: 100%;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+
+.cards-filter__inputs_inputs {
+  width: 50%;
+  height: 43px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  color: #32325d;
+}
+.btn-offset {
+  width: 100%;
+}
+
+
+/* filtros de busqueda */
 
 
 
@@ -269,6 +311,13 @@ h2 {
   background-color: rgba(0, 38, 255, 0.3);
 }
 
+.opciones-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  
+}
+
 .table-body-matriz {
   display: grid;
   grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
@@ -384,3 +433,23 @@ h2 {
   }
 }
 
+@media only screen and (max-width: 1459px) {
+  .cards-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 7px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  }
+  .cards-filter__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}

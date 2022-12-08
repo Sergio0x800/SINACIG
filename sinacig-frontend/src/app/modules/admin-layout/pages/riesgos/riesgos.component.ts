@@ -137,7 +137,7 @@ export class RiesgosComponent implements OnInit {
     fecha_inicio: new FormControl('', Validators.required),
     fecha_fin: new FormControl('', Validators.required),
     comentario: new FormControl(''),
-    usuario_registro: new FormControl('1', Validators.required),
+    usuario_registro: new FormControl(''),
   })
   formUpdateControlImplementacion = new FormGroup({
     que: new FormControl('', Validators.required),
@@ -170,6 +170,12 @@ export class RiesgosComponent implements OnInit {
     usuario_registro: new FormControl('')
   })
 
+  formFiltroRiesgo = new FormGroup({
+    medida_riesgo: new FormControl(''),
+    plan_faltante: new FormControl(''),
+    matriz_continuidad_faltante: new FormControl('')
+  })
+
   medidaRiesgoInput: any = '';
   riesgoEncontrado: any = {};
   validarExistenciaPlan: boolean = false;
@@ -197,32 +203,21 @@ export class RiesgosComponent implements OnInit {
       this.linkMatrizPeriodos = `/admin/ingreso-riesgos/${this.id_matriz}`
       this.matrizService.getMatrizById(this.id_matriz).subscribe((result: any) => {
         this.matrizObtenida = result[0]
-        this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-          if (riesgos.existencia == 1) {
-            this.riesgos = riesgos.res;
-            this.showBtnOffset = true;
-          } else if (riesgos.existencia == 0) {
-            Swal.fire({
-              icon: 'warning',
-              text: '¡No existen registros para mostrar!',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Aceptar'
-            })
-            this.showTablePlanesTrabajo = false
-            this.showBtnOffset = false;
-          }
-        }, err => {
-          Swal.fire({
-            icon: 'warning',
-            text: '¡Algo salió mal al buscar los registros, por favor vuelva a intentarlo!',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Aceptar'
-          })
-        })
+        if (sessionStorage.getItem('medida_riesgo') || sessionStorage.getItem('planes_trabajo') || sessionStorage.getItem('matrices_continuidad')) {
+          this.formFiltroRiesgo.patchValue({
+            medida_riesgo: sessionStorage.getItem('medida_riesgo'),
+            plan_faltante: sessionStorage.getItem('planes_trabajo') == "1" ? 1 : 0,
+            matriz_continuidad_faltante: sessionStorage.getItem('matrices_continuidad') == "1" ? 1 : 0,
+          });
+        } else {
+          this.formFiltroRiesgo.patchValue({
+            medida_riesgo: -1,
+            plan_faltante: false,
+            matriz_continuidad_faltante: false,
+          });
+        }
       })
     })
-
-
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getTipoObjetivo().subscribe(obj => this.tipoObjetivos = obj);
     this.catalogsService.getAreaEvaluada().subscribe(areas => this.areas_evaluadas = areas);
@@ -231,44 +226,36 @@ export class RiesgosComponent implements OnInit {
     this.catalogsService.getSeveridad().subscribe(severidades => this.severidades = severidades);
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.catalogsService.getPuestoResponsable().subscribe(puestos => this.puestos = puestos);
-    this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result)
-
-
-
-
-    // ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
-    // this.formUpdateRiesgo.get('id_tipo_objetivo')?.valueChanges.subscribe((tipo_objetivo_input: any) => {
-    //   //Se encuentra el tipo de objetivo seleccionado
-    //   this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
-    //   //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
-    //   this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
-    //     if (!maximoEncontrado) {
-    //       const newCorrelativo = {
-    //         id_matriz: this.id_matriz,
-    //         id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //         correlativo_maximo: 0,
-    //         usuario_registro: 1
-    //       }
-    //       this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-    //         //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
-    //         this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-    //           this.formUpdateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //           this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //           //este atributo sirve para al momento de crear el nuevo correlativo
-    //           this.maximoCorrelativoEncontrado = maximo
-    //         })
-    //       })
-    //     } else {
-    //       //si el correlativo ya esta inicializado, solo aumenta a 1 el correlativo maximo
-    //       this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-    //         this.formUpdateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //         this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //         this.maximoCorrelativoEncontrado = maximo
-    //       })
-    //     }
-    //   })
-    // })
-
+    this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result);
+    this.formFiltroRiesgo.valueChanges.subscribe((result: any) => {
+      this.saveInCache();
+      const filtros = {
+        ...result,
+        plan_faltante: result.plan_faltante == true ? 1 : 0,
+        matriz_continuidad_faltante: result.matriz_continuidad_faltante == true ? 1 : 0,
+        id_matriz: this.id_matriz
+      }
+      if (filtros.medida_riesgo == -1 && filtros.plan_faltante == 0 && filtros.matriz_continuidad_faltante == 0) {
+        this.getRiesgoByIdMatriz();
+      } else {
+        this.riesgoService.getRiesgosByFiltros(filtros).subscribe((riesgosObt: any) => {
+          if (riesgosObt.existencia == 1) {
+            this.riesgos = riesgosObt.res
+            this.showBtnOffset = false;
+            this.showTablePlanesTrabajo = true
+          } else {
+            Swal.fire({
+              icon: 'warning',
+              text: '¡No existen registros para mostrar con los filtros de búsqueda seleccionados!',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Aceptar'
+            })
+            this.showTablePlanesTrabajo = false
+            this.showBtnOffset = false;
+          }
+        })
+      }
+    })
     this.formUpdateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
       this.showBtnControlI = false
       this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_probabilidad')?.value * severidad_input })
@@ -303,7 +290,6 @@ export class RiesgosComponent implements OnInit {
         this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
       }
     })
-
     this.formUpdateRiesgo.get('id_control_mitigador')?.valueChanges.subscribe((mitigador_input: any) => {
       this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / mitigador_input })
       this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
@@ -317,281 +303,39 @@ export class RiesgosComponent implements OnInit {
     })
   }
 
+  //get riesgos by id_matriz
+  getRiesgoByIdMatriz() {
+    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
+      if (riesgos.existencia == 1) {
+        this.riesgos = riesgos.res;
+        this.showBtnOffset = true;
+        this.showTablePlanesTrabajo = true;
+      } else if (riesgos.existencia == 0) {
+        Swal.fire({
+          icon: 'warning',
+          text: '¡No existen registros para mostrar!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar'
+        })
+        this.showTablePlanesTrabajo = false
+        this.showBtnOffset = false;
+      }
+    }, err => {
+      Swal.fire({
+        icon: 'warning',
+        text: '¡Algo salió mal al buscar los registros, por favor vuelva a intentarlo!',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
+      })
+    })
+  }
+
   //Eliminacion y Actualizacion de Riesgos
   updateRiesgo() {
     ///llamado de los inputs del formulario reactivo para realizar los calculos del ingreso de riesgos
     const tipo_objetivo_input = this.formUpdateRiesgo.get('id_tipo_objetivo')?.value
     //Se encuentra el tipo de objetivo seleccionado
     this.tipoObjetivoEncontrado = this.tipoObjetivos.find((objetivo: any) => tipo_objetivo_input == objetivo.id_tipo_objetivo)
-    //busca una conicidencia, si no la encuentra incicializa a zero el correlativo
-    // this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximoEncontrado => {
-    //   if (!maximoEncontrado) {
-    //     const newCorrelativo = {
-    //       id_matriz: this.id_matriz,
-    //       id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //       correlativo_maximo: 0,
-    //       usuario_registro: 1
-    //     }
-    //     this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-    //       //nuevamente busca una coincidencia, cuando la encuentra aumenta a 1 el correlativo
-    //       this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-    //         this.formUpdateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //         this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //         //este atributo sirve para al momento de crear el nuevo correlativo
-    //         this.maximoCorrelativoEncontrado = maximo
-
-    //         //Aqui coloca
-    //         let updateRiesgo = {}
-    //         if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-    //           updateRiesgo = {
-    //             ...this.formUpdateRiesgo.value,
-    //             codigo_referencia: this.riesgoEncontrado.codigo_referencia,
-    //             riesgo_inherente: this.resultadoRI,
-    //             riesgo_residual: this.resultadoRR,
-    //             id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
-    //             usuario_registro: this.usuario.id_usuario
-    //           }
-    //         } else {
-    //           updateRiesgo = {
-    //             ...this.formUpdateRiesgo.value,
-    //             codigo_referencia: this.codigoReferenciaToInput,
-    //             riesgo_inherente: this.resultadoRI,
-    //             riesgo_residual: this.resultadoRR,
-    //             id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
-    //             usuario_registro: this.usuario.id_usuario
-    //           }
-    //         }
-    //         this.riesgoService.updateRiesgo(this.id_riesgo_from_table, updateRiesgo).subscribe((value) => {
-    //           //crear
-    //           this.internosMemory.map((control: any) => {
-    //             const newController = {
-    //               ...control,
-    //               // descripcion: ((this.countIndice += 1) + '. ') + control.descripcion,
-    //               id_riesgo: this.id_riesgo_for_control_interno,
-    //               usuario_registro: this.usuario.id_usuario
-    //             }
-    //             this.planService.createControlInterno(newController).subscribe((value) => { })
-    //           })
-    //           this.internosMemory = []
-    //           //eliminar
-    //           this.internosMemoryDelete.map((id_control: any) => {
-    //             this.planService.deleteControlInterno(id_control).subscribe((value) => { })
-    //           })
-
-    //           this.internosMemoryDelete = []
-    //           Swal.fire({
-    //             icon: 'success',
-    //             text: 'El registro se actualizo correctamente!'
-    //           })
-    //           if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-    //           } else {
-    //             this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
-    //               delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
-    //               delete this.maximoCorrelativoEncontrado.fecha_registro
-    //               delete this.maximoCorrelativoEncontrado.usuario_registro
-    //               const newCorrelativo = {
-    //                 ...this.maximoCorrelativoEncontrado,
-    //                 usuario_registro: this.usuario.id_usuario,
-    //                 correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
-    //               }
-    //               this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => {
-    //               })
-    //             }, err => {
-    //               const newCorrelativo = {
-    //                 id_matriz: this.id_matriz,
-    //                 id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //                 correlativo_maximo: 1,
-    //                 usuario_registro: this.usuario.id_usuario
-    //               }
-    //               this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-    //               })
-    //             })
-    //           }
-
-
-    //           this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
-    //             this.riesgos = riesgo
-    //           })
-    //         },
-    //           err => {
-    //             Swal.fire({
-    //               icon: 'error',
-    //               text: 'Error al actualizar el registro!'
-    //             })
-    //           })
-    //       })
-    //     })
-    //   } else {
-    //     //si el correlativo ya esta inicializado, solo aumenta a 1 el correlativo maximo
-    //     this.correlativoService.getCorrelativo({ id_matriz: this.id_matriz, id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo }).subscribe(maximo => {
-    //       this.formUpdateRiesgo.patchValue({ codigo_referencia: this.tipoObjetivoEncontrado.codigo_referencia + (maximo.correlativo_maximo + 1) })
-    //       this.codigoReferenciaToInput = this.formUpdateRiesgo.get('codigo_referencia')?.value
-    //       this.maximoCorrelativoEncontrado = maximo
-
-    //       let updateRiesgo = {}
-    //       if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-    //         updateRiesgo = {
-    //           ...this.formUpdateRiesgo.value,
-    //           codigo_referencia: this.riesgoEncontrado.codigo_referencia,
-    //           riesgo_inherente: this.resultadoRI,
-    //           riesgo_residual: this.resultadoRR,
-    //           id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
-    //           usuario_registro: this.usuario.id_usuario
-    //         }
-    //       } else {
-    //         updateRiesgo = {
-    //           ...this.formUpdateRiesgo.value,
-    //           codigo_referencia: this.codigoReferenciaToInput,
-    //           riesgo_inherente: this.resultadoRI,
-    //           riesgo_residual: this.resultadoRR,
-    //           id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
-    //           usuario_registro: this.usuario.id_usuario
-    //         }
-    //       }
-    //       this.riesgoService.updateRiesgo(this.id_riesgo_from_table, updateRiesgo).subscribe((resultRiesgoUpdated) => {
-    //         //crear
-    //         this.internosMemory.map((control: any) => {
-    //           const newController = {
-    //             ...control,
-    //             // descripcion: ((this.countIndice += 1) + '. ') + control.descripcion,
-    //             id_riesgo: this.id_riesgo_for_control_interno,
-    //             usuario_registro: this.usuario.id_usuario
-    //           }
-    //           this.planService.createControlInterno(newController).subscribe((value) => { })
-    //         })
-    //         this.internosMemory = []
-    //         //eliminar
-    //         this.internosMemoryDelete.map((id_control: any) => {
-    //           this.planService.deleteControlInterno(id_control).subscribe((value) => { })
-    //         })
-    //         this.internosMemoryDelete = []
-    //         Swal.fire({
-    //           icon: 'success',
-    //           text: 'El registro se actualizo correctamente!'
-    //         })
-    //         if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-    //         } else {
-    //           this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
-    //             delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
-    //             delete this.maximoCorrelativoEncontrado.fecha_registro
-    //             delete this.maximoCorrelativoEncontrado.usuario_registro
-    //             const newCorrelativo = {
-    //               ...this.maximoCorrelativoEncontrado,
-    //               usuario_registro: this.usuario.id_usuario,
-    //               correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
-    //             }
-    //             this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => {
-    //             })
-    //           }, err => {
-    //             const newCorrelativo = {
-    //               id_matriz: this.id_matriz,
-    //               id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //               correlativo_maximo: 1,
-    //               usuario_registro: this.usuario.id_usuario
-    //             }
-    //             this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-    //             })
-    //           })
-    //         }
-
-
-    //         //Llenar tabla log
-    //         this.logService.createLog(resultRiesgoUpdated).subscribe((result: any) => { })
-
-
-    //         this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
-    //           this.riesgos = riesgo
-    //         })
-    //       },
-    //         err => {
-    //           Swal.fire({
-    //             icon: 'error',
-    //             text: 'Error al actualizar el registro!'
-    //           })
-    //         })
-    //     })
-    //   }
-    // })
-
-    // this.countIndice = this.controlesInternosObtenidos.length
-    // let updateRiesgo = {}
-    // if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-    //   updateRiesgo = {
-    //     ...this.formUpdateRiesgo.value,
-    //     codigo_referencia: this.riesgoEncontrado.codigo_referencia,
-    //     riesgo_inherente: this.resultadoRI,
-    //     riesgo_residual: this.resultadoRR,
-    //     id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
-    //     usuario_registro: this.usuario.id_usuario
-    //   }
-    // } else {
-    //   updateRiesgo = {
-    //     ...this.formUpdateRiesgo.value,
-    //     codigo_referencia: this.codigoReferenciaToInput,
-    //     riesgo_inherente: this.resultadoRI,
-    //     riesgo_residual: this.resultadoRR,
-    //     id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo,
-    //     usuario_registro: this.usuario.id_usuario
-    //   }
-    // }
-    // this.riesgoService.updateRiesgo(this.id_riesgo_from_table, updateRiesgo).subscribe((value) => {
-    //   //crear
-    //   this.internosMemory.map((control: any) => {
-    //     const newController = {
-    //       ...control,
-    //       // descripcion: ((this.countIndice += 1) + '. ') + control.descripcion,
-    //       id_riesgo: this.id_riesgo_for_control_interno,
-    //       usuario_registro: this.usuario.id_usuario
-    //     }
-    //     this.planService.createControlInterno(newController).subscribe((value) => { })
-    //   })
-    //   this.internosMemory = []
-    //   //eliminar
-    //   this.internosMemoryDelete.map((id_control: any) => {
-    //     this.planService.deleteControlInterno(id_control).subscribe((value) => { })
-    //   })
-
-    //   this.internosMemoryDelete = []
-    //   Swal.fire({
-    //     icon: 'success',
-    //     text: 'El registro se actualizo correctamente!'
-    //   })
-    //   if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-    //   } else {
-    //     this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
-    //       delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
-    //       delete this.maximoCorrelativoEncontrado.fecha_registro
-    //       delete this.maximoCorrelativoEncontrado.usuario_registro
-    //       const newCorrelativo = {
-    //         ...this.maximoCorrelativoEncontrado,
-    //         usuario_registro: this.usuario.id_usuario,
-    //         correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
-    //       }
-    //       this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => {
-    //       })
-    //     }, err => {
-    //       const newCorrelativo = {
-    //         id_matriz: this.id_matriz,
-    //         id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-    //         correlativo_maximo: 1,
-    //         usuario_registro: this.usuario.id_usuario
-    //       }
-    //       this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-    //       })
-    //     })
-    //   }
-
-
-    //   this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
-    //     this.riesgos = riesgo
-    //   })
-    // },
-    //   err => {
-    //     Swal.fire({
-    //       icon: 'error',
-    //       text: 'Error al actualizar el registro!'
-    //     })
-    //   })
 
 
     const updateRiesgo = {
@@ -617,7 +361,7 @@ export class RiesgosComponent implements OnInit {
       this.internosMemory = []
       //eliminar
       this.internosMemoryDelete.map((id_control: any) => {
-        this.planService.deleteControlInterno(id_control).subscribe((value) => { })
+        this.planService.deleteControlInterno(id_control, { estado_registro: 0, usuario_registro: this.usuario.id_usuario }).subscribe((value) => { })
       })
 
       this.internosMemoryDelete = []
@@ -627,32 +371,6 @@ export class RiesgosComponent implements OnInit {
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Aceptar'
       })
-
-      // if (this.tipoObjetivoEncontrado.id_tipo_objetivo == this.riesgoEncontrado.id_tipo_objetivo) {
-      // } else {
-      //   this.correlativoService.deleteCorrelativo(this.maximoCorrelativoEncontrado.id_correlativo_maximo).subscribe(value => {
-      //     delete this.maximoCorrelativoEncontrado.id_correlativo_maximo
-      //     delete this.maximoCorrelativoEncontrado.fecha_registro
-      //     delete this.maximoCorrelativoEncontrado.usuario_registro
-      //     const newCorrelativo = {
-      //       ...this.maximoCorrelativoEncontrado,
-      //       usuario_registro: this.usuario.id_usuario,
-      //       correlativo_maximo: this.maximoCorrelativoEncontrado.correlativo_maximo + 1
-      //     }
-      //     this.correlativoService.createCorrelativo(newCorrelativo).subscribe(value => {
-      //     })
-      //   }, err => {
-      //     const newCorrelativo = {
-      //       id_matriz: this.id_matriz,
-      //       id_tipo_objetivo: this.tipoObjetivoEncontrado.id_tipo_objetivo,
-      //       correlativo_maximo: 1,
-      //       usuario_registro: this.usuario.id_usuario
-      //     }
-      //     this.correlativoService.createCorrelativo(newCorrelativo).subscribe(initCorrelativo => {
-      //     })
-      //   })
-      // }
-
 
       this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgo => {
         this.riesgos = riesgo.res
@@ -706,7 +424,7 @@ export class RiesgosComponent implements OnInit {
 
   //Actualizacion de plan de trabajo, controles y recursos
   updatePlanTrabajoControlesRecursos() {
-    this.planService.updatePlan(this.id_riesgo_plan_trabajo, this.formUpdatePlan.value).subscribe((planObtenido) => {
+    this.planService.updatePlan(this.id_riesgo_plan_trabajo, { ...this.formUpdatePlan.value, usuario_registro: this.usuario.id_usuario }).subscribe((planObtenido) => {
       //crear
       this.controlesMemory.map((control: any) => {
         const indice = this.controlesMemory.indexOf(control);
@@ -730,7 +448,7 @@ export class RiesgosComponent implements OnInit {
       })
       //eliminar
       this.controlesMemoryDelete.map((id_control: any) => {
-        this.planService.deleteControlImplementacion(id_control).subscribe((value) => { })
+        this.planService.deleteControlImplementacion(id_control, { usuario_registro: this.usuario.id_usuario }).subscribe((value) => { })
       })
 
 
@@ -752,7 +470,7 @@ export class RiesgosComponent implements OnInit {
         })
       })
       this.recursosMemoryDelete.map((id_recurso: any) => {
-        this.planService.deleteRecursos(id_recurso).subscribe((value) => { })
+        this.planService.deleteRecursos(id_recurso, { estado_registro: 0, usuario_registro: this.usuario.id_usuario }).subscribe((value) => { })
       })
 
 
@@ -773,12 +491,12 @@ export class RiesgosComponent implements OnInit {
         })
       })
       this.controlInternoPlanMemoryDelete.map((id_plan: any) => {
-        this.planService.deleteControlInternoPlan(id_plan).subscribe((value) => { })
+        this.planService.deleteControlInternoPlan(id_plan, { estado_registro: 0, usuario_registro: this.usuario.id_usuario }).subscribe((value) => { })
       })
 
 
 
-      this.logService.createLog(planObtenido).subscribe((value: any) => { })
+      // this.logService.createLog(planObtenido).subscribe((value: any) => { })
       Swal.fire({
         icon: 'success',
         text: '¡El registro se actualizo correctamente!',
@@ -939,10 +657,12 @@ export class RiesgosComponent implements OnInit {
       }
     }
   }
+
   deleteControlInternoPlanInMemory(descripcion: any) {
     const indice = this.controlInternoPlanMemory.findIndex((value: any) => value.descripcion == descripcion)
     this.controlInternoPlanMemory.splice(indice, 1)
   }
+
   deleteControlInternoPlanInMemoryTablaGet(id_plan_control: any) {
     const indice = this.controlesInternosPlanObtenidos.findIndex((value: any) => value.id_plan_control_interno == id_plan_control);
     this.controlesInternosPlanObtenidos.splice(indice, 1);
@@ -979,6 +699,7 @@ export class RiesgosComponent implements OnInit {
         })
       } else {
         this.router.navigate(['/admin/ingreso-riesgos/', this.id_matriz])
+        this.utilidades.removeFiltroCache();
       }
     }, err => {
       Swal.fire({
@@ -1001,18 +722,28 @@ export class RiesgosComponent implements OnInit {
 
   aumentarOffset() {
     this.offset += 10;
-    const countRiesgos = this.riesgos.length
+    const countRiesgos = this.riesgos.length;
     this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
       this.riesgos = riesgos.res;
-      if (countRiesgos == riesgos.length) {
+      if (countRiesgos == riesgos.res.length) {
         this.showBtnOffset = false;
         Swal.fire({
           icon: 'warning',
           text: '¡Se han cargado todos los registros!',
           confirmButtonColor: '#3085d6',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
         })
       }
     })
+  }
+
+  saveInCache() {
+    sessionStorage.setItem('medida_riesgo', this.formFiltroRiesgo.get('medida_riesgo')?.value)
+    sessionStorage.setItem('planes_trabajo', this.formFiltroRiesgo.get('plan_faltante')?.value == true ? "1" : "0")
+    sessionStorage.setItem('matrices_continuidad', this.formFiltroRiesgo.get('matriz_continuidad_faltante')?.value == true ? "1" : "0")
+  }
+
+  removeCache() {
+    this.utilidades.removeFiltroCache();
   }
 }

@@ -11,7 +11,7 @@ const riesgoControlImplementacionService =
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const body = req.body;
@@ -29,7 +29,7 @@ router.post(
 router.get(
   '/riesgo/:id_riesgo',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_riesgo } = req.params;
@@ -47,7 +47,7 @@ router.get(
 router.get(
   '/:id_plan',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_plan } = req.params;
@@ -65,7 +65,7 @@ router.get(
 router.patch(
   '/:id_control',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const { id_control } = req.params;

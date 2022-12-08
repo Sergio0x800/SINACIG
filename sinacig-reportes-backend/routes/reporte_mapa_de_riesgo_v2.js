@@ -116,13 +116,6 @@ router.post('/mapa_riesgo', async (req, res, next) => {
       )
       .style(header.text);
 
-    ws.cell(14, 4, 15, 8, true)
-      .string('Probabilidad y Severidad')
-      .style(estilosReportes.encabezadoTabla);
-    ws.cell(17, 2, 21, 2, true)
-      .string('Probabilidad')
-      .style(estilosReportes.encabezadoTabla);
-
     ws.cell(17, 3).number(5);
     ws.cell(18, 3).number(4);
     ws.cell(19, 3).number(3);
@@ -196,10 +189,6 @@ router.post('/mapa_riesgo', async (req, res, next) => {
         }
         fila--;
       }
-
-      ws.cell(24, 4, 24, 8, true)
-        .string('Severidad')
-        .style(estilosReportes.encabezadoTabla);
 
       ws.cell(26, 4).string('No.').style(estilosReportes.encabezadoTabla);
       ws.cell(26, 5).string('Riesgos').style(estilosReportes.encabezadoTabla);
@@ -333,7 +322,7 @@ router.post('/mapa_riesgo', async (req, res, next) => {
     let data = [];
     var celda;
     dataReporte.find((element) => {
-      if (element.Probabilidad == pro && element.Severidad == sev) {
+      if (element.RR == pro && element.Severidad == sev) {
         data.push(`(${element.Riesgo}), `);
         celda = ws
           .cell(fila, columna)

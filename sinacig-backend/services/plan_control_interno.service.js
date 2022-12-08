@@ -1,6 +1,9 @@
 const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
+const LogService = require('./logs.service');
+
+const logService = new LogService();
 
 class ControlInternoPlanService {
   constructor() {}
@@ -22,11 +25,29 @@ class ControlInternoPlanService {
   }
 
   async deleteControlInternoPlan(id_plan_control_interno, changes) {
-    const result = await models.ControlInternoPlan.update(changes, {
+    const resultAntes = await models.ControlInternoPlan.findOne({
       where: {
         id_plan_control_interno: id_plan_control_interno,
       },
     });
+    const resultDespues = await models.ControlInternoPlan.findOne({
+      where: {
+        id_plan_control_interno: id_plan_control_interno,
+      },
+    });
+    const result = await resultDespues.update(changes, {
+      where: {
+        id_plan_control_interno: id_plan_control_interno,
+      },
+    });
+    const newLog = {
+      nombre_tabla: 'tt_plan_control_interno',
+      id_registro: id_plan_control_interno,
+      antes: JSON.stringify(resultAntes),
+      despues: JSON.stringify(result),
+      id_usuario_modifico: changes.usuario_registro,
+    };
+    await logService.createLog(newLog);
     return result;
   }
 }

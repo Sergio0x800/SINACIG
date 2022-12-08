@@ -153,8 +153,9 @@
         </form>
 
         <div class="container-btn-agregar mt-5 mb-5">
-          <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPageRiesgo"><i class="fa fa-ban"
-              aria-hidden="true"></i> Cancelar</button>
+          <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPageRiesgo"><i
+              class="fa fa-arrow-left" aria-hidden="true"></i>
+            Regresar</button>
           <button *ngIf="!actualizar && matrizObtenida.periodo_abierto === 1" (click)="validarFormContinuidad()"
             type="button" class="btn btn-primary btn-size"><i class="fa fa-floppy-o" aria-hidden="true"></i>
             Guardar y agregar otro</button>

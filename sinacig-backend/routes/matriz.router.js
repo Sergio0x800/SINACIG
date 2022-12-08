@@ -11,7 +11,7 @@ const matrizService = new MatrizService();
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const body = req.body;
@@ -27,7 +27,7 @@ router.post(
 router.get(
   '/byParams',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const queryParams = req.query;
@@ -43,7 +43,7 @@ router.get(
 router.get(
   '/periodoAbierto',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     const queryParams = req.query;
     try {
@@ -59,7 +59,7 @@ router.get(
 router.get(
   '/:id_matriz',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1, 2),
+  checkRoles(1, 2, 3),
   async (req, res, next) => {
     try {
       const params = req.params;
@@ -75,7 +75,7 @@ router.get(
 router.patch(
   '/update/:id_matriz',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1),
+  checkRoles(1, 3),
   async (req, res, next) => {
     try {
       const params = req.params;
@@ -95,7 +95,7 @@ router.patch(
 router.patch(
   '/:id_matriz',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(1),
+  checkRoles(1, 3),
   async (req, res, next) => {
     try {
       const params = req.params;
