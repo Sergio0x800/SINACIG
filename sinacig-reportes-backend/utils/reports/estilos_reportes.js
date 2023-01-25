@@ -151,6 +151,25 @@ const estilosReportes = {
       vertical: 'center',
     },
   }),
+  backgroundAmarillo2: wb.createStyle({
+    font: {
+      name: 'Arial',
+      size: 11,
+      color: '#000000',
+    },
+    fill: {
+      type: 'pattern',
+      patternType: 'solid',
+      bgColor: '#FFFF00',
+      fgColor: '#FFFF00',
+    },
+    alignment: {
+      shrinkToFit: true,
+      wrapText: true,
+      horizontal: 'center',
+      vertical: 'center',
+    },
+  }),
   backgroundRojo: wb.createStyle({
     border: {
       left: {
@@ -189,6 +208,26 @@ const estilosReportes = {
       vertical: 'center',
     },
   }),
+  backgroundRojo2: wb.createStyle({
+    font: {
+      name: 'Arial',
+      size: 11,
+      color: '#000000',
+    },
+    fill: {
+      type: 'pattern',
+      patternType: 'solid',
+      bgColor: '#D11003',
+      fgColor: '#D11003',
+    },
+    alignment: {
+      shrinkToFit: true,
+      wrapText: true,
+      horizontal: 'center',
+      vertical: 'center',
+    },
+  }),
+
   backgroundVerde: wb.createStyle({
     border: {
       left: {
@@ -227,6 +266,26 @@ const estilosReportes = {
       vertical: 'center',
     },
   }),
+  backgroundVerde2: wb.createStyle({
+    font: {
+      name: 'Arial',
+      size: 11,
+      color: '#000000',
+    },
+    fill: {
+      type: 'pattern',
+      patternType: 'solid',
+      bgColor: '#00B050',
+      fgColor: '#00B050',
+    },
+    alignment: {
+      shrinkToFit: true,
+      wrapText: true,
+      horizontal: 'center',
+      vertical: 'center',
+    },
+  }),
+
   backgroundGris: wb.createStyle({
     fill: {
       type: 'pattern',

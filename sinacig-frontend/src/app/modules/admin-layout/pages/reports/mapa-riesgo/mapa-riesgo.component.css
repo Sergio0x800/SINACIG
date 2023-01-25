@@ -1,3 +1,13 @@
+.radioBtnMap {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+.radioBtnPointer:hover {
+  cursor: pointer;
+}
 .container-matriz {
   width: 100%;
   display: flex;

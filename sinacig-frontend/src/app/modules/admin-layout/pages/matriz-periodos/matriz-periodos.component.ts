@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 
-import { MatrizService } from 'src/app/services/matriz.service';
-import { CatalogosService } from 'src/app/services/catalogos.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { RiesgosService } from 'src/app/services/riesgos.service';
-import { UtilidadesService } from 'src/app/services/utilidades.service';
+import { CatalogosService } from 'src/app/services/catalogos.service';
+import { MatrizService } from 'src/app/services/matriz.service';
 
-import Swal from 'sweetalert2'
-import { PlanRiesgosService } from 'src/app/services/plan-riesgos.service';
 import { MatrizContinuidadService } from 'src/app/services/matriz-continuidad.service';
+import { PlanRiesgosService } from 'src/app/services/plan-riesgos.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-matriz-periodos',
@@ -18,26 +18,20 @@ import { MatrizContinuidadService } from 'src/app/services/matriz-continuidad.se
 })
 
 export class MatrizPeriodosComponent implements OnInit {
-  //Datos usuario
   usuario: any = {}
-
-  //Inicializando Catalogos
   unidadesEjecutoras: any = [];
   periodos: any = [];
   showTablePeriodos: boolean = false;
   routeIngresoRiesgos: any = '/admin/riesgos/'
   periodoSeleccionado: any;
 
-  //array que almacena matriz periodos encontrados
   matrizPeriodosEncontrados: any = []
 
-  //Forms Control Search by Params
   formSearchCreateMatrizPeriodo = new FormGroup({
     id_unidad_ejecutora: new FormControl('', Validators.required),
     id_periodo: new FormControl('', Validators.required),
   })
 
-  //Se hace la inyeccion de los servicios
   constructor(
     private catalogsService: CatalogosService,
     private matrizService: MatrizService,
@@ -49,7 +43,6 @@ export class MatrizPeriodosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //Se obtienen los periodos
     this.utilidades.removeFiltroCache();
     this.catalogsService.getPeriodos().subscribe(resultPeriodos => {
       this.periodos = resultPeriodos
@@ -111,7 +104,6 @@ export class MatrizPeriodosComponent implements OnInit {
     }
   }
 
-  //Se agrega el metodo crear nueva matriz periodo para la creacion de los encabezados
   createNewMatrizPeriodo() {
     const valuePeriodo = this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value
     this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == valuePeriodo)
@@ -156,7 +148,6 @@ export class MatrizPeriodosComponent implements OnInit {
       this.utilidades.showError('¡Error en el proceso de registro!', 'Ocurrió un error mientras se ingresaban los datos, por favor intente nuevamente')
     })
   }
-
 
   findMatrizPeriodo() {
 
@@ -368,5 +359,4 @@ export class MatrizPeriodosComponent implements OnInit {
     sessionStorage.setItem('Unidad', this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.value)
     sessionStorage.setItem('Periodo', this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value)
   }
-
 }

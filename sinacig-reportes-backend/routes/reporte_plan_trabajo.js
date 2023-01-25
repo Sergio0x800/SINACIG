@@ -200,178 +200,147 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
           let rowIndex = 18;
           let colNum = 0;
           resultado[0].forEach((item) => {
-            reporteService
-              .dataRecursos(item.id_planRecursos)
-              .then((resultRecursos) => {
-                reporteService
-                  .dataControlesImplementacion(
-                    item.id_planControlesImplementacion
-                  )
-                  .then((resultControlesImplementacion) => {
-                    reporteService
-                      .dataControlesInternosPlan(item.id_planControlesInternos)
-                      .then((resultControlesInternosPlan) => {
-                        let columnIndex = 2;
-                        colNum++;
-                        Object.keys(item).forEach((colName) => {
-                          ws.cell(rowIndex, 1)
-                            .string(colNum.toString())
-                            .style(tableBody.tableBodyText1);
+            // reporteService
+            //   .dataRecursos(item.id_planRecursos)
+            //   .then((resultRecursos) => {
+            // reporteService
+            //   .dataControlesImplementacion(
+            //     item.id_planControlesImplementacion
+            //   )
+            //   .then((resultControlesImplementacion) => {
+            //     reporteService
+            //       .dataControlesInternosPlan(item.id_planControlesInternos)
+            //       .then((resultControlesInternosPlan) => {
+            let columnIndex = 2;
+            colNum++;
+            Object.keys(item).forEach((colName) => {
+              ws.cell(rowIndex, 1)
+                .string(colNum.toString())
+                .style(tableBody.tableBodyText1);
 
-                          if (colName === 'Nivel Riesgo Residual') {
-                            if (item[colName] >= 0 && item[colName] <= 10) {
-                              ws.cell(rowIndex, columnIndex++)
-                                .string(item[colName].toString())
-                                .style(tableBody.tableBodyTolerable);
-                            } else if (
-                              item[colName] >= 10.01 &&
-                              item[colName] <= 15
-                            ) {
-                              ws.cell(rowIndex, columnIndex++)
-                                .string(item[colName].toString())
-                                .style(tableBody.tableBodyGestionable);
-                            } else if (item[colName] >= 15.01) {
-                              ws.cell(rowIndex, columnIndex++)
-                                .string(item[colName].toString())
-                                .style(tableBody.tableBodyNoTolerable);
-                            } else {
-                              ws.cell(rowIndex, columnIndex++)
-                                .string(item[colName].toString())
-                                .style(tableBody.tableBodyText1);
-                            }
-                          } else if (
-                            colName === 'Riesgo' ||
-                            colName === 'Comentarios'
-                          ) {
-                            ws.cell(rowIndex, columnIndex++)
-                              .string(item[colName].toString())
-                              .style(tableBody.tableBodyText3);
-                          } else if (colName === 'id_planRecursos') {
-                            let recursos = '';
-                            resultRecursos.map((item) => {
-                              recursos += `${item.descripcion}\n\n`;
-                            });
-                            ws.cell(rowIndex, columnIndex++)
-                              .string(recursos)
-                              .style(tableBody.tableBodyText3);
-                          } else if (colName === 'id_planControlesInternos') {
-                            let controlesInternos = '';
-                            resultControlesInternosPlan.map((item) => {
-                              controlesInternos += `${item.descripcion}\n\n`;
-                            });
-                            ws.cell(rowIndex, columnIndex++)
-                              .string(controlesInternos)
-                              .style(tableBody.tableBodyText3);
-                          } else if (
-                            colName === 'id_planControlesImplementacion'
-                          ) {
-                            let controlesImplementacion = '';
-                            resultControlesImplementacion.map((item) => {
-                              controlesImplementacion += `${item.descripcion}\n\n`;
-                            });
-                            ws.cell(rowIndex, columnIndex++)
-                              .string(controlesImplementacion)
-                              .style(tableBody.tableBodyText3);
-                          } else {
-                            ws.cell(rowIndex, columnIndex++)
-                              .string(item[colName].toString())
-                              .style(tableBody.tableBodyText1);
-                          }
-                        });
-                        rowIndex++;
-                        conteoPlanesRecorridos++;
+              if (colName === 'Nivel Riesgo Residual') {
+                if (item[colName] >= 0 && item[colName] <= 10) {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyTolerable);
+                } else if (item[colName] >= 10.01 && item[colName] <= 15) {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyGestionable);
+                } else if (item[colName] >= 15.01) {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyNoTolerable);
+                } else {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyText1);
+                }
+              } else if (colName === 'Riesgo' || colName === 'Comentarios') {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName].toString())
+                  .style(tableBody.tableBodyText3);
+              } else if (colName === 'id_planRecursos') {
+                // console.log(item[colName].toString());
+                // let recursos = '';
+                // resultRecursos.map((item) => {
+                //   recursos += `${item.descripcion}\n\n`;
+                // });
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName])
+                  .style(tableBody.tableBodyText3);
+              } else if (colName === 'id_planControlesInternos') {
+                // let controlesInternos = '';
+                // resultControlesInternosPlan.map((item) => {
+                //   controlesInternos += `${item.descripcion}\n\n`;
+                // });
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName])
+                  .style(tableBody.tableBodyText3);
+              } else if (colName === 'id_planControlesImplementacion') {
+                // let controlesImplementacion = '';
+                // resultControlesImplementacion.map((item) => {
+                //   controlesImplementacion += `${item.descripcion}\n\n`;
+                // });
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName])
+                  .style(tableBody.tableBodyText3);
+              } else {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName].toString())
+                  .style(tableBody.tableBodyText1);
+              }
+            });
+            rowIndex++;
+            conteoPlanesRecorridos++;
 
-                        if (totalPlanes == conteoPlanesRecorridos) {
-                          ws.cell(rowIndex + 2, 1, rowIndex + 2, 2, true)
-                            .string('Elaborado por:')
-                            .style(header.tituloInfoUnidad);
-                          ////////////
-                          ws.cell(rowIndex + 3, 1, rowIndex + 3, 3, true)
-                            .string('Firma')
-                            .style(tableFooter.footerTitle2);
-                          ws.cell(
-                            rowIndex + 3,
-                            4,
-                            rowIndex + 3,
-                            14,
-                            true
-                          ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 3).setHeight(20);
+            if (totalPlanes == conteoPlanesRecorridos) {
+              ws.cell(rowIndex + 2, 1, rowIndex + 2, 2, true)
+                .string('Elaborado por:')
+                .style(header.tituloInfoUnidad);
+              ////////////
+              ws.cell(rowIndex + 3, 1, rowIndex + 3, 3, true)
+                .string('Firma')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 3, 4, rowIndex + 3, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 3).setHeight(20);
 
-                          ws.cell(rowIndex + 4, 1, rowIndex + 4, 3, true)
-                            .string('Nombre del responsable')
-                            .style(tableFooter.footerTitle2);
-                          ws.cell(
-                            rowIndex + 4,
-                            4,
-                            rowIndex + 4,
-                            14,
-                            true
-                          ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 4).setHeight(20);
+              ws.cell(rowIndex + 4, 1, rowIndex + 4, 3, true)
+                .string('Nombre del responsable')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 4, 4, rowIndex + 4, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 4).setHeight(20);
 
-                          ws.cell(rowIndex + 5, 1, rowIndex + 5, 3, true)
-                            .string('Puesto')
-                            .style(tableFooter.footerTitle2);
-                          ws.cell(
-                            rowIndex + 5,
-                            4,
-                            rowIndex + 5,
-                            14,
-                            true
-                          ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 5).setHeight(20);
-                          //////////////
-                          // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
-                          //   .string('Conclusión:')
-                          //   .style(tableFooter.footerTitle1);
+              ws.cell(rowIndex + 5, 1, rowIndex + 5, 3, true)
+                .string('Puesto')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 5, 4, rowIndex + 5, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 5).setHeight(20);
+              //////////////
+              // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
+              //   .string('Conclusión:')
+              //   .style(tableFooter.footerTitle1);
 
-                          ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
-                            .string('Visto bueno:')
-                            .style(header.tituloInfoUnidad);
+              ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                .string('Visto bueno:')
+                .style(header.tituloInfoUnidad);
 
-                          ////////////
-                          ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
-                            .string('Firma')
-                            .style(tableFooter.footerTitle2);
-                          ws.cell(
-                            rowIndex + 9,
-                            4,
-                            rowIndex + 9,
-                            14,
-                            true
-                          ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 9).setHeight(20);
+              ////////////
+              ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
+                .string('Firma')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 9, 4, rowIndex + 9, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 9).setHeight(20);
 
-                          ws.cell(rowIndex + 10, 1, rowIndex + 10, 3, true)
-                            .string('Nombre del responsable')
-                            .style(tableFooter.footerTitle2);
-                          ws.cell(
-                            rowIndex + 10,
-                            4,
-                            rowIndex + 10,
-                            14,
-                            true
-                          ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 10).setHeight(20);
+              ws.cell(rowIndex + 10, 1, rowIndex + 10, 3, true)
+                .string('Nombre del responsable')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 10, 4, rowIndex + 10, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 10).setHeight(20);
 
-                          ws.cell(rowIndex + 11, 1, rowIndex + 11, 3, true)
-                            .string('Puesto')
-                            .style(tableFooter.footerTitle2);
-                          ws.cell(
-                            rowIndex + 11,
-                            4,
-                            rowIndex + 11,
-                            14,
-                            true
-                          ).style(tableFooter.footerBoxText);
-                          ws.row(rowIndex + 11).setHeight(20);
+              ws.cell(rowIndex + 11, 1, rowIndex + 11, 3, true)
+                .string('Puesto')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 11, 4, rowIndex + 11, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 11).setHeight(20);
 
-                          wb.write('Plan_de_trabajo.xlsx', res);
-                        }
-                      });
-                  });
-              });
+              wb.write('Plan_de_trabajo.xlsx', res);
+            }
+            //         });
+            //     });
+            // });
           });
         } else {
           wb.write('Plan_de_trabajo.xlsx', res);

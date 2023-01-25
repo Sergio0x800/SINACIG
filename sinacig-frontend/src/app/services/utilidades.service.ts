@@ -110,6 +110,10 @@ export class UtilidadesService {
     })
   }
 
+  saveInCache(nombre: any, valor: any) {
+    sessionStorage.setItem(nombre, valor)
+  }
+
   cuiValido(cui: string, notificarError: boolean = true, preMensaje: string = '') {
     if (!cui || cui.length < 13) {
       if (notificarError) this.mostrarError(`${preMensaje}CUI invalido, debe contener 13 dígitos.`)

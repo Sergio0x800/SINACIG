@@ -210,137 +210,137 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
           let colNum = 0;
 
           resultado[0].forEach((item) => {
-            reporteService
-              .dataControlesInternos(item.id_riesgo)
-              .then((result) => {
-                let columnIndex = 2;
-                colNum++;
+            // reporteService
+            //   .dataControlesInternos(item.id_riesgo)
+            //   .then((result) => {
+            let columnIndex = 2;
+            colNum++;
 
-                Object.keys(item).forEach((colName) => {
-                  ws.cell(rowIndex, 1)
-                    .string(colNum.toString())
+            Object.keys(item).forEach((colName) => {
+              ws.cell(rowIndex, 1)
+                .string(colNum.toString())
+                .style(tableBody.tableBodyText1);
+              if (colName === 'Riesgo Residual') {
+                if (item[colName] >= 0 && item[colName] <= 10) {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyTolerable);
+                } else if (item[colName] >= 10.01 && item[colName] <= 15) {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyGestionable);
+                } else if (item[colName] >= 15.01) {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
+                    .style(tableBody.tableBodyNoTolerable);
+                } else {
+                  ws.cell(rowIndex, columnIndex++)
+                    .string(item[colName].toString())
                     .style(tableBody.tableBodyText1);
-                  if (colName === 'Riesgo Residual') {
-                    if (item[colName] >= 0 && item[colName] <= 10) {
-                      ws.cell(rowIndex, columnIndex++)
-                        .string(item[colName].toString())
-                        .style(tableBody.tableBodyTolerable);
-                    } else if (item[colName] >= 10.01 && item[colName] <= 15) {
-                      ws.cell(rowIndex, columnIndex++)
-                        .string(item[colName].toString())
-                        .style(tableBody.tableBodyGestionable);
-                    } else if (item[colName] >= 15.01) {
-                      ws.cell(rowIndex, columnIndex++)
-                        .string(item[colName].toString())
-                        .style(tableBody.tableBodyNoTolerable);
-                    } else {
-                      ws.cell(rowIndex, columnIndex++)
-                        .string(item[colName].toString())
-                        .style(tableBody.tableBodyText1);
-                    }
-                  } else if (
-                    colName === 'Tipo Objetivo' ||
-                    colName === 'Código Referencia' ||
-                    colName === 'Área Evaluada'
-                  ) {
-                    ws.cell(rowIndex, columnIndex++)
-                      .string(item[colName].toString())
-                      .style(tableBody.tableBodyText2);
-                  } else if (
-                    colName === 'Descripción Riesgo' ||
-                    colName === 'Eventos Identificados' ||
-                    colName === 'Observaciones'
-                  ) {
-                    ws.cell(rowIndex, columnIndex++)
-                      .string(item[colName].toString())
-                      .style(tableBody.tableBodyText3);
-                  } else if (colName === 'id_riesgo') {
-                    let controlesInternos = '';
-                    result.map((item) => {
-                      controlesInternos += `${item.descripcion}\n\n`;
-                    });
-                    ws.cell(rowIndex, columnIndex++)
-                      .string(controlesInternos)
-                      .style(tableBody.tableBodyText3);
-                  } else {
-                    ws.cell(rowIndex, columnIndex++)
-                      .string(item[colName].toString())
-                      .style(tableBody.tableBodyText1);
-                  }
-                });
-                rowIndex++;
-                conteoRiesgosRecorridos++;
-
-                //Pie de página
-                if (totalRiesgos == conteoRiesgosRecorridos) {
-                  ws.cell(rowIndex + 2, 1, rowIndex + 6, 14, true)
-                    .string('Conclusión:')
-                    .style(tableFooter.footerTitle1);
-
-                  ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
-                    .string('Elaborado por:')
-                    .style(header.tituloInfoUnidad);
-                  ////////////
-                  ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
-                    .string('Firma')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 9, 4, rowIndex + 9, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 9).setHeight(20);
-
-                  ws.cell(rowIndex + 10, 1, rowIndex + 10, 3, true)
-                    .string('Nombre del responsable')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 10, 4, rowIndex + 10, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 10).setHeight(20);
-
-                  ws.cell(rowIndex + 11, 1, rowIndex + 11, 3, true)
-                    .string('Puesto')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 11, 4, rowIndex + 11, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 11).setHeight(20);
-                  //////////////
-                  // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
-                  //   .string('Conclusión:')
-                  //   .style(tableFooter.footerTitle1);
-
-                  ws.cell(rowIndex + 14, 1, rowIndex + 14, 2, true)
-                    .string('Visto bueno:')
-                    .style(header.tituloInfoUnidad);
-
-                  ////////////
-                  ws.cell(rowIndex + 15, 1, rowIndex + 15, 3, true)
-                    .string('Firma')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 15, 4, rowIndex + 15, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 15).setHeight(20);
-
-                  ws.cell(rowIndex + 16, 1, rowIndex + 16, 3, true)
-                    .string('Nombre del responsable')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 16, 4, rowIndex + 16, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 16).setHeight(20);
-
-                  ws.cell(rowIndex + 17, 1, rowIndex + 17, 3, true)
-                    .string('Puesto')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 17, 4, rowIndex + 17, 14, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 17).setHeight(20);
-
-                  wb.write('Matriz_evaluacion_riesgos.xlsx', res);
                 }
-              });
+              } else if (
+                colName === 'Tipo Objetivo' ||
+                colName === 'Código Referencia' ||
+                colName === 'Área Evaluada'
+              ) {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName].toString())
+                  .style(tableBody.tableBodyText2);
+              } else if (
+                colName === 'Descripción Riesgo' ||
+                colName === 'Eventos Identificados' ||
+                colName === 'Observaciones'
+              ) {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName].toString())
+                  .style(tableBody.tableBodyText3);
+              } else if (colName === 'controles_internos') {
+                // let controlesInternos = '';
+                // result.map((item) => {
+                //   controlesInternos += `${item.descripcion}\n\n`;
+                // });
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName])
+                  .style(tableBody.tableBodyText3);
+              } else {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName].toString())
+                  .style(tableBody.tableBodyText1);
+              }
+            });
+            rowIndex++;
+            conteoRiesgosRecorridos++;
+
+            //Pie de página
+            if (totalRiesgos == conteoRiesgosRecorridos) {
+              ws.cell(rowIndex + 2, 1, rowIndex + 6, 14, true)
+                .string('Conclusión:')
+                .style(tableFooter.footerTitle1);
+
+              ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                .string('Elaborado por:')
+                .style(header.tituloInfoUnidad);
+              ////////////
+              ws.cell(rowIndex + 9, 1, rowIndex + 9, 3, true)
+                .string('Firma')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 9, 4, rowIndex + 9, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 9).setHeight(20);
+
+              ws.cell(rowIndex + 10, 1, rowIndex + 10, 3, true)
+                .string('Nombre del responsable')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 10, 4, rowIndex + 10, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 10).setHeight(20);
+
+              ws.cell(rowIndex + 11, 1, rowIndex + 11, 3, true)
+                .string('Puesto')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 11, 4, rowIndex + 11, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 11).setHeight(20);
+              //////////////
+              // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
+              //   .string('Conclusión:')
+              //   .style(tableFooter.footerTitle1);
+
+              ws.cell(rowIndex + 14, 1, rowIndex + 14, 2, true)
+                .string('Visto bueno:')
+                .style(header.tituloInfoUnidad);
+
+              ////////////
+              ws.cell(rowIndex + 15, 1, rowIndex + 15, 3, true)
+                .string('Firma')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 15, 4, rowIndex + 15, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 15).setHeight(20);
+
+              ws.cell(rowIndex + 16, 1, rowIndex + 16, 3, true)
+                .string('Nombre del responsable')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 16, 4, rowIndex + 16, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 16).setHeight(20);
+
+              ws.cell(rowIndex + 17, 1, rowIndex + 17, 3, true)
+                .string('Puesto')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 17, 4, rowIndex + 17, 14, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 17).setHeight(20);
+
+              wb.write('Matriz_evaluacion_riesgos.xlsx', res);
+            }
+            // });
           });
         } else {
           wb.write('Matriz_evaluacion_riesgos.xlsx', res);

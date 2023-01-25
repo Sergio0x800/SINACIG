@@ -18,9 +18,6 @@ router.post('/matriz_continuidad', async (req, res, next) => {
   try {
     let { unidadEjecutora, fechaInicio, fechaFin } = req.body;
 
-    // fechaInicio = moment(fechaInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    // fechaFin = moment(fechaFin, 'DD/MM/YYYY').format('YYYY-MM-DD');
-
     var wb = new xl.Workbook();
     var ws = wb.addWorksheet('Matriz de Continuidad');
 
@@ -38,13 +35,6 @@ router.post('/matriz_continuidad', async (req, res, next) => {
     ws.column(6).setWidth(25);
     ws.column(7).setWidth(40);
     ws.column(8).setWidth(15);
-
-    // ws.column(9).setWidth(35);
-    // ws.column(10).setWidth(16);
-    // ws.column(11).setWidth(14);
-    // ws.column(12).setWidth(14);
-    // ws.column(13).setWidth(14);
-    // ws.column(14).setWidth(21);
 
     ws.row(1).setHeight(13);
     ws.row(5).setHeight(13);
@@ -121,13 +111,6 @@ router.post('/matriz_continuidad', async (req, res, next) => {
       .string(`Del ${fecha_inicio} al ${fecha_fin}`)
       .style(header.text);
 
-    // Instrucciones
-    // ws.cell(12, 1, 13, 9, true)
-    //   .string(
-    //     'Instrucciones: Realice el plan de trabajo en evaluación de riesgos identificados previamente, completando la información de la matriz según lo indica el documento SINACIG en la página 52.'
-    //   )
-    //   .style(header.text);
-
     //numeracion col tablas
     ws.cell(16, 2).string('(1)').style(tableBody.tableBodyText4);
     ws.cell(16, 3).string('(2)').style(tableBody.tableBodyText4);
@@ -136,58 +119,38 @@ router.post('/matriz_continuidad', async (req, res, next) => {
     ws.cell(16, 6).string('(5)').style(tableBody.tableBodyText4);
     ws.cell(16, 7).string('(6)').style(tableBody.tableBodyText4);
     ws.cell(16, 8).string('(7)').style(tableBody.tableBodyText4);
-    // ws.cell(16, 9).string('(8)').style(tableBody.tableBodyText4);
-    // ws.cell(16, 10).string('(9)').style(tableBody.tableBodyText4);
-    // ws.cell(16, 11).string('(10)').style(tableBody.tableBodyText4);
-    // ws.cell(16, 12).string('(11)').style(tableBody.tableBodyText4);
-    // ws.cell(16, 13).string('(12)').style(tableBody.tableBodyText4);
-    // ws.cell(16, 14).string('(13)').style(tableBody.tableBodyText4);
+    ws.cell(16, 9).string('(8)').style(tableBody.tableBodyText4);
 
     //Encabezado columnas
     const filaEncabezado = 17;
     ws.cell(filaEncabezado, 1).string('No.').style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 2)
-      .string('Riesgo')
+      .string('Unidad Ejecutora')
       .style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 3)
-      .string('Subtema')
+      .string('Riesgo')
       .style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 4)
-      .string('Nivel de Tolerancia')
+      .string('Subtema')
       .style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 5)
-      .string('Metodo de Monitoreo')
+      .string('Nivel de Tolerancia')
       .style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 6)
-      .string('Frecuencia de Monitoreo')
+      .string('Metodo de Monitoreo')
       .style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 7)
-      .string('Responsable')
+      .string('Frecuencia de Monitoreo')
       .style(table.tableHeaderEvaluacion);
     ws.cell(filaEncabezado, 8)
+      .string('Responsable')
+      .style(table.tableHeaderEvaluacion);
+    ws.cell(filaEncabezado, 9)
       .string('Severidad del Riesgo')
       .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 9)
-    //   .string('Controles para Implementación')
-    //   .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 10)
-    //   .string('Recursos Internos o Externos')
-    //   .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 11)
-    //   .string('Puesto Responsable')
-    //   .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 12)
-    //   .string('Fecha Inicio')
-    //   .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 13)
-    //   .string('Fecha Fin')
-    //   .style(table.tableHeaderEvaluacion);
-    // ws.cell(filaEncabezado, 14)
-    //   .string('Comentarios')
-    //   .style(table.tableHeaderEvaluacion);
 
     //indicamos el número de fila donde se comenzará a escribir la información del reporte
-    await reporteService
+    reporteService
       .dataReporteMatrizContinuidad(
         unidadEjecutoraData.codigo_unidad,
         fechaInicio,
@@ -198,152 +161,141 @@ router.post('/matriz_continuidad', async (req, res, next) => {
           let totalMatrices = resultado[0].length;
           let conteoMatricesRocorrido = 0;
           let rowIndex = 18;
+          let rowIndex2 = 18;
           let colNum = 0;
+          let id_riesgo_ant = 0;
           resultado[0].forEach((item) => {
-            reporteService
-              .dataMetodosMonitoreo(item.metodo_monitoreo)
-              .then((resultMetodosMonitoreo) => {
-                let columnIndex = 2;
-                colNum++;
-                Object.keys(item).forEach((colName) => {
-                  ws.cell(rowIndex, 1)
-                    .string(colNum.toString())
-                    .style(tableBody.tableBodyText1);
+            if (item.id_riesgo != id_riesgo_ant) {
+              colNum++;
+              if (item.cantidad_registros == 1) {
+                ws.cell(rowIndex2, 1)
+                  .string(colNum.toString())
+                  .style(tableBody.tableBodyText1);
+                ws.cell(rowIndex2, 2)
+                  .string(item.codigo_unidad.toString())
+                  .style(tableBody.tableBodyText1);
+                ws.cell(rowIndex2, 3)
+                  .string(item.riesgo.toString())
+                  .style(tableBody.tableBodyText1);
+              } else {
+                ws.cell(
+                  rowIndex2,
+                  1,
+                  rowIndex2 + (item.cantidad_registros - 1),
+                  1,
+                  true
+                )
+                  .string(colNum.toString())
+                  .style(tableBody.tableBodyText1);
+                ws.cell(
+                  rowIndex2,
+                  2,
+                  rowIndex2 + (item.cantidad_registros - 1),
+                  2,
+                  true
+                )
+                  .string(item.codigo_unidad.toString())
+                  .style(tableBody.tableBodyText1);
+                ws.cell(
+                  rowIndex2,
+                  3,
+                  rowIndex2 + (item.cantidad_registros - 1),
+                  3,
+                  true
+                )
+                  .string(item.riesgo.toString())
+                  .style(tableBody.tableBodyText1);
+              }
+            }
 
-                  // if (colName === 'Nivel Riesgo Residual') {
-                  //   if (item[colName] >= 0 && item[colName] <= 10) {
-                  //     ws.cell(rowIndex, columnIndex++)
-                  //       .string(item[colName].toString())
-                  //       .style(tableBody.tableBodyTolerable);
-                  //   } else if (
-                  //     item[colName] >= 10.01 &&
-                  //     item[colName] <= 15
-                  //   ) {
-                  //     ws.cell(rowIndex, columnIndex++)
-                  //       .string(item[colName].toString())
-                  //       .style(tableBody.tableBodyGestionable);
-                  //   } else if (item[colName] >= 15.01) {
-                  //     ws.cell(rowIndex, columnIndex++)
-                  //       .string(item[colName].toString())
-                  //       .style(tableBody.tableBodyNoTolerable);
-                  //   } else {
-                  //     ws.cell(rowIndex, columnIndex++)
-                  //       .string(item[colName].toString())
-                  //       .style(tableBody.tableBodyText1);
-                  //   }
-                  // } else if (
-                  //   colName === 'Riesgo' ||
-                  //   colName === 'Comentarios'
-                  // ) {
-                  //   ws.cell(rowIndex, columnIndex++)
-                  //     .string(item[colName].toString())
-                  //     .style(tableBody.tableBodyText3);
-                  // }
-                  if (colName === 'metodo_monitoreo') {
-                    let metodosMonitoreo = '';
-                    resultMetodosMonitoreo.map((item) => {
-                      metodosMonitoreo += `${item.descripcion_monitoreo}\n\n`;
-                    });
-                    ws.cell(rowIndex, columnIndex++)
-                      .string(metodosMonitoreo)
-                      .style(tableBody.tableBodyText3);
-                  }
-                  // else if (colName === 'id_planControlesInternos') {
-                  //   let controlesInternos = '';
-                  //   resultControlesInternosPlan.map((item) => {
-                  //     controlesInternos += `${item.descripcion}\n\n`;
-                  //   });
-                  //   ws.cell(rowIndex, columnIndex++)
-                  //     .string(controlesInternos)
-                  //     .style(tableBody.tableBodyText3);
-                  // } else if (
-                  //   colName === 'id_planControlesImplementacion'
-                  // ) {
-                  //   let controlesImplementacion = '';
-                  //   resultControlesImplementacion.map((item) => {
-                  //     controlesImplementacion += `${item.descripcion}\n\n`;
-                  //   });
-                  //   ws.cell(rowIndex, columnIndex++)
-                  //     .string(controlesImplementacion)
-                  //     .style(tableBody.tableBodyText3);
-                  // }
-                  else {
-                    ws.cell(rowIndex, columnIndex++)
-                      .string(item[colName].toString())
-                      .style(tableBody.tableBodyText1);
-                  }
-                });
-                rowIndex++;
-                conteoMatricesRocorrido++;
+            let columnIndex = 4;
 
-                if (totalMatrices == conteoMatricesRocorrido) {
-                  //Pie de página
-                  //Conclusión
-                  ws.cell(rowIndex + 2, 1, rowIndex + 2, 2, true)
-                    .string('Elaborado por:')
-                    .style(header.tituloInfoUnidad);
-                  ////////////
-                  ws.cell(rowIndex + 3, 1, rowIndex + 3, 2, true)
-                    .string('Firma')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 3, 3, rowIndex + 3, 8, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 3).setHeight(20);
+            Object.keys(item).forEach((colName) => {
+              if (colName === 'metodos_monitoreo') {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName])
+                  .style(tableBody.tableBodyText3);
+              } else if (colName === 'id_riesgo') {
+              } else if (colName === 'codigo_unidad') {
+              } else if (colName === 'riesgo') {
+              } else if (colName === 'cantidad_registros') {
+              } else {
+                ws.cell(rowIndex, columnIndex++)
+                  .string(item[colName].toString())
+                  .style(tableBody.tableBodyText1);
+              }
 
-                  ws.cell(rowIndex + 4, 1, rowIndex + 4, 2, true)
-                    .string('Nombre del responsable')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 4, 3, rowIndex + 4, 8, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 4).setHeight(20);
+              id_riesgo_ant = item.id_riesgo;
+            });
+            rowIndex++;
+            conteoMatricesRocorrido++;
 
-                  ws.cell(rowIndex + 5, 1, rowIndex + 5, 2, true)
-                    .string('Puesto')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 5, 3, rowIndex + 5, 8, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 5).setHeight(20);
-                  //////////////
-                  // ws.cell(rowIndex + 2, 1, rowIndex + 6, 8, true)
-                  //   .string('Conclusión:')
-                  //   .style(tableFooter.footerTitle1);
+            if (totalMatrices == conteoMatricesRocorrido) {
+              //Pie de página
+              //Conclusión
+              ws.cell(rowIndex + 2, 1, rowIndex + 2, 2, true)
+                .string('Elaborado por:')
+                .style(header.tituloInfoUnidad);
+              ////////////
+              ws.cell(rowIndex + 3, 1, rowIndex + 3, 2, true)
+                .string('Firma')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 3, 3, rowIndex + 3, 8, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 3).setHeight(20);
 
-                  ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
-                    .string('Visto bueno:')
-                    .style(header.tituloInfoUnidad);
+              ws.cell(rowIndex + 4, 1, rowIndex + 4, 2, true)
+                .string('Nombre del responsable')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 4, 3, rowIndex + 4, 8, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 4).setHeight(20);
 
-                  ////////////
-                  ws.cell(rowIndex + 9, 1, rowIndex + 9, 2, true)
-                    .string('Firma')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 9, 3, rowIndex + 9, 8, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 9).setHeight(20);
+              ws.cell(rowIndex + 5, 1, rowIndex + 5, 2, true)
+                .string('Puesto')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 5, 3, rowIndex + 5, 8, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 5).setHeight(20);
 
-                  ws.cell(rowIndex + 10, 1, rowIndex + 10, 2, true)
-                    .string('Nombre del responsable')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 10, 3, rowIndex + 10, 8, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 10).setHeight(20);
+              ws.cell(rowIndex + 8, 1, rowIndex + 8, 2, true)
+                .string('Visto bueno:')
+                .style(header.tituloInfoUnidad);
 
-                  ws.cell(rowIndex + 11, 1, rowIndex + 11, 2, true)
-                    .string('Puesto')
-                    .style(tableFooter.footerTitle2);
-                  ws.cell(rowIndex + 11, 3, rowIndex + 11, 8, true).style(
-                    tableFooter.footerBoxText
-                  );
-                  ws.row(rowIndex + 11).setHeight(20);
-                  //////////////
+              ////////////
+              ws.cell(rowIndex + 9, 1, rowIndex + 9, 2, true)
+                .string('Firma')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 9, 3, rowIndex + 9, 8, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 9).setHeight(20);
 
-                  wb.write('Plan_de_trabajo.xlsx', res);
-                }
-              });
+              ws.cell(rowIndex + 10, 1, rowIndex + 10, 2, true)
+                .string('Nombre del responsable')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 10, 3, rowIndex + 10, 8, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 10).setHeight(20);
+
+              ws.cell(rowIndex + 11, 1, rowIndex + 11, 2, true)
+                .string('Puesto')
+                .style(tableFooter.footerTitle2);
+              ws.cell(rowIndex + 11, 3, rowIndex + 11, 8, true).style(
+                tableFooter.footerBoxText
+              );
+              ws.row(rowIndex + 11).setHeight(20);
+              //////////////
+
+              wb.write('Plan_de_trabajo.xlsx', res);
+            }
+
+            id_riesgo_ant = item.id_riesgo;
+            rowIndex2++;
           });
         } else {
           wb.write('Plan_de_trabajo.xlsx', res);

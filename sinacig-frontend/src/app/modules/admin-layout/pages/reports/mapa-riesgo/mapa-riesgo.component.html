@@ -18,7 +18,31 @@
             {{periodo.anio}}</option>
         </select>
         <label for="periodoAnio">Periodo</label>
+
       </div>
+
+      <div class="radioBtnMap">
+        <div class="form-check radioBtnPointer">
+          <input formControlName="tipoMapa" class="form-check-input radioBtnPointer" type="radio" name="exampleRadios"
+            id="exampleRadios1" value="1" checked>
+          <label class="form-check-label radioBtnPointer" for="exampleRadios1">
+            Mapa RI
+          </label>
+        </div>
+        <div class="form-check radioBtnPointer">
+          <input formControlName="tipoMapa" class="form-check-input radioBtnPointer" type="radio" name="exampleRadios"
+            id="exampleRadios2" value="2">
+          <label class="form-check-label radioBtnPointer" for="exampleRadios2">
+            Mapa RR
+          </label>
+        </div>
+      </div>
+
+
+
+
+
+
       <div class="container-btn">
         <button class="btn btn-primary btn-size" (click)="validarFormSearch()" type="button">
           <i class="fa fa-line-chart" aria-hidden="true"></i> Generar reporte

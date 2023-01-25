@@ -26,6 +26,7 @@ export class MapaRiesgoComponent implements OnInit {
   generarReporte = new FormGroup({
     unidadEjecutora: new FormControl('', Validators.required),
     id_periodo: new FormControl('', Validators.required),
+    tipoMapa: new FormControl('1', Validators.required),
   })
   usuario: any;
   constructor(
@@ -71,7 +72,11 @@ export class MapaRiesgoComponent implements OnInit {
       const filePath = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
       const downloadlink = document.createElement('a');
       downloadlink.href = filePath;
-      downloadlink.setAttribute('download', "Mapa_de_riesgo.xlsx");
+      if (dataSearch.tipoMapa == 1) {
+        downloadlink.setAttribute('download', "Mapa_de_riesgo.xlsx");
+      } else {
+        downloadlink.setAttribute('download', "Mapa_de_riesgo_RR.xlsx");
+      }
       document.body.appendChild(downloadlink)
       downloadlink.click();
     }, err => {

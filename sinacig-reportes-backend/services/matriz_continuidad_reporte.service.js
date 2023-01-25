@@ -36,6 +36,21 @@ class MatrizContinuidadReporteService {
       throw `${error}`;
     }
   }
+
+  async totalRiesgosContinuidad(id_riesgo) {
+    try {
+      const result = await models.MatrizContinuidad.findAll({
+        raw: true,
+        where: {
+          estado_registro: 1,
+          id_riesgo,
+        },
+      });
+      return result.length;
+    } catch (error) {
+      throw `${error}`;
+    }
+  }
 }
 
 module.exports = MatrizContinuidadReporteService;

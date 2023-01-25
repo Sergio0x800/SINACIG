@@ -13,9 +13,15 @@ export class MapaRiesgoService {
     private http: HttpClient
   ) { }
 
-  public generarReporte(dataReporte: any): Observable<any>{
-    return this.http.post(`${this.apiReportes}/mapa_riesgo`, dataReporte, {
-      responseType: 'blob' as 'json'
-    })    
+  public generarReporte(dataReporte: any): Observable<any> {
+    if (dataReporte.tipoMapa == 1) {
+      return this.http.post(`${this.apiReportes}/mapa_riesgo`, dataReporte, {
+        responseType: 'blob' as 'json'
+      })
+    } else {
+      return this.http.post(`${this.apiReportes}/mapa_riesgo_RR`, dataReporte, {
+        responseType: 'blob' as 'json'
+      })
+    }
   }
 }
