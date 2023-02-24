@@ -448,7 +448,7 @@ export class RiesgosComponent implements OnInit {
       })
       //eliminar
       this.controlesMemoryDelete.map((id_control: any) => {
-        this.planService.deleteControlImplementacion(id_control, { usuario_registro: this.usuario.id_usuario }).subscribe((value) => { })
+        this.planService.deleteControlImplementacion(id_control, { estado_registro: 0, usuario_registro: this.usuario.id_usuario }).subscribe((value) => { })
       })
 
 
