@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
     }, err => {
       if (err.status === 401) {
         this.noAutorizado = true
+        // this.utilidades.mostrarError("Usuario o contraseña incorrecto")
       } else {
         this.utilidades.showError('Problemas con los servicios', 'Algo salio mal mientras se procesaba la solicitud')
       }

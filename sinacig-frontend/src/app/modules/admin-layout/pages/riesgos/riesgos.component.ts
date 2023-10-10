@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { ActivatedRoute } from '@angular/router';
 import { RiesgosService } from 'src/app/services/riesgos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -22,9 +22,26 @@ import { MatrizService } from 'src/app/services/matriz.service';
 })
 export class RiesgosComponent implements OnInit {
 
-  //mostrar tabla
-  showTablePlanesTrabajo = true;
-  showBtnOffset: boolean = false;
+  public configuration!: Config;
+  public columns: Columns[] = [
+    // { key: 'id_riesgo', title: 'Comunidad' },
+    { key: 'descripcion_riesgo', title: 'Descripción' },
+    { key: 'riesgo_inherente', title: 'Riesgo Inherente' },
+    { key: 'riesgo_residual', title: 'Riesgo Residual' },
+    { key: 'medida_riesgo', title: 'Medida de Riesgo' },
+    // { key: 'objetivo', title: 'Fecha' },
+    // { key: 'area_evaluada', title: 'Tipo de censo' },
+    // { key: 'eventos', title: 'Población total' },
+    // { key: 'fecha_registro', title: 'Población sin agua' },
+    // { key: 'probabilidad', title: 'Sistema de agua' },
+    // { key: 'severidad', title: 'Estado' },
+    // { key: 'valor_control_mitigador', title: 'Estado' },
+    // { key: 'observaciones', title: 'Estado' },
+    // { key: 'id_matriz', title: 'Estado' },
+    // { key: 'codigo_referencia', title: 'Estado' },
+    { key: '', title: 'Acciones' },
+  ];
+
   //config fecha
   myDpOptions: IAngularMyDpOptions = {
     dateRange: false,
@@ -191,7 +208,6 @@ export class RiesgosComponent implements OnInit {
     private planService: PlanRiesgosService,
     private usuarioService: UsuarioService,
     private router: Router,
-    private logService: LogsService,
     private utilidades: UtilidadesService,
     private matrizService: MatrizService
 
@@ -218,6 +234,14 @@ export class RiesgosComponent implements OnInit {
         }
       })
     })
+    this.configuration = { ...DefaultConfig }
+    this.configuration.searchEnabled = true
+    this.getCatalogos()
+    this.getAllRiesgoByIdMatriz()
+    this.suscripcionCamposRiesgo();
+  }
+
+  getCatalogos() {
     this.catalogsService.getUnidadEjecutora().subscribe(unidades => this.unidadesEjecutoras = unidades);
     this.catalogsService.getTipoObjetivo().subscribe(obj => this.tipoObjetivos = obj);
     this.catalogsService.getAreaEvaluada().subscribe(areas => this.areas_evaluadas = areas);
@@ -227,99 +251,12 @@ export class RiesgosComponent implements OnInit {
     this.catalogsService.getPrioridad().subscribe(prioridades => this.prioridades = prioridades);
     this.catalogsService.getPuestoResponsable().subscribe(puestos => this.puestos = puestos);
     this.usuarioService.obtenerUsuario().subscribe((result: any) => this.usuario = result);
-    this.formFiltroRiesgo.valueChanges.subscribe((result: any) => {
-      this.saveInCache();
-      const filtros = {
-        ...result,
-        plan_faltante: result.plan_faltante == true ? 1 : 0,
-        matriz_continuidad_faltante: result.matriz_continuidad_faltante == true ? 1 : 0,
-        id_matriz: this.id_matriz
-      }
-      if (filtros.medida_riesgo == -1 && filtros.plan_faltante == 0 && filtros.matriz_continuidad_faltante == 0) {
-        this.getRiesgoByIdMatriz();
-      } else {
-        this.riesgoService.getRiesgosByFiltros(filtros).subscribe((riesgosObt: any) => {
-          if (riesgosObt.existencia == 1) {
-            this.riesgos = riesgosObt.res
-            this.showBtnOffset = false;
-            this.showTablePlanesTrabajo = true
-          } else {
-            Swal.fire({
-              icon: 'warning',
-              text: '¡No existen registros para mostrar con los filtros de búsqueda seleccionados!',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Aceptar'
-            })
-            this.showTablePlanesTrabajo = false
-            this.showBtnOffset = false;
-          }
-        })
-      }
-    })
-    this.formUpdateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
-      this.showBtnControlI = false
-      this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_probabilidad')?.value * severidad_input })
-      this.resultadoRI = this.formUpdateRiesgo.get('riesgo_inherente')?.value
-
-      if (this.formUpdateRiesgo.get('id_control_mitigador')?.value && this.formUpdateRiesgo.get('id_probabilidad')?.value) {
-        this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / this.formUpdateRiesgo.get('id_control_mitigador')?.value })
-        this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
-        this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
-          if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-            return medida
-          }
-        })
-        this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
-        this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
-      }
-    })
-    this.formUpdateRiesgo.get('id_probabilidad')?.valueChanges.subscribe((probabilidad_input: any) => {
-      this.showBtnControlP = false
-      this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_severidad')?.value * probabilidad_input })
-      this.resultadoRI = this.formUpdateRiesgo.get('riesgo_inherente')?.value
-
-      if (this.formUpdateRiesgo.get('id_control_mitigador')?.value && this.formUpdateRiesgo.get('id_severidad')?.value) {
-        this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / this.formUpdateRiesgo.get('id_control_mitigador')?.value })
-        this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
-        this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
-          if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-            return medida
-          }
-        })
-        this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
-        this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
-      }
-    })
-    this.formUpdateRiesgo.get('id_control_mitigador')?.valueChanges.subscribe((mitigador_input: any) => {
-      this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / mitigador_input })
-      this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
-      this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
-        if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
-          return medida
-        }
-      })
-      this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
-      this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
-    })
   }
 
   //get riesgos by id_matriz
-  getRiesgoByIdMatriz() {
-    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-      if (riesgos.existencia == 1) {
-        this.riesgos = riesgos.res;
-        this.showBtnOffset = true;
-        this.showTablePlanesTrabajo = true;
-      } else if (riesgos.existencia == 0) {
-        Swal.fire({
-          icon: 'warning',
-          text: '¡No existen registros para mostrar!',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'Aceptar'
-        })
-        this.showTablePlanesTrabajo = false
-        this.showBtnOffset = false;
-      }
+  getAllRiesgoByIdMatriz() {
+    this.riesgoService.getAllRiesgoByIdMatriz(this.id_matriz).subscribe(riesgos => {
+      this.riesgos = riesgos.res;
     }, err => {
       Swal.fire({
         icon: 'warning',
@@ -405,11 +342,7 @@ export class RiesgosComponent implements OnInit {
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Aceptar'
           });
-          this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-            this.riesgos = riesgos.res
-          }, err => {
-            this.showTablePlanesTrabajo = false
-          })
+          this.getAllRiesgoByIdMatriz()
         }, err => {
           Swal.fire({
             icon: 'error',
@@ -719,22 +652,9 @@ export class RiesgosComponent implements OnInit {
     // this.linkMatrizContinuidad = `/admin/grid-continuidad/${riesgoGrid}/${this.id_matriz}`
     this.router.navigate(['/admin/grid-continuidad/', riesgoGrid, this.id_matriz])
   }
-
-  aumentarOffset() {
-    this.offset += 10;
-    const countRiesgos = this.riesgos.length;
-    this.riesgoService.getRiesgoByIdMatriz(this.id_matriz, this.offset).subscribe(riesgos => {
-      this.riesgos = riesgos.res;
-      if (countRiesgos == riesgos.res.length) {
-        this.showBtnOffset = false;
-        Swal.fire({
-          icon: 'warning',
-          text: '¡Se han cargado todos los registros!',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'Aceptar',
-        })
-      }
-    })
+  goToSeguimientoRiesgo(riesgoGrid: any) {
+    // this.linkMatrizContinuidad = `/admin/grid-continuidad/${riesgoGrid}/${this.id_matriz}`
+    this.router.navigate(['/admin/seguimiento-riesgo/', riesgoGrid, this.id_matriz])
   }
 
   saveInCache() {
@@ -745,5 +665,53 @@ export class RiesgosComponent implements OnInit {
 
   removeCache() {
     this.utilidades.removeFiltroCache();
+  }
+
+  suscripcionCamposRiesgo() {
+    this.formUpdateRiesgo.get('id_severidad')?.valueChanges.subscribe((severidad_input: any) => {
+      this.showBtnControlI = false
+      this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_probabilidad')?.value * severidad_input })
+      this.resultadoRI = this.formUpdateRiesgo.get('riesgo_inherente')?.value
+
+      if (this.formUpdateRiesgo.get('id_control_mitigador')?.value && this.formUpdateRiesgo.get('id_probabilidad')?.value) {
+        this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / this.formUpdateRiesgo.get('id_control_mitigador')?.value })
+        this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
+        this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
+          if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
+            return medida
+          }
+        })
+        this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
+        this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
+      }
+    })
+    this.formUpdateRiesgo.get('id_probabilidad')?.valueChanges.subscribe((probabilidad_input: any) => {
+      this.showBtnControlP = false
+      this.formUpdateRiesgo.patchValue({ riesgo_inherente: this.formUpdateRiesgo.get('id_severidad')?.value * probabilidad_input })
+      this.resultadoRI = this.formUpdateRiesgo.get('riesgo_inherente')?.value
+
+      if (this.formUpdateRiesgo.get('id_control_mitigador')?.value && this.formUpdateRiesgo.get('id_severidad')?.value) {
+        this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / this.formUpdateRiesgo.get('id_control_mitigador')?.value })
+        this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
+        this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
+          if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
+            return medida
+          }
+        })
+        this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
+        this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
+      }
+    })
+    this.formUpdateRiesgo.get('id_control_mitigador')?.valueChanges.subscribe((mitigador_input: any) => {
+      this.formUpdateRiesgo.patchValue({ riesgo_residual: this.formUpdateRiesgo.get('riesgo_inherente')?.value / mitigador_input })
+      this.resultadoRR = this.formUpdateRiesgo.get('riesgo_residual')?.value
+      this.medidaRiesgoEncontrado = this.medidasRiesgo.find((medida: any) => {
+        if (this.formUpdateRiesgo.get('riesgo_residual')?.value >= medida.rango_minimo && this.resultadoRR <= medida.rango_maximo) {
+          return medida
+        }
+      })
+      this.formUpdateRiesgo.patchValue({ id_medida_riesgo: this.medidaRiesgoEncontrado.id_medida_riesgo })
+      this.medidaRiesgoInput = this.medidaRiesgoEncontrado.descripcion
+    })
   }
 }

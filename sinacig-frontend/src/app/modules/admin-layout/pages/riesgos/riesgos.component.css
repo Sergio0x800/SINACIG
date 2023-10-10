@@ -97,6 +97,25 @@
   box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
 }
 
+.container-table {
+  background-color: white;
+  border-radius: 7px;
+  padding: 20px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+.descripcionTable {
+  text-align: justify;
+}
+.riesgoTable {
+  text-align: center;
+}
+
+
+.btnAcciones {
+  text-align: center;
+}
 
 .cards-filter__inputs {
   width: 100%;

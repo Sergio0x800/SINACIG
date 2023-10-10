@@ -9,6 +9,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NgxMaskModule } from 'ngx-mask'
+import { TableModule } from 'ngx-easy-table';
 
 
 import { AdminLayoutRoutingModule } from './admin-layout-routing.module';
@@ -30,6 +31,7 @@ import { PeriodosComponent } from './pages/periodos/periodos.component';
 import { ContinuidadComponent } from './pages/continuidad/continuidad.component';
 import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continuidad.component';
 import { MatrizContinuidadReporteComponent } from './pages/reports/matriz-continuidad-reporte/matriz-continuidad-reporte.component';
+import { SeguimientoRiesgosComponent } from './pages/seguimiento-riesgos/seguimiento-riesgos.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { MatrizContinuidadReporteComponent } from './pages/reports/matriz-contin
     PeriodosComponent,
     ContinuidadComponent,
     GridContinuidadComponent,
-    MatrizContinuidadReporteComponent
+    MatrizContinuidadReporteComponent,
+    SeguimientoRiesgosComponent
   ],
   imports: [
     AdminLayoutRoutingModule,
@@ -58,7 +61,8 @@ import { MatrizContinuidadReporteComponent } from './pages/reports/matriz-contin
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    TableModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

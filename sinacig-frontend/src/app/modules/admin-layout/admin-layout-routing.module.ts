@@ -15,6 +15,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { PeriodosComponent } from './pages/periodos/periodos.component';
 import { GridContinuidadComponent } from './pages/grid-continuidad/grid-continuidad.component';
 import { MatrizContinuidadReporteComponent } from './pages/reports/matriz-continuidad-reporte/matriz-continuidad-reporte.component';
+import { SeguimientoRiesgosComponent } from './pages/seguimiento-riesgos/seguimiento-riesgos.component';
 const routes: Routes = [
   {
     path: '',
@@ -94,6 +95,11 @@ const routes: Routes = [
         path: 'mapa-riesgo',
         canActivate: [AuthGuard],
         component: MapaRiesgoComponent
+      },
+      {
+        path: 'seguimiento-riesgo/:id_riesgo/:id_matriz',
+        canActivate: [AuthGuard],
+        component: SeguimientoRiesgosComponent
       }
     ]
   },

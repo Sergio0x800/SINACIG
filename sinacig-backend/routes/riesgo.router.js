@@ -85,6 +85,21 @@ router.get(
 );
 
 router.get(
+  '/riesgoMatriz/:id_matriz',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 2, 3),
+  async (req, res, next) => {
+    try {
+      const { id_matriz } = req.params;
+      const result = await riesgoService.findAllRiesgoByIdMatriz(id_matriz);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
   '/:id_matriz/:offset',
   passport.authenticate('jwt', { session: false }),
   checkRoles(1, 2, 3),
