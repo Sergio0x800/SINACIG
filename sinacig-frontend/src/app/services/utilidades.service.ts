@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2'
+// import { NotifierService } from 'angular-notifier';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilidadesService {
+  // private readonly notifier: NotifierService;
 
   DATOS_USUARIO: any = {
     rol: 'rol',
@@ -14,7 +16,22 @@ export class UtilidadesService {
     id_usuario: 'id_usuario',
   }
 
-  constructor() { }
+  constructor(
+    // notifierService: NotifierService,
+
+  ) {
+    // this.notifier = notifierService;
+  }
+
+  // mostrarErrorNoti = (texto: any) => {
+  //   this.notifier.hideAll();
+  //   this.notifier.notify('error', texto);
+  // }
+
+  // mostrarExitoNoti = (texto: any) => {
+  //   this.notifier.hideAll();
+  //   this.notifier.notify('success', texto);
+  // }
 
   private toast = Swal.mixin({
     toast: true,

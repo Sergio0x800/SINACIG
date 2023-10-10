@@ -27,6 +27,7 @@ let server;
 //   },
 // };
 app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 require('./utils/auth/index.strategy');
 

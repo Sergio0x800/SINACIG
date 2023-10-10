@@ -23,6 +23,25 @@ textarea {
   resize: none !important;
 }
 
+table thead {
+  background-color: #29548F !important;
+  text-align: center;
+  font-size: 14px;
+  font-family: "Poppins";
+}
+
+
+
+table thead tr th {
+  color: #ffffff !important;
+}
+
+table thead tr th {
+  color: #ffffff !important;
+  border-left: 1px dotted #9b9b9b;
+  border-right: 1px dotted #9b9b9b;
+}
+
 .form-label {
   color: black;
 }

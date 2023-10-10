@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { NgxSpinnerModule } from 'ngx-spinner';
+// import { NotifierModule } from 'angular-notifier';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     BrowserAnimationsModule,
     NgbModule,
     AngularMyDatePickerModule,
+    // NotifierModule
 
   ],
   providers: [

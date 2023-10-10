@@ -81,14 +81,30 @@ class RiesgoService {
     // result[0];
   }
 
-  async deleteRiesgo(id_matriz, changes) {
-    const result = await models.Riesgo.update(changes, {
-      where: {
-        id_matriz: id_matriz,
-      },
-    });
-    return result;
+  async findAllRiesgoByIdMatriz(id_matriz) {
+    const result = await sequelize.query(
+      `EXEC sp_get_all_riesgos_by_id_matriz
+    @id_matriz = ${id_matriz}`
+    );
+    if (result[0].length === 0) {
+      return {
+        existencia: 0,
+      };
+    }
+    return {
+      existencia: 1,
+      res: result[0],
+    };
   }
+
+  // async deleteRiesgo(id_matriz, changes) {
+  //   const result = await models.Riesgo.update(changes, {
+  //     where: {
+  //       id_matriz: id_matriz,
+  //     },
+  //   });
+  //   return result;
+  // }
 
   async updateRiesgo(id_riesgo, changes) {
     const riesgoAntes = await models.Riesgo.findOne({

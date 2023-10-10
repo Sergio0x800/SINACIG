@@ -13,6 +13,7 @@ const authRouter = require('./auth.router');
 const logRouter = require('./logs.router');
 const matrizContinuidad = require('./matriz_continuidad.router');
 const monitoreo = require('./monitoreo.router');
+const seguimiento = require('./seguimiento.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -31,6 +32,7 @@ function routerApi(app) {
   router.use('/log', logRouter);
   router.use('/matriz_continuidad', matrizContinuidad);
   router.use('/metodo_monitoreo', monitoreo);
+  router.use('/seguimiento', seguimiento);
 }
 
 module.exports = routerApi;
