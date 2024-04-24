@@ -96,9 +96,9 @@ export class MatrizPeriodosComponent implements OnInit {
     const valuePeriodo = this.formSearchCreateMatrizPeriodo.get('id_periodo')?.value
     this.periodoSeleccionado = this.periodos.filter((item: any) => item.id_periodo == valuePeriodo)
     if (this.formSearchCreateMatrizPeriodo.get('id_unidad_ejecutora')?.invalid) {
-      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
+      this.utilidades.mostrarErrorNoti('Selecciona una unidad ejecutora')
     } else if (this.formSearchCreateMatrizPeriodo.get('id_periodo')?.invalid) {
-      this.utilidades.mostrarError('Selecciona un periodo')
+      this.utilidades.mostrarErrorNoti('Selecciona un periodo')
     } else {
       this.findMatrizPeriodo()
     }

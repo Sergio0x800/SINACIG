@@ -16,22 +16,25 @@ export class LoginComponent implements OnInit {
   password: any = undefined;
   token: any = '';
   noAutorizado: any = false
+  recordarme: boolean = false;
 
 
   constructor(private router: Router, private utilidades: UtilidadesService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
+    this.usuario = localStorage.getItem('SINACIG_USUARIO')
+    this.recordarme = !!this.usuario
     this.utilidades.removeItem();
     return
   }
 
   async iniciarSesion() {
     if (!this.usuario) {
-      this.utilidades.mostrarError('Debe ingresar un usuario')
+      this.utilidades.mostrarErrorNoti('Debe ingresar un usuario')
       return
     }
     if (!this.password) {
-      this.utilidades.mostrarError('Debe ingresar una contraseña')
+      this.utilidades.mostrarErrorNoti('Debe ingresar una contraseña')
       return
     }
 
@@ -44,14 +47,16 @@ export class LoginComponent implements OnInit {
         this.utilidades.setSessionStorageRol(usuarioAuth.id_rol)
         this.utilidades.setSessionStorageIdUsuario(usuarioAuth.id_usuario)
         this.utilidades.setSessionStorageUsuario(usuarioAuth.usuario)
+        if (this.recordarme) localStorage.setItem('SINACIG_USUARIO', this.usuario)
+        else localStorage.removeItem('SINACIG_USUARIO')
         this.router.navigate(['/admin']); //redirigimos
       }
     }, err => {
       if (err.status === 401) {
         this.noAutorizado = true
-        // this.utilidades.mostrarError("Usuario o contraseña incorrecto")
+        this.utilidades.mostrarErrorNoti("Usuario o contraseña incorrecto")
       } else {
-        this.utilidades.showError('Problemas con los servicios', 'Algo salio mal mientras se procesaba la solicitud')
+        this.utilidades.mostrarErrorNoti('Problemas al conectar con los servicios')
       }
     })
 

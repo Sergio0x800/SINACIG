@@ -71,6 +71,14 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     //Encabezado principal
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+    const fecha_inicio_ejecucion = moment(fechaInicio, 'YYYY-MM-DD')
+      .add(1, 'year')
+      .format('DD/MM/YYYY');
+    const fecha_fin_ejecucion = moment(fechaFin, 'YYYY-MM-DD')
+      .add(1, 'year')
+      .format('DD/MM/YYYY');
+
     ws.addImage({
       path: path.join(
         __dirname,
@@ -114,17 +122,21 @@ router.post('/evaluacion_plan_trabajo', async (req, res, next) => {
     ws.cell(8, 4, 8, 13, true)
       .string(`${unidadEjecutoraData.nombre_unidad}`)
       .style(header.text);
-    ws.cell(9, 1, 9, 3, true)
-      .string('Periodo de evaluación:')
-      .style(header.tituloInfoUnidad);
+    ws.cell(9, 1, 9, 3, true).string('Periodo:').style(header.tituloInfoUnidad);
     ws.cell(9, 4, 9, 6, true)
       .string(`Del ${fecha_inicio} al ${fecha_fin}`)
       .style(header.text);
 
+    ws.cell(10, 1, 10, 3, true)
+      .string('Periodo de ejecución:')
+      .style(header.tituloInfoUnidad);
+    ws.cell(10, 4, 10, 6, true)
+      .string(`Del ${fecha_inicio_ejecucion} al ${fecha_fin_ejecucion}`)
+      .style(header.text);
     // Instrucciones
     ws.cell(12, 1, 13, 9, true)
       .string(
-        'Instrucciones: Realice el plan de trabajo en evaluación de riesgos identificados previamente, completando la información de la matriz según lo indica el documento SINACIG en la página 52.'
+        'Instrucciones: Realice el plan de trabajo en evaluación de riesgos identificados previamente.'
       )
       .style(header.text);
 

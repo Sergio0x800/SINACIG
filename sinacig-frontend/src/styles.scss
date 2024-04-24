@@ -2,6 +2,7 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+// @import '~/angular-notifier/styles.';
 
 
 
@@ -18,7 +19,7 @@
 // footer {
 //   background-color: #eaeaea !important;
 // }
-
+@import "~angular-notifier/styles.css";
 textarea {
   resize: none !important;
 }

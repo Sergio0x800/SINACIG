@@ -95,11 +95,11 @@ export class PlanTrabajoComponent implements OnInit {
 
   validarFormPlan() {
     if (this.generarReporte.get('unidadEjecutora')?.invalid) {
-      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
+      this.utilidades.mostrarErrorNoti('Selecciona una unidad ejecutora')
     } else if (this.generarReporte.get('fechaInicio')?.invalid) {
-      this.utilidades.mostrarError('Selecciona una fecha inicial')
+      this.utilidades.mostrarErrorNoti('Selecciona una fecha inicial')
     } else if (this.generarReporte.get('fechaFin')?.invalid) {
-      this.utilidades.mostrarError('Seleccione una fecha final')
+      this.utilidades.mostrarErrorNoti('Seleccione una fecha final')
     } else {
       this.descargarReporte()
     }

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NotifierModule } from 'angular-notifier';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -62,7 +63,8 @@ import { SeguimientoRiesgosComponent } from './pages/seguimiento-riesgos/seguimi
     CommonModule,
     FormsModule,
     NgxMaskModule.forRoot(),
-    TableModule
+    TableModule,
+    NotifierModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

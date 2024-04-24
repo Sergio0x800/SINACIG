@@ -403,7 +403,7 @@ export class IngresoRiesgosComponent implements OnInit, OnExit {
       this.descripcionControlInvalid = true
     }
     if (this.controlInternoMemory.length < 1 || this.formCreateRiesgo.invalid || !this.formCreateRiesgo.get('id_control_mitigador')?.dirty || !this.formCreateRiesgo.get('id_severidad')?.dirty || !this.formCreateRiesgo.get('id_probabilidad')?.dirty) {
-      this.utilidades.mostrarError("Por favor llene los campos obligatorios")
+      this.utilidades.mostrarErrorNoti("Por favor llene los campos obligatorios")
     } else {
       this.nextPagePlan = true
       this.createNewRiesgo()

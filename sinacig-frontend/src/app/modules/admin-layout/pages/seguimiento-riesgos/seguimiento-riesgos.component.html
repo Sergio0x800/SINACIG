@@ -33,18 +33,30 @@
 </div>
 <div class="container-body-riesgo">
   <div class="container_form_riesgos">
-    <form [formGroup]="formSeguimiento">
-      <h2 class="matriz-form__title mb-4 mt-4">Ingreso de seguimiento de riesgo</h2>
+    <form #id_probabilidad [formGroup]="formSeguimiento">
+      <div class="container-title-back">
+        <h2 *ngIf="id_seguimiento_riesgo" class="matriz-form__title mb-4 mt-4">Actualizar seguimiento de riesgo</h2>
+        <h2 *ngIf="!id_seguimiento_riesgo" class="matriz-form__title mb-4 mt-4">Ingreso seguimiento de riesgo</h2>
+        <button class="btn btn-danger btn-size" [routerLink]="routerLinkRiesgo"><i class="fa fa-arrow-left"
+            aria-hidden="true"></i>
+          Regresar</button>
+      </div>
       <div class="double-inputs-form mb-4">
         <div class="form-floating">
           <select class="form-select" id="inputProbabilidad" aria-label="inputProbabilidad" [ngClass]="{
             'is-invalid': probabilidadInvalid,
             'is-valid': probabilidadValid
           }" formControlName="id_probabilidad">
-            <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
-              {{probabilidad.nivel_probabilidad}}</option>
+            <option [value]="0">--Seleccione una opción--</option>
+            <ng-container *ngFor="let probabilidad of probabilidades">
+              <option [value]="probabilidad.id_probabilidad">
+                {{probabilidad.nivel_probabilidad}}
+              </option>
+            </ng-container>
+            <!-- <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+              {{probabilidad.nivel_probabilidad}}</option> -->
           </select>
-          <label for="inputProbabilidad">Probabilidad</label>
+          <label for="inputProbabilidad">Probabilidad <span class="obligatorio"> *</span></label>
           <div *ngIf="probabilidadInvalid" class="invalid-feed">
             Por favor ingresa un valor
           </div>
@@ -55,10 +67,16 @@
             'is-invalid': severidadInvalid,
             'is-valid': severidadValid
           }">
-            <option *ngFor="let severidad of severidades" [value]="severidad.id_severidad">
-              {{severidad.nivel_severidad}}</option>
+            <option [value]="0">--Seleccione una opción--</option>
+            <ng-container *ngFor="let severidad of severidades">
+              <option [value]="severidad.id_severidad">
+                {{severidad.nivel_severidad}}
+              </option>
+            </ng-container>
+            <!-- <option *ngFor="let severidad of severidades" [value]="severidad.id_severidad">
+              {{severidad.nivel_severidad}}</option> -->
           </select>
-          <label for="inputSeveridad">Severidad</label>
+          <label for="inputSeveridad">Severidad<span class="obligatorio"> *</span></label>
           <div *ngIf="severidadInvalid" class="invalid-feed">
             Por favor ingresa un valor
           </div>
@@ -68,19 +86,23 @@
           <label for="riesgoRI">Riesgo Inherente (RI)</label>
         </div>
         <div class="form-floating">
-          <select
-            *ngIf="formSeguimiento.get('id_probabilidad')?.dirty && formSeguimiento.get('id_severidad')?.dirty; else elseControlMitigador"
-            class="form-select" [ngClass]="{
+          <select class="form-select" [ngClass]="{
                 'is-invalid': controlMitigadorInvalid,
                 'is-valid': controlMitigadorValid
               }" id="valorMitigador" aria-label="valorMitigador" formControlName="id_control_mitigador">
-            <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
-              {{probabilidad.nivel_probabilidad}}</option>
+            <option [value]="0">--Seleccione una opción--</option>
+            <ng-container *ngFor="let probabilidad of probabilidades">
+              <option [value]="probabilidad.id_probabilidad">
+                {{probabilidad.nivel_probabilidad}}
+              </option>
+            </ng-container>
+            <!-- <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+              {{probabilidad.nivel_probabilidad}}</option> -->
           </select>
-          <ng-template #elseControlMitigador>
+          <!-- <ng-template #elseControlMitigador>
             <input type="number" class="form-control" [value]="0" [disabled]="true">
-          </ng-template>
-          <label for="valorMitigador" class="">Control Mitigador</label>
+          </ng-template> -->
+          <label for="valorMitigador" class="">Control Mitigador<span class="obligatorio"> *</span></label>
           <div *ngIf="controlMitigadorInvalid" class="invalid-feed">
             Por favor ingresa un valor
           </div>
@@ -90,31 +112,28 @@
           <label for="riesgoRR">Riesgo Residual (RR)</label>
         </div>
         <div class="form-floating">
-          <input type="text" id="inputMedida" [value]="medidaRiesgoInput" [disabled]="true" [ngClass]="{
-            'form-control-bg': true,
-            'form-control': true,
-            'tolerable': medidaRiesgoEncontrado.id_medida_riesgo === 1,
-            'gestionable': medidaRiesgoEncontrado.id_medida_riesgo === 2,
-            'noTolerable': medidaRiesgoEncontrado.id_medida_riesgo === 3
-          }" class="form-control">
+          <input type="text" id="inputMedida" [value]="medidaRiesgoInput" [disabled]="true" class="form-control">
           <label for="inputMedida">Medida de Riesgo</label>
         </div>
       </div>
       <div class="form-floating mb-5">
         <textarea maxlength="500" class="form-control" formControlName="comentario_seguimiento"
           placeholder="Ingresa un comentario" id="comentario_seguimiento" style="height: 130px"></textarea>
-        <label for="comentario_seguimiento">Comentario</label>
+        <label for="comentario_seguimiento">Comentario <span class="obligatorio"> *</span></label>
       </div>
       <div class="mb-5">
-        <label for="archivos" class="formFile">Subir archivos:</label>
+        <label for="archivos" class="formFile">Subir archivos: (.pdf, .xls, .xlsx, .jpg, .png, .doc,
+          .docx)</label>
         <input type="file" class="form-control" id="archivos" name="archivos" multiple
           (change)="onFilesSelected($event)">
       </div>
       <div class="container-btn-ingreso mt-5 mb-4">
-        <button type="button" class="btn btn-danger btn-size" [routerLink]="routerLinkRiesgo"><i class="fa fa-ban"
-            aria-hidden="true"></i> Cancelar</button>
-        <button (click)="validarFormularioRiesgo()" type="button" class="btn btn-primary btn-size"><i class="fa fa-save"
-            aria-hidden="true"></i> Guardar</button>
+        <button *ngIf="id_seguimiento_riesgo" type="button" class="btn btn-danger btn-size"
+          (click)="resetCamposSeguimiento()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+        <button *ngIf="!id_seguimiento_riesgo" (click)="validarFormularioRiesgo()" type="button"
+          class="btn btn-primary btn-size"><i class="fa fa-save" aria-hidden="true"></i> Guardar</button>
+        <button *ngIf="id_seguimiento_riesgo" (click)="validarFormularioRiesgo()" type="button"
+          class="btn btn-primary btn-size"><i class="fa fa-save" aria-hidden="true"></i> Actualizar</button>
       </div>
     </form>
 
@@ -144,6 +163,96 @@
           </h4>
         </div>
       </div> -->
+    </div>
+  </div>
+  <div class="container-table">
+    <ngx-table [configuration]="configuration" [data]="seguimientos" [columns]="columns">
+      <ng-template let-row class="rowsStyles">
+        <td class="descripcionTable">
+          <div class="font-small">{{ row.comentario_seguimiento }}</div>
+        </td>
+        <td class="riesgoTable">
+          <div class="font-small">{{ row.fecha_registro }}</div>
+        </td>
+        <td>
+          <ng-container>
+            <div class="btnAcciones">
+              <div ngbDropdown class="d-inline-block">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="riesgoBtnAccion" aria-expanded="true"
+                  ngbDropdownToggle>
+                  <i class="fa fa-arrow-down"></i>
+                  Acciones
+                </button>
+                <div ngbDropdownMenu aria-labelledby="riesgoBtnAccion">
+                  <button data-bs-toggle="modal" data-bs-target="#riesgoModal" ngbDropdownItem class="btn btn-link"
+                    (click)="editSeguimiento(row)">
+                    Editar
+                  </button>
+                  <button *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3)" ngbDropdownItem class="btn btn-link"
+                    (click)="deleteSeguimiento(row.id_seguimiento_riesgo)">
+                    Eliminar
+                  </button>
+                  <button data-bs-toggle="modal" data-bs-target="#planModal" ngbDropdownItem class="btn btn-link"
+                    (click)="verArchivos(row.id_seguimiento_riesgo)">
+                    Ver archivos adjuntos
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="planModal" tabindex="-1" aria-labelledby="planModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel">Archivos del seguimiento</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body mb-5">
+        <div>
+          <div>
+            <ngx-table [configuration]="configuration" [data]="archivosSeguimiento" [columns]="columns2">
+              <ng-template let-row class="rowsStyles">
+                <td class="descripcionTable">
+                  <div class="font-small">{{ row.nombre_archivo }}</div>
+                </td>
+                <td class="riesgoTable">
+                  <div class="font-small">{{ row.tipo_archivo }}</div>
+                </td>
+                <td>
+                  <ng-container>
+                    <div class="btnAcciones">
+                      <div ngbDropdown class="d-inline-block">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="riesgoBtnAccion"
+                          aria-expanded="true" ngbDropdownToggle>
+                          <i class="fa fa-arrow-down"></i>
+                          Acciones
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="riesgoBtnAccion">
+                          <button data-bs-toggle="modal" data-bs-target="#riesgoModal" ngbDropdownItem
+                            class="btn btn-link" (click)="descargarArchivo(row.nombre_archivo)">
+                            Descargar archivo
+                          </button>
+                          <button *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3)" ngbDropdownItem
+                            class="btn btn-link" (click)="deleteSeguimientoArchivo(row)">
+                            Eliminar archivo
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </td>
+              </ng-template>
+            </ngx-table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

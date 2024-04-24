@@ -52,7 +52,8 @@
                     (click)="goToMatrizContinuidad(row.id_riesgo)">
                     Matriz de continuidad
                   </button>
-                  <button data-bs-toggle="modal" data-bs-target="#continuidadModal" ngbDropdownItem class="btn btn-link"
+                  <button *ngIf="matrizObtenida.periodo_abierto === 0" data-bs-toggle="modal"
+                    data-bs-target="#continuidadModal" ngbDropdownItem class="btn btn-link"
                     (click)="goToSeguimientoRiesgo(row.id_riesgo)">
                     Seguimiento de riesgo
                   </button>

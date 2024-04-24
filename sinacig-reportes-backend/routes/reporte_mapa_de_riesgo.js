@@ -106,18 +106,18 @@ router.post('/mapa_riesgo', async (req, res, next) => {
               .string(`${unidadEjecutoraData.nombre_unidad}`)
               .style(header.text);
             ws.cell(9, 1, 9, 3, true)
-              .string('Periodo de evaluación:')
+              .string('Periodo:')
               .style(header.tituloInfoUnidad);
             ws.cell(9, 4, 9, 6, true)
               .string(`Del ${fecha_inicio} al ${fecha_fin}`)
               .style(header.text);
 
             // Instrucciones
-            ws.cell(12, 1, 13, 8, true)
-              .string(
-                'Instrucciones: Realice el mapa de riesgos, completando la información de la matriz según lo indica el documento SINACIG en la página 53.'
-              )
-              .style(header.text);
+            // ws.cell(12, 1, 13, 8, true)
+            //   .string(
+            //     'Instrucciones: Realice el mapa de riesgos identificado previamente'
+            //   )
+            //   .style(header.text);
 
             ws.cell(14, 4, 15, 8, true)
               .string('Probabilidad y Severidad')

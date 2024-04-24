@@ -87,9 +87,9 @@ export class MapaRiesgoComponent implements OnInit {
 
   validarFormSearch() {
     if (this.generarReporte.get('unidadEjecutora')?.invalid) {
-      this.utilidades.mostrarError('Selecciona una unidad ejecutora')
+      this.utilidades.mostrarErrorNoti('Selecciona una unidad ejecutora')
     } else if (this.generarReporte.get('id_periodo')?.invalid) {
-      this.utilidades.mostrarError('Selecciona un periodo')
+      this.utilidades.mostrarErrorNoti('Selecciona un periodo')
     } else {
       this.descargarReporte()
     }

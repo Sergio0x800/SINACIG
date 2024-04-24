@@ -206,7 +206,7 @@ export class ContinuidadComponent implements OnInit {
     }
 
     if ((this.metodoMonitoreoMemory.length < 1 && this.metodoMonitoreoDB.length < 1) || this.formMatrizContinuidad.invalid) {
-      this.utilidades.mostrarError("Por favor llene los campos obligatorios")
+      this.utilidades.mostrarErrorNoti("Por favor llene los campos obligatorios")
     } else {
       if (this.actualizar) {
         this.actualizarMatrizContinuidad();

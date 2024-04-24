@@ -1,0 +1,12 @@
+.imgBack {
+  width: 180px;
+  height: 65px;
+}
+
+
+@media only screen and (max-width: 330px) {
+  .imgBack {
+    width: 155px;
+    height: 55px;
+  }
+}

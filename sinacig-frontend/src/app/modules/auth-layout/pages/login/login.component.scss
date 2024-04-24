@@ -1,129 +1,101 @@
-.btn-size {
-  width: 100%;
-}
-
 .login {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   flex-direction: column;
+  gap: 25px;
+}
+
+.login-header {
   width: 100%;
-  height: 100vh;
-  background-image:linear-gradient(87deg, rgb(17, 205, 239) 0px, rgb(17, 113, 239) 100%);
-    // background-color: #172b4d;
+  padding: 10px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 3px;
+  background-image: linear-gradient(87deg, rgb(17, 205, 239) 60%, rgb(17, 113, 239) 100%);
+
 }
 
-.invalid-feed {
-  color: red;
-  font-size: 13px;
-  font-family: 'Poppins', sans-serif;
+.login-header-logo {
+  width: 220px;
+  height: 85px;
 }
 
-.border-span {
-  border-top: 1px solid #fb6340;
-  border-bottom: 1px solid #fb6340;
-  border-left: 1px solid #fb6340;
-}
-
-.header-container {
+.login-title {
   width: 100%;
-  padding: 5px 15px;
-  background-color: #f7fafc;
-  display: flex;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  .header__imgLogo {
-    width: 250px;
-    img {
-      width: 100%;
-    }
-  }
+  font-family: "Poppins", sans-serif;
+  font-size: 2.5rem;
+  text-align: center;
+  color: black;
 }
 
 .login-container {
-  background-color: #f7fafc;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  width: 420px;
-  padding: 30px;
-  .login-title {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 25px;
-    h1 {
-      font-family: 'Poppins', sans-serif;
-      color: #474a51;
-      font-size: 22px;
-    }
-    small {
-      font-family: 'Nunito';
-      color: #525f7f;
-      text-align: center;
-      font-size: 14px;
-    }
-  }
-}
-
-.footer-container {
   width: 100%;
-  padding: 15px 0;
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
   align-items: center;
-  background-color: #f7fafc;
-  box-shadow: rgba(0, 0, 0, 0.35) 5px 0px 15px;
-  .footer-items-container {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    gap: 10px;
-    .items {
-      list-style: none;
-    }
-  }
-}
-p {
-  margin: 0;
+  padding: 25px;
 }
 
-@media only screen and (max-width: 768px) {
-  .header-container {
-    justify-content: center;
+.imgBack {
+  width: 750px;
+  height: 460px;
+}
+
+.login-credentials {
+  width: 450px;
+}
+
+.title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  color: black;
+}
+
+@media only screen and (max-width: 1290px) {
+  .imgBack {
+    width: 530px;
+    height: 385px;
   }
-  .login {
-    justify-content: flex-start;
-    gap: 85px;
-  }
-  h1 {
-    font-size: 20px;
-  }
-  .btn-size {
-    width: 220px;
-  }
-  .login-container {
+}
+@media only screen and (max-width: 1070px) {
+  .login-credentials {
     width: 350px;
   }
-  .footer-container {
-    display: none;
+}
+@media only screen and (max-width: 1040px) {
+  .login-title {
+    font-size: 2.1rem;
   }
 }
-@media only screen and (max-width: 425px) {
-  .login {
-    justify-content: flex-start;
-    gap: 85px;
+@media only screen and (max-width: 970px) {
+  .imgBack {
+    width: 460px;
+    height: 315px;
   }
-  h1 {
-    font-size: 20px;
-  }
-  .btn-size {
-    width: 100%;
-  }
+}
+@media only screen and (max-width: 860px) {
   .login-container {
-    width: 300px;
-    padding: 15px;
+    grid-template-columns: 1fr;
   }
-  .footer-container {
+  .title {
+    text-align: center;
+  }
+  .imgBack-container {
     display: none;
+  }
+  .login-title {
+    font-size: 1.9rem;
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .login-header {
+    text-align: center;
+  }
+  .login-title {
+    font-size: 1.8rem;
+  }
+}
+@media only screen and (max-width: 408px) {
+  .login-credentials {
+    width: 270px;
   }
 }

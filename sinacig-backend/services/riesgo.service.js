@@ -51,7 +51,6 @@ class RiesgoService {
     @matriz_continuidad_faltante = ${filtro.matriz_continuidad_faltante},
     @id_matriz = ${filtro.id_matriz}`
     );
-    console.log(result[0].length);
     if (result[0].length == 0) {
       return {
         existencia: 0,

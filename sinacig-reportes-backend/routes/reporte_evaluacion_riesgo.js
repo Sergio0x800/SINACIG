@@ -113,9 +113,7 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     ws.cell(8, 4, 8, 13, true)
       .string(`${unidadEjecutoraData.nombre_unidad}`)
       .style(header.text);
-    ws.cell(9, 1, 9, 3, true)
-      .string('Periodo de evaluación:')
-      .style(header.tituloInfoUnidad);
+    ws.cell(9, 1, 9, 3, true).string('Periodo:').style(header.tituloInfoUnidad);
     ws.cell(9, 4, 9, 6, true)
       .string(`Del ${fecha_inicio} al ${fecha_fin}`)
       .style(header.text);
@@ -123,7 +121,7 @@ router.post('/evaluacion_riesgo', async (req, res, next) => {
     // Instrucciones
     ws.cell(12, 1, 13, 9, true)
       .string(
-        'Instrucciones: Realice la evaluación de riesgos identificados previamente, completando la información de la matriz según lo indica el documento SINACIG en la página 51.'
+        'Instrucciones: Realice la evaluación de riesgos identificados previamente.'
       )
       .style(header.text);
 

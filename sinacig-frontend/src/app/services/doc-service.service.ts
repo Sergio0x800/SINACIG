@@ -11,12 +11,37 @@ export class DocServiceService {
 
   constructor(private http: HttpClient) { }
 
+  getSeguimientos(id_riesgo: any) {
+    return this.http.post(`${this.apiUrl}/getSeguimientos`, { id_riesgo });
+  }
+
+  getArchivosSeguimiento(id_seguimiento_riesgo: any) {
+    return this.http.post(`${this.apiUrl}/getArchivosSeguimientos`, { id_seguimiento_riesgo });
+  }
+
+  getArchivosDescarga(nombreArchivo: any, id_riesgo: any) {
+    return this.http.post(`${this.apiUrl}/descargarArchivoSeguimiento`, { nombreArchivo, id_riesgo }, {
+      responseType: 'blob'
+    });
+  }
+
   createSeguimiento(data: any) {
     return this.http.post(this.apiUrl, data);
   }
 
   insertarArchivos(formData: any) {
     return this.http.post(`${this.apiUrl}/archivosSeguimiento`, formData);
+  }
+
+  updateSeguimiento(data: any) {
+    return this.http.post(`${this.apiUrl}/updateSeguimiento`, data);
+  }
+
+  deleteSeguimiento(id_seguimiento_riesgo: any) {
+    return this.http.post(`${this.apiUrl}/deleteSeguimiento`, { id_seguimiento_riesgo });
+  }
+  deleteSeguimientoArchivo(id_seguimiento_riesgo_archivo: any) {
+    return this.http.post(`${this.apiUrl}/deleteSeguimientoArchivo`, { id_seguimiento_riesgo_archivo });
   }
 
   // async getBase64FileCementerio(id_requisito: any) {

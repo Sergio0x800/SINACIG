@@ -318,7 +318,7 @@ export class IngresoPlanTrabajoComponent implements OnInit {
 
 
     if (this.controlImplementacionMemory.length < 1 || this.recursosMemory.length < 1 || this.controlInternoPlanMemory.length < 1 || this.formCreatePlanRiesgo.invalid) {
-      this.utilidades.mostrarError("Por favor llene los campos obligatorios")
+      this.utilidades.mostrarErrorNoti("Por favor llene los campos obligatorios")
     } else {
       // this.nextPagePlan = true
       this.createNewPlanRiesgo()

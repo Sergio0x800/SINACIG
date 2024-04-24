@@ -143,7 +143,34 @@
   align-items: center;
   justify-content: center;
 }
+.container-title-back {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+.obligatorio {
+  color: #dc3545 !important;
+}
 
+.container-table {
+  background-color: white;
+  border-radius: 7px;
+  padding: 20px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+.descripcionTable {
+  text-align: justify;
+}
+.riesgoTable {
+  text-align: center;
+}
+.btnAcciones {
+  text-align: center;
+}
 .select-control-mitigador {
   width: 300px;
 }

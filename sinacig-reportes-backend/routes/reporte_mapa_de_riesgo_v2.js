@@ -98,18 +98,12 @@ router.post('/mapa_riesgo_RR', async (req, res, next) => {
           .string(`${unidadEjecutoraData.nombre_unidad}`)
           .style(header.text);
         ws.cell(9, 1, 9, 3, true)
-          .string('Periodo de evaluación:')
+          .string('Periodo:')
           .style(header.tituloInfoUnidad);
         ws.cell(9, 4, 9, 6, true)
           .string(`Del ${fecha_inicio} al ${fecha_fin}`)
           .style(header.text);
 
-        // Instrucciones
-        ws.cell(12, 1, 13, 8, true)
-          .string(
-            'Instrucciones: Realice el mapa de riesgos, completando la información de la matriz según lo indica el documento SINACIG en la página 53.'
-          )
-          .style(header.text);
         mapaRiesgoService
           .dataReporteMapariesgo(
             unidadEjecutoraData.codigo_unidad,
@@ -173,87 +167,92 @@ router.post('/mapa_riesgo_RR', async (req, res, next) => {
                 if (random == 1) {
                   dataTolerable1.push(element);
                   ws.cell(17, 4)
-                    .string(dataTolerable1)
+                    .string(dataTolerable1.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 2) {
                   dataTolerable2.push(element);
                   ws.cell(17, 5)
-                    .string(dataTolerable2)
+                    .string(dataTolerable2.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 3) {
                   dataTolerable3.push(element);
                   ws.cell(18, 4)
-                    .string(dataTolerable3)
+                    .string(dataTolerable3.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 4) {
                   dataTolerable4.push(element);
                   ws.cell(18, 5)
-                    .string(dataTolerable4)
+                    .string(dataTolerable4.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 5) {
                   dataTolerable5.push(element);
                   ws.cell(19, 4)
-                    .string(dataTolerable5)
+                    .string(dataTolerable5.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 6) {
                   dataTolerable6.push(element);
                   ws.cell(19, 5)
-                    .string(dataTolerable6)
+                    .string(dataTolerable6.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 7) {
                   dataTolerable7.push(element);
                   ws.cell(19, 6)
-                    .string(dataTolerable7)
+                    .string(dataTolerable7.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 8) {
                   dataTolerable8.push(element);
                   ws.cell(20, 4)
-                    .string(dataTolerable8)
+                    .string(dataTolerable8.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 9) {
                   dataTolerable9.push(element);
                   ws.cell(20, 5)
-                    .string(dataTolerable9)
+                    .string(dataTolerable9.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 10) {
                   dataTolerable10.push(element);
                   ws.cell(20, 6)
-                    .string(dataTolerable10)
+                    .string(dataTolerable10.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 11) {
                   dataTolerable11.push(element);
                   ws.cell(20, 7)
-                    .string(dataTolerable11)
+                    .string(dataTolerable11.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 12) {
                   dataTolerable12.push(element);
                   ws.cell(20, 8)
-                    .string(dataTolerable12)
+                    .string(dataTolerable12.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 13) {
                   dataTolerable13.push(element);
                   ws.cell(21, 4)
-                    .string(dataTolerable13)
+                    .string(dataTolerable13.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 14) {
                   dataTolerable14.push(element);
                   ws.cell(21, 5)
-                    .string(dataTolerable14)
+                    .string(dataTolerable14.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 15) {
                   dataTolerable15.push(element);
                   ws.cell(21, 6)
-                    .string(dataTolerable15)
+                    .string(dataTolerable15.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 16) {
                   dataTolerable16.push(element);
                   ws.cell(21, 7)
-                    .string(dataTolerable16)
+                    .string(dataTolerable16.toString())
                     .style(estilosReportes.backgroundVerde2);
                 } else if (random == 17) {
                   dataTolerable17.push(element);
                   ws.cell(21, 8)
-                    .string(dataTolerable17)
+                    .string(dataTolerable17.toString())
+                    .style(estilosReportes.backgroundVerde2);
+                } else {
+                  dataTolerable17.push(element);
+                  ws.cell(21, 8)
+                    .string(dataTolerable17.toString())
                     .style(estilosReportes.backgroundVerde2);
                 }
               });
@@ -263,77 +262,36 @@ router.post('/mapa_riesgo_RR', async (req, res, next) => {
                 if (random == 1) {
                   dataGestionable1.push(element);
                   ws.cell(17, 6)
-                    .string(dataGestionable1)
+                    .string(dataGestionable1.toString())
                     .style(estilosReportes.backgroundAmarillo2);
                 } else if (random == 2) {
                   dataGestionable2.push(element);
                   ws.cell(18, 6)
-                    .string(dataGestionable2)
+                    .string(dataGestionable2.toString())
                     .style(estilosReportes.backgroundAmarillo2);
                 } else if (random == 3) {
                   dataGestionable3.push(element);
                   ws.cell(19, 7)
-                    .string(dataGestionable3)
+                    .string(dataGestionable3.toString())
                     .style(estilosReportes.backgroundAmarillo2);
                 } else if (random == 4) {
                   dataGestionable4.push(element);
                   ws.cell(19, 8)
-                    .string(dataGestionable4)
+                    .string(dataGestionable4.toString())
+                    .style(estilosReportes.backgroundAmarillo2);
+                } else {
+                  dataGestionable4.push(element);
+                  ws.cell(19, 8)
+                    .string(dataGestionable4.toString())
                     .style(estilosReportes.backgroundAmarillo2);
                 }
               });
 
-              // if (dataTolerable.length > 0) {
-              //   let countTolerable = 1;
-              //   let dataCount1 = [];
-              //   let dataCount2 = [];
-              //   let dataCount3 = [];
-              //   dataTolerable.find((element) => {
-              //     countTolerable++;
-              //     if (countTolerable % 2 == 0) {
-              //       dataCount1.push(element);
-              //     } else if (countTolerable % 3 == 0) {
-              //       dataCount2.push(element);
-              //     } else {
-              //       dataCount3.push(element);
-              //     }
-              //   });
-              //   ws.cell(17, 4, 21, 5)
-              //     .string(dataCount1)
-              //     .style(estilosReportes.backgroundVerde2);
-              //   ws.cell(19, 6, 21, 6)
-              //     .string(dataCount3)
-              //     .style(estilosReportes.backgroundVerde2);
-              //   ws.cell(20, 7, 21, 8)
-              //     .string(dataCount2)
-              //     .style(estilosReportes.backgroundVerde2);
-              // }
-
-              // if (dataGestionable.length > 0) {
-              //   let countGestionable = 1;
-              //   let dataCount1 = [];
-              //   let dataCount2 = [];
-              //   dataGestionable.find((element) => {
-              //     countGestionable++;
-              //     if (countGestionable % 2 == 0) {
-              //       dataCount1.push(element);
-              //     } else {
-              //       dataCount2.push(element);
-              //     }
-              //   });
-              //   ws.cell(17, 6, 18, 6, true)
-              //     .string(dataCount1)
-              //     .style(estilosReportes.backgroundAmarillo2);
-              //   ws.cell(19, 7, 19, 8, true)
-              //     .string(dataCount2)
-              //     .style(estilosReportes.backgroundAmarillo2);
-              // }
-
-              // if (dataNoTolerable.length > 0) {
-              //   ws.cell(17, 7, 18, 8, true)
-              //     .string(dataNoTolerable)
-              //     .style(estilosReportes.backgroundRojo2);
-              // }
+              if (dataNoTolerable.length > 0) {
+                ws.cell(17, 7, 18, 8, true)
+                  .string(dataNoTolerable.toString())
+                  .style(estilosReportes.backgroundRojo2);
+              }
 
               ws.cell(26, 4)
                 .string('No.')

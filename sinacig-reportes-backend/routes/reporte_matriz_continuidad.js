@@ -61,6 +61,12 @@ router.post('/matriz_continuidad', async (req, res, next) => {
     //Encabezado principal
     const fecha_inicio = moment(fechaInicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
     const fecha_fin = moment(fechaFin, 'YYYY-MM-DD').format('DD/MM/YYYY');
+    const fecha_inicio_ejecucion = moment(fechaInicio, 'YYYY-MM-DD')
+      .add(1, 'year')
+      .format('DD/MM/YYYY');
+    const fecha_fin_ejecucion = moment(fechaFin, 'YYYY-MM-DD')
+      .add(1, 'year')
+      .format('DD/MM/YYYY');
     ws.addImage({
       path: path.join(
         __dirname,
@@ -104,11 +110,15 @@ router.post('/matriz_continuidad', async (req, res, next) => {
     ws.cell(8, 3, 8, 13, true)
       .string(`${unidadEjecutoraData.nombre_unidad}`)
       .style(header.text);
-    ws.cell(9, 1, 9, 2, true)
-      .string('Periodo de evaluación:')
-      .style(header.tituloInfoUnidad);
+    ws.cell(9, 1, 9, 2, true).string('Periodo:').style(header.tituloInfoUnidad);
     ws.cell(9, 3, 9, 6, true)
       .string(`Del ${fecha_inicio} al ${fecha_fin}`)
+      .style(header.text);
+    ws.cell(10, 1, 10, 2, true)
+      .string('Periodo de ejecución:')
+      .style(header.tituloInfoUnidad);
+    ws.cell(10, 3, 10, 6, true)
+      .string(`Del ${fecha_inicio_ejecucion} al ${fecha_fin_ejecucion}`)
       .style(header.text);
 
     //numeracion col tablas

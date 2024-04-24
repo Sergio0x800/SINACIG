@@ -498,7 +498,7 @@ export class RiesgosComponent implements OnInit {
   //Controles Internos Memory
   addInternoInMemory() {
     if (this.formUpdateControlInterno.invalid) {
-      this.utilidades.mostrarError("Ingrese una descripción")
+      this.utilidades.mostrarErrorNoti("Ingrese una descripción")
     } else {
       const dataFormControl = this.formUpdateControlInterno.value;
       if (dataFormControl.descripcion) {
@@ -524,7 +524,7 @@ export class RiesgosComponent implements OnInit {
   //Controles Memory
   addControlInMemory() {
     if (this.formUpdateControlImplementacion.invalid) {
-      this.utilidades.mostrarError('Debe de llenar todos los campos obligatorios!')
+      this.utilidades.mostrarErrorNoti('Debe de llenar todos los campos obligatorios!')
     } else {
       const dataFormControl = this.formUpdateControlImplementacion.value;
       if (dataFormControl.que || dataFormControl.como || dataFormControl.quien || dataFormControl.cuando) {
@@ -553,7 +553,7 @@ export class RiesgosComponent implements OnInit {
   //Memory Recursos
   addRecursoMemory() {
     if (this.formUpdateRecursos.invalid) {
-      this.utilidades.mostrarError('Debe de llenar los campos obligatorios!')
+      this.utilidades.mostrarErrorNoti('Debe de llenar los campos obligatorios!')
     } else {
       const dataFormControl = this.formUpdateRecursos.value;
       if (dataFormControl.descripcion) {
@@ -577,7 +577,7 @@ export class RiesgosComponent implements OnInit {
   }
   addControlInternoPlanMemory() {
     if (this.formUpdateControlesInternosPlan.invalid) {
-      this.utilidades.mostrarError('Debe de llenar los campos obligatorios!')
+      this.utilidades.mostrarErrorNoti('Debe de llenar los campos obligatorios!')
     } else {
       const dataFormControl = this.formUpdateControlesInternosPlan.value;
       if (dataFormControl.descripcion) {
