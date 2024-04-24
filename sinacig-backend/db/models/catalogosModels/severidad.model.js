@@ -13,6 +13,10 @@ const SeveridadSchema = {
     allowNull: true,
     type: DataTypes.INTEGER,
   },
+  descripcion: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
   estado_registro: {
     allowNull: true,
     type: DataTypes.INTEGER,

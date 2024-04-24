@@ -1,19 +1,21 @@
 const express = require('express');
 const routerApi = require('./routes/index.router');
 const cors = require('cors');
-const {
-  logErrors,
-  errorHandler,
-  boomErrorHandler,
-} = require('./middlewares/error.handler');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const { logErrors, boomErrorHandler } = require('./middlewares/error.handler');
 const config = require('./config/config');
 
 const app = express();
 const port = config.port;
+let server;
 
 // const whiteList = [
-//   'http://localhost:8080',
-//   'https://capacitacionmalaria.com.gt',
+//   'http://localhost:4200',
+//   'http://localhost:5000',
+//   'http://sinacigqa.mspas.gob.gt',
+//   'http://sinacig.mspas.gob.gt',
 // ];
 // const options = {
 //   origin: (origin, callback) => {
@@ -25,6 +27,7 @@ const port = config.port;
 //   },
 // };
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 require('./utils/auth/index.strategy');
 
@@ -32,11 +35,25 @@ routerApi(app);
 
 app.use(boomErrorHandler);
 app.use(logErrors);
-app.use(errorHandler);
 
-app.listen(port, () => {
+if (config.env == 'dev') {
+  app.listen(port, () => {
+    console.log(
+      '\nEl sistema SINACIG se ha levantado en la dirección: http://localhost:' +
+        port
+    );
+  });
+} else if (config.env == 'pro') {
+  server = https.createServer(
+    {
+      key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem')),
+    },
+    app
+  );
+  server.listen(port);
   console.log(
-    '\nEl sistema SINACIG se ha levantado en la dirección: http://localhost:' +
+    '\nEl sistema SINACIG se ha levantado en la dirección: https://sinacig.mspas.gob.gt:' +
       port
   );
-});
+}

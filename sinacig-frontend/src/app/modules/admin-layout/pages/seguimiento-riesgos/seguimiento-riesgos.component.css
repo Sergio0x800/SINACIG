@@ -1,0 +1,288 @@
+/*Encabezado periodo*/
+.container-encabezado {
+  width: 100%;
+  padding: 30px;
+}
+
+.container-info-periodo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  border-radius: 10px;
+}
+
+.title-position {
+  align-self: flex-start;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  align-self: flex-start;
+}
+
+.container-cards-periodo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 5fr 1fr 1fr;
+  gap: 15px;
+  color: black;
+}
+
+.card-style {
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.card-header-periodo {
+  height: auto;
+  margin: 0;
+  padding: 10px;
+  background-color: #0026ff60;
+}
+
+.card-body-periodo {
+  padding: 15px;
+}
+/*Fin encabezado periodo*/
+
+/*Form ingreso de riesgo*/
+.container-body-riesgo {
+  padding: 0px 30px;
+}
+
+.container_form_riesgos {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+
+.container_form_riesgos > form {
+  width: 70%;
+}
+
+.container-inputs-ingresoRiesgo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.double-inputs-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+}
+
+.container-btn-ingreso {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.btn-size {
+  width: 245px;
+  margin: 0;
+}
+
+.form-control {
+  color: #000000;
+  font-size: 16px;
+}
+
+.invalid-feed {
+  color: red;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+}
+/*Fin form ingreso de riesgo*/
+
+/*Form control interno*/
+.container-btn-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-btn-plus {
+  position: relative;
+}
+
+.container-btn-control {
+  position: relative;
+}
+
+.btn-float {
+  position: absolute;
+  bottom: calc(100% - 27px);
+  left: calc(100% - 27px);
+  display: block;
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-delete {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container-title-back {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+.obligatorio {
+  color: #dc3545 !important;
+}
+
+.container-table {
+  background-color: white;
+  border-radius: 7px;
+  padding: 20px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+.descripcionTable {
+  text-align: justify;
+}
+.riesgoTable {
+  text-align: center;
+}
+.btnAcciones {
+  text-align: center;
+}
+.select-control-mitigador {
+  width: 300px;
+}
+
+.form-control-bg {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+.objetivo-area-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.tolerable {
+  background-color: rgba(0, 255, 34, 0.09);
+}
+
+.gestionable {
+  background-color: rgba(229, 255, 0, 0.09);
+}
+
+.noTolerable {
+  background-color: rgba(255, 0, 0, 0.09);
+}
+
+/*Tabla matriz*/
+
+.container-table-grid {
+  width: 100%;
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: 70px 2fr;
+  gap: 4px;
+}
+
+.table-body-matriz > div {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  font-family: 'Poppins';
+}
+
+.table-matriz-edit {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.table-body-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  text-align: start;
+  width: 100%;
+  padding: 0 0px;
+  font-family: 'Poppins';
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.table-body-matriz-edit > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+.table-body-matriz-edit:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
+/*Fin form control interno*/
+
+@media only screen and (max-width: 1219px) {
+  .container-cards-periodo {
+    grid-template-columns: 3fr 1fr 1fr;
+  }
+  .container_form_riesgos > form {
+    width: 100%;
+  }
+
+  .objetivo-area-container {
+
+    grid-template-columns: 1fr;
+
+  }
+}
+@media only screen and (max-width: 984px) {
+
+  .container-cards-periodo {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  .double-inputs-form {
+    grid-template-columns: 1fr;
+  }
+
+}

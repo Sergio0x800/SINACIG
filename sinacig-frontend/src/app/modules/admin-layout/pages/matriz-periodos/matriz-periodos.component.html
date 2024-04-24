@@ -1,0 +1,85 @@
+<div class="container-matriz mb-7">
+  <form [formGroup]="formSearchCreateMatrizPeriodo" class="matriz-form">
+    <div>
+      <h2 class="matriz-form__title">Matriz de riesgos</h2>
+    </div>
+    <div class="inputs-matriz-periodo">
+      <div class="form-floating">
+        <select class="form-select" id="unidadFindRiesgo" aria-label="unidadFindRiesgo"
+          formControlName="id_unidad_ejecutora">
+          <option *ngFor="let unidadEjecutora of unidadesEjecutoras" [value]="unidadEjecutora.id_unidad_ejecutora">
+            {{unidadEjecutora.codigo_unidad + ' - ' + unidadEjecutora.nombre_unidad}}</option>
+        </select>
+        <label for="unidadFindRiesgo">Unidad Ejecutora</label>
+      </div>
+      <div class="form-floating">
+        <select class="form-select" id="periodoAnio" aria-label="periodoAnio" formControlName="id_periodo">
+          <option *ngFor="let periodo of periodos" [value]="periodo.id_periodo">
+            {{periodo.anio}}</option>
+        </select>
+        <label for="periodoAnio">Periodo</label>
+      </div>
+      <div>
+        <div class="container-btn">
+          <button class="btn btn-primary btn-size" type="button" (click)="validarFormBusqueda()"><i class="fa fa-search"
+              aria-hidden="true"></i>
+            Buscar
+          </button>
+          <button class="btn btn-success btn-size" (click)="validarFormMatriz()" type="button"><i class="fa fa-plus"
+              aria-hidden="true"></i>
+            Agregar periodo
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="tabla-res">
+  <div *ngIf="showTablePeriodos" class="table-matriz ">
+    <div class="table-header-matriz">
+      <div class="header-title"><span
+          *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3) && matrizPeriodosEncontrados[0].periodo_abierto === 1">Acciones</span>
+      </div>
+      <div class="header-title">Unidad ejecutora</div>
+      <div class="header-title">Fecha inicio</div>
+      <div class="header-title">Fecha final</div>
+      <div class="header-title">Estado</div>
+      <div class="header-title">Riesgos</div>
+    </div>
+    <div class="table-body-matriz" *ngFor="let matriz of matrizPeriodosEncontrados">
+      <div>
+        <button
+          *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3) && matriz.periodo_abierto === 0 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-warning" (click)="abrirPeriodo(matriz.id_matriz)">
+          <i class="fa-solid fa-lock-open"></i>
+        </button>
+        <button
+          *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3) && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-success" (click)="cerrarPeriodo(matriz.id_matriz)">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <button
+          *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3) && matriz.periodo_abierto === 1 && periodoSeleccionado[0].periodo_abierto === 1"
+          class="btn btn-sm btn-danger" (click)="deletePeriodoMatriz(matriz.id_matriz)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div>
+        <span>{{matriz.codigo_unidad_ejecutora+' - '+matriz.unidad_ejecutora}}</span>
+      </div>
+      <div><span>{{matriz.fecha_periodo_inicio | date: 'dd/MM/yyyy'}}</span>
+      </div>
+      <div><span>{{matriz.fecha_periodo_final | date: 'dd/MM/yyyy'}}</span>
+      </div>
+      <div *ngIf="matriz.periodo_abierto === 1" class="abierto"><span>Abierto</span>
+      </div>
+      <div *ngIf="matriz.periodo_abierto === 0" class="cerrado"><span>Validado</span>
+      </div>
+      <div>
+        <button class="btn btn_primary bg-primary btn-sm btn-plan-search" (click)="saveInCache()"
+          [routerLink]="routeIngresoRiesgos+matriz.id_matriz">Ver
+          riesgos</button>
+      </div>
+    </div>
+  </div>
+</div>

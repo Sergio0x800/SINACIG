@@ -1,0 +1,329 @@
+<div class="container-encabezado">
+  <div class="container-info-riesgo">
+    <div class="title-position">
+      <h2 class="matriz-form__title">Riesgo evaluado</h2>
+    </div>
+    <div class="container-cards-riesgo">
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Descripción:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{riesgo.descripcion_riesgo}}
+        </div>
+      </div>
+      <div class="card card-style">
+        <div class="card-header card-header-periodo text-white">
+          Área evaluada:
+        </div>
+        <div class="card-body card-body-periodo text-black">
+          {{riesgo.area_evaluada}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-body-plan">
+  <div class="container_form_plan">
+    <form [formGroup]="formCreatePlanRiesgo">
+      <div class="container-inputs-ingresoPlan">
+        <h2 class="matriz-form__title">Ingreso plan de trabajo</h2>
+        <div class="fechas-plan">
+          <div class="fecha-style">
+            <div class="input-group">
+              <input class="form-control" placeholder="Fecha de inicio" angular-mydatepicker [ngClass]="{
+                      'is-invalid': fechaInicioInvalid,
+                      'is-valid': fechaInicioValid
+                    }" name="inputFechaInicio" id="inputFechaInicio" [options]="myDpOptions"
+                #deFechaInicio="angular-mydatepicker" [locale]="locale" formControlName="fecha_inicio" />
+              <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" (click)="deFechaInicio.clearDate()">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+              <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" (click)="deFechaInicio.toggleCalendar()">
+                  <i class="fa fa-calendar-o"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="fechaInicioInvalid" class="invalid-feed">
+              Por favor ingresa una fecha valida
+            </div>
+          </div>
+          <div class="fecha-style">
+            <div class="input-group">
+              <input class="form-control" placeholder="Fecha final" angular-mydatepicker [ngClass]="{
+                    'is-invalid': fechaFinInvalid,
+                    'is-valid': fechaFinValid
+                  }" name="inputFechaFin" id="inputFechaFin" formControlName="fecha_fin" [options]="myDpOptions2"
+                #deFechaFin="angular-mydatepicker" [locale]="locale" />
+
+              <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" (click)="deFechaFin.clearDate()">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+              <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" (click)="deFechaFin.toggleCalendar()">
+                  <i class="fa fa-calendar-o"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="fechaFinInvalid" class="invalid-feed">
+              Por favor ingresa una fecha valida
+            </div>
+          </div>
+        </div>
+        <div class="prioridad-puesto">
+          <div class="form-floating">
+            <select class="form-select" id="inputPrioridad" aria-label="inputPrioridad" [ngClass]="{
+              'is-invalid': prioridadInvalid,
+              'is-valid': prioridadValid
+            }" formControlName="id_prioridad">
+              <option *ngFor="let prioridad of prioridades" [value]="prioridad.id_prioridad">
+                {{prioridad.descripcion_prioridad}}</option>
+            </select>
+            <label for="inputPrioridad">Prioridad</label>
+            <div *ngIf="prioridadInvalid" class="invalid-feed">
+              Por favor ingresa un tipo de prioridad
+            </div>
+          </div>
+          <div class="form-floating">
+            <select class="form-select" id="inputPuesto" aria-label="inputPuesto" [ngClass]="{
+              'is-invalid': puestoInvalid,
+              'is-valid': puestoValid
+            }" formControlName="id_puesto_responsable">
+              <option *ngFor="let puesto of puestos" [value]="puesto.id_puesto_responsable">
+                {{puesto.descripcion}}</option>
+            </select>
+            <label for="inputPuesto">Puesto responsable</label>
+            <div *ngIf="puestoInvalid" class="invalid-feed">
+              Por favor ingresa un puesto
+            </div>
+          </div>
+        </div>
+        <form [formGroup]="formCreateControlImplementacion" class="form-controles-Imple">
+          <div class="container-btn-add">
+            <h3 class="">Controles para implementación</h3>
+            <div class="container-btn">
+              <button [disabled]="formCreateControlImplementacion.invalid" type="button"
+                (click)="createNewControlToMemory()" class="btn btn-success btn-float-controles">+</button>
+            </div>
+          </div>
+          <div class="form-floating">
+            <textarea maxlength="500" class="form-control" formControlName="que" [ngClass]="{
+                'is-invalid': queInvalid,
+                'is-valid': queValid
+              }" placeholder="Ingresa la información aquí" id="inputQue" style="height: 130px"></textarea>
+            <label for="inputQue">¿Qué?</label>
+          </div>
+          <div class="form-floating">
+            <textarea maxlength="500" class="form-control" formControlName="como" [ngClass]="{
+                'is-invalid': comoInvalid,
+                'is-valid': comoValid
+              }" placeholder="Ingresa la información aquí" id="inputComo" style="height: 130px"></textarea>
+            <label for="inputComo">¿Cómo?</label>
+          </div>
+          <div class="form-floating">
+            <textarea maxlength="500" class="form-control" formControlName="quien" [ngClass]="{
+                'is-invalid': quienInvalid,
+                'is-valid': quienValid
+              }" placeholder="Ingresa la información aquí" id="inputQuien" style="height: 130px"></textarea>
+            <label for="inputQuien">¿Quién?</label>
+          </div>
+          <div class="form-floating">
+            <textarea maxlength="500" class="form-control" formControlName="cuando" [ngClass]="{
+                'is-invalid': cuandoInvalid,
+                'is-valid': cuandoValid
+              }" placeholder="Ingresa la información aquí" id="inputCuando" style="height: 130px"></textarea>
+            <label for="inputCuando">¿Cuándo?</label>
+            <div *ngIf="controlImplementacionMemory.length === 0 && queInvalid" class="invalid-feed">
+              Por favor ingresa al menos un control
+            </div>
+          </div>
+
+
+
+
+          <div *ngIf="controlImplementacionMemory.length > 0" class="table-matriz-edit-plan">
+            <div class="table-body-matriz-edit-plan" *ngFor="let ctImplementacion of controlImplementacionMemory">
+              <div>
+                <button class="btn btn-sm btn-danger"
+                  (click)="deleteControlFromMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien,ctImplementacion.cuando)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.que}}</span>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.como}}</span>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.quien}}</span>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style">{{ctImplementacion.cuando}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="controlImplementacionMemory.length > 0" class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let ctImplementacion of controlImplementacionMemory">
+                  <th scope="row th-display">
+                    <div class="btn-delete">
+                      <button class="btn btn-sm btn-danger"
+                        (click)="deleteControlFromMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien,ctImplementacion.cuando)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </th>
+                  <td class="pt-3 text-dark font-text-table">
+
+                    {{ctImplementacion.que}}
+
+                  </td>
+                  <td class="pt-3 text-dark font-text-table">
+                    {{ctImplementacion.como}}
+                  </td>
+                  <td class="pt-3 text-dark font-text-table">
+                    {{ctImplementacion.quien}}
+                  </td>
+                  <td class="pt-3 text-dark font-text-table">
+                    {{ctImplementacion.cuando}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        </form>
+
+
+        <form [formGroup]="formCreateRecursos" class="form-recursos">
+          <h3 class="">Ingreso de Recursos</h3>
+          <div class="form-floating container-btn-recursos">
+            <button [disabled]="formCreateRecursos.invalid" type="button" class="btn btn-success btn-float-recursos"
+              (click)="createNewRecursoToMemory()">+</button>
+            <textarea maxlength="500" class="form-control" formControlName="descripcion" [ngClass]="{
+                  'is-invalid': descripcionInvalid,
+                  'is-valid': descripcionValid
+                }" placeholder="Ingresa los recursos aquí" id="inputRecurso" style="height: 130px"></textarea>
+            <label for="inputRecurso">Recursos</label>
+            <div *ngIf="recursosMemory.length === 0 && descripcionInvalid" class="invalid-feed">
+              Por favor ingresa al menos un recurso
+            </div>
+          </div>
+
+
+
+
+          <div *ngIf="showTableRecursos" class="table-matriz-edit">
+            <div class="table-body-matriz-edit" *ngFor="let recurso of recursosMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteRecursoFromMemory(recurso.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style"> {{recurso.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div *ngIf="showTableRecursos" class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let recurso of recursosMemory">
+                  <th scope="row th-display">
+                    <div class="btn-delete">
+                      <button class="btn btn-sm btn-danger" (click)="deleteRecursoFromMemory(recurso.descripcion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </th>
+                  <td class="pt-3 text-dark">
+                    <div class="select-control-mitigador">
+                      {{recurso.descripcion}}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        </form>
+
+        <!-- Ingreso de controles Internos para el plan -->
+        <form [formGroup]="formCreateControlesInternosPlan" class="form-recursos">
+          <h3 class="">Ingreso de Controles Recomendados</h3>
+          <div class="form-floating container-btn-recursos">
+            <button [disabled]="formCreateControlesInternosPlan.invalid" type="button"
+              class="btn btn-success btn-float-recursos" (click)="createNewControlInternoPlanToMemory()">+</button>
+            <textarea maxlength="500" class="form-control" formControlName="descripcion" [ngClass]="{
+                  'is-invalid': descripcionControlesInternosPlanInvalid,
+                  'is-valid': descripcionControlesInternosPlanValid
+                }" placeholder="Ingresa los controles aquí" id="inputRecurso" style="height: 130px"></textarea>
+            <label for="inputRecurso">Controles recomendados</label>
+            <div *ngIf="controlInternoPlanMemory.length === 0 && descripcionControlesInternosPlanInvalid"
+              class="invalid-feed">
+              Por favor ingresa al menos un control recomendado
+            </div>
+          </div>
+
+
+
+          <div *ngIf="showTableControlInternoPlan" class="table-matriz-edit">
+            <div class="table-body-matriz-edit" *ngFor="let control of controlInternoPlanMemory">
+              <div>
+                <button class="btn btn-sm btn-danger" (click)="deleteControlInternoPlanFromMemory(control.descripcion)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="riesgo-descripcion-style"> {{control.descripcion}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngIf="showTableControlInternoPlan" class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let control of controlInternoPlanMemory">
+                  <th scope="row th-display">
+                    <div class="btn-delete">
+                      <button class="btn btn-sm btn-danger"
+                        (click)="deleteControlInternoPlanFromMemory(control.descripcion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </th>
+                  <td class="pt-3 text-dark">
+                    <div class="select-control-mitigador">
+                      {{control.descripcion}}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        </form>
+        <div class="form-floating">
+          <textarea maxlength="500" class="form-control" formControlName="comentario" [ngClass]="{
+            'is-invalid': false,
+            'is-valid': false
+          }" placeholder="Ingresa los comentarios aquí" id="comentarioTxt" style="height: 130px"></textarea>
+          <label for="comentarioTxt">Comentario plan de trabajo</label>
+        </div>
+        <div class="container-btn-agregar mt-5 mb-5">
+          <button type="button" class="btn btn-danger btn-size" [routerLink]="linkPlan"><i class="fa fa-ban"
+              aria-hidden="true"></i> Cancelar</button>
+          <button (click)="validarFormPlanRiesgo()" type="button" class="btn btn-primary btn-size"><i
+              class="fa-sharp fa-solid fa-flag-checkered" aria-hidden="true"></i> Finalizar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

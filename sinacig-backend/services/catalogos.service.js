@@ -16,6 +16,42 @@ class CatalogosService {
     }
     return dataUnidad;
   }
+  async findFrecuenciaMonitoreo() {
+    const dataFrecuencia = await models.FrecuenciaMonitoreo.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+
+    if (dataFrecuencia.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataFrecuencia;
+  }
+  async findNivelTolerancia() {
+    const dataNiveles = await models.NivelTolerancia.findAll({
+      where: {
+        estado_registro: 1,
+      },
+    });
+    if (dataNiveles.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return dataNiveles;
+  }
+
+  async findUnidadEjecutoraByCodigo(id_unidad) {
+    const dataUnidad = await models.Unidad.findOne({
+      where: {
+        id_unidad_ejecutora: id_unidad,
+        estado_registro: 1,
+      },
+    });
+    if (dataUnidad.length === 0) {
+      throw boom.notFound('No hay registros');
+    }
+    return [dataUnidad];
+  }
 
   async findRoles() {
     const dataRoles = await models.Rol.findAll({
@@ -71,6 +107,21 @@ class CatalogosService {
       throw boom.notFound('No hay registros');
     }
     return periodos[0];
+  }
+
+  async cerrarPeriodo(id_periodo, changes) {
+    const periodos = await models.Periodos.update(changes, {
+      where: {
+        id_periodo: id_periodo,
+      },
+    });
+
+    const periodo = await models.Periodos.findOne({
+      where: {
+        id_periodo: id_periodo,
+      },
+    });
+    return periodo;
   }
 
   async findAreaEvaluada() {

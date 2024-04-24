@@ -1,12 +1,44 @@
 const express = require('express');
 const router = express.Router();
 const CatalogosService = require('../services/catalogos.service');
+const { checkRoles } = require('../middlewares/auth.handler');
+const passport = require('passport');
 
 const catalogosServiceI = new CatalogosService();
 
 router.get('/unidad_ejecutora', async (req, res, next) => {
   try {
     const unidadesEjecutoras = await catalogosServiceI.findUnidadEjecutora();
+    res.json(unidadesEjecutoras);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/nivel_tolerancia', async (req, res, next) => {
+  try {
+    const nivel_tolerancia = await catalogosServiceI.findNivelTolerancia();
+    res.json(nivel_tolerancia);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/frecuencia_monitoreo', async (req, res, next) => {
+  try {
+    const frecuencias_monitoreo =
+      await catalogosServiceI.findFrecuenciaMonitoreo();
+    res.json(frecuencias_monitoreo);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/unidad_ejecutoraByid/:id_unidad', async (req, res, next) => {
+  try {
+    const { id_unidad } = req.params;
+    const unidadesEjecutoras =
+      await catalogosServiceI.findUnidadEjecutoraByCodigo(id_unidad);
     res.json(unidadesEjecutoras);
   } catch (error) {
     next(error);
@@ -39,6 +71,22 @@ router.get('/periodos', async (req, res, next) => {
     next(error);
   }
 });
+
+router.patch(
+  '/periodos/:id_periodo',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(1, 3),
+  async (req, res, next) => {
+    const { id_periodo } = req.params;
+    const body = req.body;
+    try {
+      const periodos = await catalogosServiceI.cerrarPeriodo(id_periodo, body);
+      res.json(periodos);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get('/tipo_objetivo', async (req, res, next) => {
   try {

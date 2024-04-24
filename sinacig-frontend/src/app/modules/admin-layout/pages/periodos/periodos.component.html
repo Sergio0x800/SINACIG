@@ -1,0 +1,42 @@
+<div class="container-title-inputFilter">
+  <div>
+    <h2 class="matriz-form__title">Matriz periodos</h2>
+  </div>
+  <!-- <form [formGroup]="formSearchPeriodo" class="matrizFormFilter">
+    <select formControlName="anioPeriodo" id="selectRol" name="selectRol" class="form-select">
+      <option value="-1"><span class="busquedaAnio">Todos los periodos</span></option>
+      <option *ngFor="let periodo of periodos" [value]="periodo.anio">
+        {{periodo.anio}}</option>
+    </select>
+  </form> -->
+</div>
+
+<!-- Tabla -->
+<div class="tabla-res">
+  <div *ngIf="true" class="table-matriz">
+    <div class="table-header-matriz">
+      <div class="header-title">Año periodo</div>
+      <div class="header-title">Fecha inicio</div>
+      <div class="header-title">Fecha final</div>
+      <div class="header-title">Estado</div>
+      <div class="header-title">Acciones</div>
+    </div>
+    <div class="table-body-matriz" *ngFor="let periodo of periodosTabla">
+      <div><span>{{periodo.anio}}</span>
+      </div>
+      <div><span>{{periodo.fecha_inicio | date: 'dd/MM/yyyy'}}</span>
+      </div>
+      <div><span>{{periodo.fecha_fin | date: 'dd/MM/yyyy'}}</span>
+      </div>
+      <div *ngIf="periodo.periodo_abierto === 1" class="abierto"><span>Abierto</span>
+      </div>
+      <div *ngIf="periodo.periodo_abierto=== 0" class="cerrado"><span>Cerrado</span>
+      </div>
+      <div>
+        <button *ngIf="periodo.periodo_abierto === 1" class="btn btn_primary bg-warning btn-sm btn-plan-search"
+          (click)="cerrarPeriodo(periodo.id_periodo, periodo.fecha_inicio, periodo.fecha_fin, periodo.anio)">Cerrar
+          periodo</button>
+      </div>
+    </div>
+  </div>
+</div>

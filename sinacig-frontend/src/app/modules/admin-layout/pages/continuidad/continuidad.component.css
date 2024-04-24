@@ -1,0 +1,414 @@
+/*Encabezado*/
+.container-encabezado {
+  width: 100%;
+  padding: 30px;
+}
+
+.container-info-riesgo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  border-radius: 10px;
+}
+
+.title-position {
+  align-self: flex-start;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  align-self: flex-start;
+}
+
+.container-cards-riesgo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: 15px;
+  color: black;
+}
+
+.card-style {
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.card-header-periodo {
+  height: auto;
+  margin: 0;
+  padding: 10px;
+  background-color: #0026ff60;
+}
+
+.card-body-periodo {
+  padding: 15px;
+}
+
+.prioridad-puesto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+}
+/*Fin encabezado riesgo*/
+
+/*Form ingreso de plan*/
+.container-body-plan {
+  padding: 0px 30px;
+}
+
+.container_form_plan {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+
+.container_form_plan > form {
+  width: 70%;
+}
+
+.container-inputs-ingresoPlan {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.fechas-plan {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: start;
+  gap: 70px;
+}
+
+.fecha-style {
+  width: 100%;
+}
+
+
+
+
+.input-group-append {
+  height: 50px;
+}
+
+.fechaFin-container {
+  justify-self: end;
+}
+
+.btn-size {
+  width: 245px;
+  margin: 0;
+}
+
+.invalid-feed {
+  color: red;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.select-control-mitigador {
+  width: 350px;
+}
+/*Fin form ingreso Plan*/
+
+/*Form controles para implementacion*/
+.form-controles-Imple {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.container-btn-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-btn {
+  position: relative;
+}
+
+.btn-float-controles {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: calc(100% - 25px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-text-table {
+  font-size: 14px;
+  font-weight: 500;
+}
+/*Fin form controles implementacion*/
+
+/*Form recursos*/
+.form-recursos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+}
+
+.container-btn-recursos {
+  position: relative;
+}
+
+.btn-float-recursos {
+  position: absolute;
+  bottom: calc(100% - 26px);
+  left: calc(100% - 28px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+/**/
+
+.title-inputs-periodo {
+  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  align-self: flex-start;
+}
+.inputs-perido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: start;
+  gap: 30px;
+}
+.input-unidad {
+  width: 600px;
+}
+.obligatorio {
+  color: red;
+}
+
+
+.btn-terminar-registro {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.btns-ingreso-plan {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 15px;
+}
+
+.options-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.container-form-co-re {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 7px;
+  padding: 30px 30px;
+}
+
+.container-inputs-controles {
+  display: flex;
+  justify-content: center;
+}
+
+.container-inputs-textbox {
+  width: 800px;
+}
+.container-inputs-textbox-controles {
+  width: 800px;
+  background: white;
+  padding: 5px;
+  border-radius: 0.375rem;
+}
+
+.container-btn-agregar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.container-ingreso-plan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+}
+
+.container-plan-trabajo{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-ingreso-plan {
+  align-self: flex-start;
+  margin-bottom: 15px;
+}
+
+
+.container-inputs-plan {
+  width: 600px;
+}
+
+.container-controles-imple {
+  display: flex;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.container-imple-tabla-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+}
+
+
+/*Clases de bootstrap*/
+.form-control {
+  color: #000000;
+  font-size: 14px;
+}
+
+/*Tabla matriz*/
+
+.container-table-grid {
+  width: 100%;
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: 70px 2fr;
+  gap: 4px;
+}
+
+.table-body-matriz > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  width: 100%;
+  font-family: 'Poppins';
+}
+
+
+
+.table-matriz-edit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.table-body-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 5px;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  text-align: start;
+  width: 100%;
+  padding: 0 0px;
+  font-family: 'Poppins';
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.table-body-matriz-edit > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 3px 2px;
+}
+.table-body-matriz-edit:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
+
+.table-body-matriz-edit-plan {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-body-matriz-edit-plan:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
+.table-body-matriz-edit-plan > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+/*Fin form control interno*/
+
+
+@media only screen and (max-width: 1224px) {
+  .fechas-plan {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .prioridad-puesto {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}

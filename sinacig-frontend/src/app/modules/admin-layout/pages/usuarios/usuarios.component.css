@@ -1,0 +1,159 @@
+.obligatorio {
+    color: red;
+}
+
+.usuario__title {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+}
+
+.title-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn-size {
+  width: 245px;
+}
+
+.container-cards-center {
+  max-width: 1553px;
+  margin: 0 auto;
+}
+
+.cards-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: white;
+  padding: 30px 80px;
+  border-radius: 7px;
+  margin-bottom: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+.cards-filter__inputs {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+}
+.cards-filter__inputs_inputs {
+  height: 43px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  color: #32325d;
+}
+
+.btn-table-riesgo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 15px;
+}
+
+.btns-modal {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 55px;
+}
+
+.btn-editar:hover {
+  cursor: pointer;
+}
+
+.container-cards-user-title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px;
+}
+
+.container-cards-user {
+  max-width: 1553px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-user {
+  width: 350px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: transform 0.1s;
+}
+
+.card-user:hover {
+  transform: scale(1.05);
+}
+
+
+.card-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.container-btns-cards {
+  display: flex;
+  gap: 25px;
+  margin-top: 15px;
+}
+
+@media only screen and (max-width: 2560px) {
+  .container-cards-user {
+    gap: 30px;
+  }
+}
+@media only screen and (max-width: 1459px) {
+  .container-cards-user {
+    gap: 40px;
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 1459px) {
+  .cards-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 7px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  }
+  .cards-filter__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .container-cards-user {
+    justify-content: center;
+  }
+  .btns-modal-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+  }
+}
+@media only screen and (max-width: 840px) {
+  .title-btns {
+    gap: 10px;
+    justify-content: center;
+  }
+}

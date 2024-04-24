@@ -1,0 +1,474 @@
+/* .btn {
+  margin-right: 0;
+} */
+.btn-size {
+  width: 245px;
+}
+
+.btn-size-complement {
+  width: 100px;
+}
+
+.color-tolerable {
+  color: green;
+}
+
+.color-gestionable {
+  color: rgb(231, 231, 0);
+}
+
+.riesgo__title {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+}
+
+.color-no-tolerable {
+  color: red;
+}
+
+.tolerable {
+  color: black;
+  background-color: rgba(0, 255, 34, 0.09);
+}
+
+.gestionable {
+  color: black;
+  background-color: rgba(229, 255, 0, 0.09);
+}
+
+.noTolerable {
+  color: black;
+  background-color: rgba(255, 0, 0, 0.09);
+}
+
+.descripcion-recursos {
+  width: 350px;
+}
+
+.th-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.options-icons {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.container-add-plan {
+  width: 100%;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-delete {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-table-plan {
+  border: none;
+  background: none;
+  transition: all .1s ease-in-out;
+}
+
+.btn-table-plan:hover {
+  transform: scale(1.1);
+}
+
+/* filtros de busqueda */
+.cards-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: white;
+  padding: 30px 80px;
+  border-radius: 7px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+
+.container-table {
+  background-color: white;
+  border-radius: 7px;
+  padding: 20px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+.descripcionTable {
+  text-align: justify;
+}
+.riesgoTable {
+  text-align: center;
+}
+
+
+.btnAcciones {
+  text-align: center;
+}
+
+.cards-filter__inputs {
+  width: 100%;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+
+.cards-filter__inputs_inputs {
+  width: 50%;
+  height: 43px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  color: #32325d;
+}
+.btn-offset {
+  width: 100%;
+}
+
+
+/* filtros de busqueda */
+
+
+
+.btn-edit:hover {
+  transform: scale(1.2);
+}
+
+.table-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.title-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.obligatorio {
+  color: red;
+}
+.btn-table-riesgo {
+  display: flex;
+  gap: 15px;
+}
+
+.btns-modal {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 55px;
+}
+
+.btns-modal > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+}
+
+.btn-modal-plan {
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.btn-plan-search {
+  color: white;
+  /* font-size: 13px;
+  min-width: 85px;  */
+  /* width: 33%; */
+
+  /* padding: 3px; */
+}
+
+.container-btn {
+  position: relative;
+}
+
+.btn-float {
+  position: absolute;
+  top: calc(100% - 10px);
+  right: calc(100% - 25px);
+  border-radius: 100%;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+}
+
+h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+}
+
+.descripcion__stl {
+  width: 300px;
+  overflow: hidden;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+
+.table-riesgo {
+  padding: 20px;
+  overflow-x: scroll;
+}
+
+
+.conatiner-btn-agregar {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}
+
+.container-riego-table {
+  padding: 50px 30px;
+}
+
+@media only screen and (max-width: 1090px) {
+  .title-btns {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .btns-modal-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+
+/*Tabla matriz*/
+
+.table-matriz {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0 10px;
+}
+.table-matriz-edit {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.table-header-matriz {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+.table-header-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 3px;
+}
+.table-header-matriz-edit-plan {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  justify-items: center;
+  gap: 3px;
+}
+
+.fondo-alerta {
+  background-color: rgba(224, 224, 224, 0.4);
+  color: black;
+}
+
+.table-header-matriz > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+.table-header-matriz-edit > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+.table-header-matriz-edit-plan > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+
+.opciones-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) minmax(90px, 5fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-body-matriz-edit {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+.table-body-matriz-edit-plan {
+  display: grid;
+  grid-template-columns: 70px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-body-matriz:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+.table-body-matriz-edit:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+.table-body-matriz-edit-plan:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
+.table-body-matriz > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.table-body-matriz-edit-plan > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.table-body-matriz-edit > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.header-title {
+   color: #2b2b2b;
+   font-size: 13px;
+   font-weight: 600;
+   font-family: 'Poppins', sans-serif;
+   text-align: center;
+}
+.header-title-edit {
+   color: black;
+   font-size: 13px;
+   font-weight: 400;
+   font-family: 'Poppins', sans-serif;
+   text-align: center;
+}
+.header-title-edit-plan {
+   color: black;
+   font-size: 13px;
+   font-weight: 400;
+   font-family: 'Poppins', sans-serif;
+   text-align: center;
+}
+
+.riesgo-descripcion-style {
+  font-size: 13px;
+  text-align: start;
+  width: 100%;
+  padding: 0 0px;
+  font-family: 'Poppins';
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+/*Fin table matriz*/
+@media only screen and (max-width: 975px) {
+  .tabla-res {
+    overflow-x: scroll;
+  }
+  .table-matriz {
+    width: 900px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .title-btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .btn-table-riesgo {
+    flex-direction: column;
+    margin-top: 15px;
+  }
+}
+
+@media only screen and (max-width: 1459px) {
+  .cards-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 7px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+  }
+  .cards-filter__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}

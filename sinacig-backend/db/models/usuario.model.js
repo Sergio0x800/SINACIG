@@ -49,6 +49,10 @@ const UsuarioSchema = {
     allowNull: true,
     type: DataTypes.INTEGER,
   },
+  id_unidad_ejecutora: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+  },
 };
 
 class Usuario extends Model {

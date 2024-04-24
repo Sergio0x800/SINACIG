@@ -1,0 +1,729 @@
+<div class="container-riego-table">
+  <div class="title-btns">
+    <h2 class="riesgo__title">Matriz de evaluación de riesgos: </h2>
+    <div class="btn-table-riesgo">
+      <button class="btn btn-danger btn-size" (click)="removeCache()" routerLink="/admin/matriz"><i
+          class="fa fa-arrow-left" aria-hidden="true"></i>
+        Regresar</button>
+      <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-success btn-size"
+        (click)="verificarPlanes()"><i class="fa fa-plus" aria-hidden="true"></i>
+        Nuevo
+        riesgo</button>
+    </div>
+  </div>
+  <div class="container-table">
+    <ngx-table [configuration]="configuration" [data]="riesgos" [columns]="columns">
+      <ng-template let-row class="rowsStyles">
+        <td class="descripcionTable">
+          <div class="font-small">{{ row.descripcion_riesgo }}</div>
+        </td>
+        <td class="riesgoTable">
+          <div class="font-small">{{ row.riesgo_inherente }}</div>
+        </td>
+        <td class="riesgoTable">
+          <div class="font-small">{{ row.riesgo_residual }}</div>
+        </td>
+        <td>
+          <div class="font-small">{{ row.medida_riesgo }}</div>
+        </td>
+        <td>
+          <ng-container>
+            <div class="btnAcciones">
+              <div ngbDropdown class="d-inline-block">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="riesgoBtnAccion" aria-expanded="true"
+                  ngbDropdownToggle>
+                  <i class="fa fa-arrow-down"></i>
+                  Acciones
+                </button>
+                <div ngbDropdownMenu aria-labelledby="riesgoBtnAccion">
+                  <button data-bs-toggle="modal" data-bs-target="#riesgoModal" ngbDropdownItem class="btn btn-link"
+                    (click)="editRiesgo(row.id_riesgo)">
+                    Editar
+                  </button>
+                  <button *ngIf="(usuario.id_rol === 1 || usuario.id_rol === 3) && matrizObtenida.periodo_abierto === 1"
+                    ngbDropdownItem class="btn btn-link" (click)="deleteRiesgo(row.id_riesgo)">
+                    Eliminar
+                  </button>
+                  <button data-bs-toggle="modal" data-bs-target="#planModal" ngbDropdownItem class="btn btn-link"
+                    (click)="editPlanTrabajoControlesRecursos(row.id_riesgo)">
+                    Plan de trabajo
+                  </button>
+                  <button data-bs-toggle="modal" data-bs-target="#continuidadModal" ngbDropdownItem class="btn btn-link"
+                    (click)="goToMatrizContinuidad(row.id_riesgo)">
+                    Matriz de continuidad
+                  </button>
+                  <button *ngIf="matrizObtenida.periodo_abierto === 0" data-bs-toggle="modal"
+                    data-bs-target="#continuidadModal" ngbDropdownItem class="btn btn-link"
+                    (click)="goToSeguimientoRiesgo(row.id_riesgo)">
+                    Seguimiento de riesgo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </td>
+      </ng-template>
+    </ngx-table>
+  </div>
+  <!-- <div class="btn-offset mt-5" *ngIf="showBtnOffset && riesgos.length >= 10">
+    <button class="btn btn-outline-success btn-lg btn-block" (click)="aumentarOffset()">Cargar mas</button>
+  </div> -->
+</div>
+<!-- Modal Actualizar Riesgo -->
+<div class="modal fade" id="riesgoModal" tabindex="-1" aria-labelledby="riesgoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="riesgoModalLabel">Actualizar riesgo</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="container_form_form" [formGroup]="formUpdateRiesgo">
+          <div class="row justify-content-center">
+            <div class="col-12 double-inputs-form mt-1">
+              <div class="inputs-size">
+                <label for="inputTipoObjetivo" class="form-label">Tipo de objetivo</label>
+                <select id="inputTipoObjetivo" name="inputTipoObjetivo" class="form-select"
+                  formControlName="id_tipo_objetivo">
+                  <option *ngFor="let tipoObjetivo of tipoObjetivos" [value]="tipoObjetivo.id_tipo_objetivo">
+                    {{tipoObjetivo.descripcion}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 mt-4">
+              <label for="inputArea" class="form-label">Área evaluada</label>
+              <select id="inputArea" name="inputArea" class="form-select" formControlName="id_area_evaluada">
+                <option *ngFor="let area of areas_evaluadas" [value]="area.id_area_evaluada">
+                  {{area.descripcion}}</option>
+              </select>
+            </div>
+            <div class="col-12 mt-4">
+              <label for="inputEventos" class="form-label">Eventos identificados</label>
+              <textarea id="inputEventos" name="inputEventos" class="form-control" rows="4"
+                formControlName="id_eventos_identificados"></textarea>
+            </div>
+            <div class="col-12 mt-4">
+              <label for="descripcionRiesgo" class="form-label">Descripción de riesgo</label>
+              <textarea formControlName="descripcion_riesgo" id="descripcionRiesgo" name="descripcionRiesgo"
+                class="form-control" rows="4"></textarea>
+            </div>
+            <div class="col-12 mt-4 double-inputs-form">
+              <div class="inputs-size">
+                <label for="inputProbabilidad" class="form-label">Probabilidad</label>
+                <select id="inputProbabilidad" name="inputProbabilidad" class="form-select"
+                  formControlName="id_probabilidad">
+                  <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+                    {{probabilidad.nivel_probabilidad}}</option>
+                </select>
+              </div>
+              <div class="inputs-size">
+                <label for="inputSeveridad" class="form-label">Severidad</label>
+                <select id="inputSeveridad" name="inputSeveridad" class="form-select" formControlName="id_severidad">
+                  <option *ngFor="let severidad of severidades" [value]="severidad.id_severidad">
+                    {{severidad.nivel_severidad}}</option>
+                </select>
+              </div>
+              <div class="inputs-size">
+                <label for="riesgoRI" class="form-label">Riesgo Inherente (RI)</label>
+                <input [disabled]="true" formControlName="riesgo_inherente" id="riesgoRI" name="riesgoRI" type="number"
+                  class="form-control" [value]="resultadoRI">
+              </div>
+            </div>
+            <div class="col-12 mt-4 double-inputs-form">
+              <div class="inputs-size">
+                <label for="valorMitigador" class="form-label">Control Mitigador</label>
+                <select *ngIf="showBtnControlP || showBtnControlI; else elseIfSelect" [disabled]="true"
+                  id="valorMitigador" name="valorMitigador" class="form-select" formControlName="id_control_mitigador">
+                  <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+                    {{probabilidad.nivel_probabilidad}}</option>
+                </select>
+                <ng-template #elseIfSelect>
+                  <select id="valorMitigador" name="valorMitigador" class="form-select"
+                    formControlName="id_control_mitigador">
+                    <option *ngFor="let probabilidad of probabilidades" [value]="probabilidad.id_probabilidad">
+                      {{probabilidad.nivel_probabilidad}}</option>
+                  </select>
+                </ng-template>
+              </div>
+              <div class="inputs-size">
+                <label for="riesgoRR" class="form-label">Riesgo Residual (RR)</label>
+                <input [disabled]="true" formControlName="riesgo_residual" id="riesgoRR" name="riesgoRR" type="number"
+                  class="form-control" [value]="resultadoRR">
+              </div>
+              <div class="inputs-size">
+                <label for="inputMedida" class="form-label">Medida de Riesgo</label>
+
+                <select [disabled]="true" id="inputMedida" name="inputMedida" class="form-control"
+                  formControlName="id_medida_riesgo">
+
+                  <option *ngFor="let medida of medidasRiesgo" [value]="medida.id_medida_riesgo">
+                    {{medida.descripcion}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 mt-4">
+              <label for="txt_observaciones" class="form-label">Observaciones</label>
+              <textarea formControlName="observaciones" id="txt_observaciones" name="txt_observaciones"
+                class="form-control" rows="4"></textarea>
+            </div>
+            <div class="col-12 mt-5">
+              <h3>Controles internos para mitigar</h3>
+              <form [formGroup]="formUpdateControlInterno">
+                <div class="row justify-content-center">
+                  <div class="container-table-coImple">
+                    <div>
+                      <div>
+                        <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                          class="btn btn-success btn-sm mb-2" (click)="mostrarCamposInterno()"><i class="fa fa-plus"
+                            aria-hidden="true"></i> Nuevo</button>
+                        <button *ngIf="showInputsModalInterno" type="button" class="btn btn-primary btn-sm mb-2"
+                          (click)="addInternoInMemory()"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</button>
+                      </div>
+                    </div>
+                    <div *ngIf="showInputsModalInterno" class="row">
+                      <div class="col-12">
+                        <form [formGroup]="formUpdateControlInterno">
+                          <div>
+                            <div class="mt-1">
+                              <label for="inputRecurso" class="form-label">Descripción<span
+                                  class="obligatorio">*</span></label>
+                              <textarea id="inputRecurso" name="inputRecurso" class="form-control"
+                                formControlName="descripcion" rows="4"></textarea>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div *ngIf="controlesInternosObtenidos.length > 0" class="table-matriz-edit mt-3">
+                      <div class="table-header-matriz-edit">
+                        <div class="header-title-edit"><span
+                            *ngIf="matrizObtenida.periodo_abierto === 1">Opciones</span></div>
+                        <div class="header-title-edit">Descripción</div>
+                      </div>
+                      <div class="table-body-matriz-edit" *ngFor="let internos of controlesInternosObtenidos">
+                        <div>
+                          <button *ngIf="matrizObtenida.periodo_abierto === 1"
+                            class="btn btn-sm btn-danger btn-size-card"
+                            (click)="deleteInternoInMemoryTablaGet(internos.id_riesgo_control_interno)">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                        <div>
+                          <span class="riesgo-descripcion-style">{{internos.descripcion}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="internosMemory.length > 0" class="table-matriz-edit">
+                      <div class="table-body-matriz-edit" *ngFor="let internosM of internosMemory">
+                        <div>
+                          <button class="btn btn-sm btn-danger btn-size-card"
+                            (click)="deleteInternoInMemory(internosM.descripcion)">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                        <div>
+                          <span class="riesgo-descripcion-style">{{internosM.descripcion}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="btns-modal mt-5">
+            <div class="btns-modal-container">
+              <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
+                (click)="cancelarUpdate()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+              <button *ngIf="matrizObtenida.periodo_abierto === 1" [disabled]="formUpdateRiesgo.invalid" type="submit"
+                class="btn btn-primary btn-size" (click)="updateRiesgo()" data-bs-dismiss="modal"><i
+                  class="fa fa-pencil" aria-hidden="true"></i>
+                Actualizar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="planModal" tabindex="-1" aria-labelledby="planModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel">Plan de trabajo, controles y recursos</h2>
+        <button (click)="resetVariables()" type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body mb-5">
+        <div *ngIf="validarExistenciaPlan; else ingresarPlanTrabajo">
+          <h3>Plan de trabajo:</h3>
+          <form [formGroup]="formUpdatePlan">
+            <div class="row justify-content-center">
+              <div class="col-6 col-lg-4 mt-1">
+                <label for="inputFechaInicio" class="form-label">Fecha inicio:</label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="Ingresar fecha" type="date" name="inputFechaInicio"
+                    id="inputFechaInicio" formControlName="fecha_inicio" />
+                </div>
+              </div>
+              <div class="col-6 col-lg-4 mt-1">
+                <label for="inputFechaFin" class="form-label">Fecha fin:</label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="Ingresar fecha" id="inputFechaFin" type="date"
+                    formControlName="fecha_fin" />
+                </div>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-6 col-lg-4 mt-1">
+                <label for="inputPrioridad" class="form-label">Prioridad</label>
+                <select id="inputPrioridad" name="inputPrioridad" class="form-select" formControlName="id_prioridad">
+                  <option value="" selected></option>
+                  <option *ngFor="let prioridad of prioridades" [value]="prioridad.id_prioridad">
+                    {{prioridad.descripcion_prioridad}}</option>
+                </select>
+              </div>
+              <div class="col-6 col-lg-4 mt-1">
+                <label for="inputPuesto" class="form-label">Puesto responsable</label>
+                <select id="inputPuesto" name="inputPuesto" class="form-select" formControlName="id_puesto_responsable">
+                  <option value="" selected></option>
+                  <option *ngFor="let puesto of puestos" [value]="puesto.id_puesto_responsable">
+                    {{puesto.descripcion}}</option>
+                </select>
+              </div>
+              <div class="col-6 col-lg-8 mt-1">
+                <label for="comentarioTxt" class="form-label">Comentario</label>
+                <textarea formControlName="comentario" id="comentarioTxt" name="comentarioTxt" class="form-control"
+                  rows="4"></textarea>
+              </div>
+            </div>
+          </form>
+          <h3 class="mt-5">Controles:</h3>
+          <form [formGroup]="formUpdateControlImplementacion" class="mb-5">
+            <div class="row justify-content-center">
+              <div class="container-table-coImple">
+                <div>
+                  <div>
+                    <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                      class="btn btn-success btn-sm mb-2" (click)="mostrarCampos()"><i class="fa fa-plus"
+                        aria-hidden="true"></i> Nuevo</button>
+                    <button *ngIf="showInputsModalController" type="button" class="btn btn-primary btn-sm mb-2"
+                      (click)="addControlInMemory()"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</button>
+                  </div>
+                </div>
+                <div *ngIf="showInputsModalController" class="row mb-3">
+                  <div class="col-12">
+                    <form [formGroup]="formUpdateControlImplementacion">
+                      <div class="row">
+                        <div class="col-6 mt-2">
+                          <label for="inputQue" class="form-label">¿Que?<span class="obligatorio">*</span></label>
+                          <textarea id="inputQue" name="inputQue" class="form-control" formControlName="que"
+                            rows="4"></textarea>
+                        </div>
+                        <div class="col-6 mt-2">
+                          <div class="container-btn-add">
+                            <label for="inputComo" class="form-label">¿Como?<span class="obligatorio">*</span></label>
+                          </div>
+                          <textarea id="inputComo" name="inputComo" class="form-control" formControlName="como"
+                            rows="4"></textarea>
+                        </div>
+                        <div class="col-6 mt-2">
+                          <label for="inputQuien" class="form-label">¿Quien?<span class="obligatorio">*</span></label>
+                          <textarea id="inputQuien" name="inputQuien" class="form-control" formControlName="quien"
+                            rows="4"></textarea>
+                        </div>
+                        <div class="col-6 mt-2">
+                          <label for="inputCuando" class="form-label">¿Cuando?<span class="obligatorio">*</span></label>
+                          <textarea id="inputCuando" name="inputCuando" class="form-control" formControlName="cuando"
+                            rows="4"></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div *ngIf="controlesImplementacionObtenidos.length > 0" class="table-matriz-edit-plan">
+                  <div class="table-header-matriz-edit-plan">
+                    <div class="header-title-edit"><span *ngIf="matrizObtenida.periodo_abierto === 1">Opciones</span>
+                    </div>
+                    <div class="header-title-edit">¿Qué?</div>
+                    <div class="header-title-edit">¿Cómo?</div>
+                    <div class="header-title-edit">¿Quién?</div>
+                    <div class="header-title-edit">¿Cuándo?</div>
+                  </div>
+                  <div class="table-body-matriz-edit-plan"
+                    *ngFor="let ctImplementacion of controlesImplementacionObtenidos">
+                    <div>
+                      <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-sm btn-danger"
+                        (click)="deleteControlInMemoryTablaGet(ctImplementacion.id_implementacion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.que}}</span>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.como}}</span>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.quien}}</span>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.cuando}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="controlesMemory.length > 0" class="table-matriz-edit-plan">
+                  <div class="table-body-matriz-edit-plan" *ngFor="let ctImplementacion of controlesMemory">
+                    <div>
+                      <button class="btn btn-sm btn-danger btn-size-card"
+                        (click)="deleteControlInMemory(ctImplementacion.que, ctImplementacion.como, ctImplementacion.quien, ctImplementacion.cuando)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.que}}</span>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.como}}</span>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.quien}}</span>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{ctImplementacion.cuando}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <h3>Recursos:</h3>
+          <form [formGroup]="formUpdateRecursos" class="mb-5">
+            <div class="row justify-content-center">
+              <div class="container-table-coImple">
+                <div>
+                  <div>
+                    <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                      class="btn btn-success btn-sm mb-2" (click)="mostrarCamposRecursos()"><i class="fa fa-plus"
+                        aria-hidden="true"></i> Nuevo</button>
+                    <button *ngIf="showInputsModalRecursos" type="button" class="btn btn-primary btn-sm mb-2"
+                      (click)="addRecursoMemory()"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</button>
+                  </div>
+                </div>
+                <div *ngIf="showInputsModalRecursos" class="row mb-3">
+                  <div class="col-12">
+                    <form [formGroup]="formUpdateRecursos">
+                      <div>
+                        <div class="mt-1">
+                          <label for="inputRecurso" class="form-label">Recursos<span
+                              class="obligatorio">*</span></label>
+                          <textarea id="inputRecurso" name="inputRecurso" class="form-control"
+                            formControlName="descripcion" rows="4"></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                </div>
+
+                <div *ngIf="recursosObtenidos.length > 0" class="table-matriz-edit">
+                  <div class="table-header-matriz-edit">
+                    <div class="header-title-edit"><span *ngIf="matrizObtenida.periodo_abierto === 1">Opciones</span>
+                    </div>
+                    <div class="header-title-edit">Descripción</div>
+                  </div>
+                  <div class="table-body-matriz-edit" *ngFor="let recurso of recursosObtenidos">
+                    <div>
+                      <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-sm btn-danger btn-size-card"
+                        (click)="deleteRecursoInMemoryTablaGet(recurso.id_recursos)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{recurso.descripcion}}</span>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div *ngIf="recursosMemory.length > 0" class="table-matriz-edit">
+                  <div class="table-body-matriz-edit" *ngFor="let recurso of recursosMemory">
+                    <div>
+                      <button class="btn btn-sm btn-danger btn-size-card"
+                        (click)="deleteRecursoMemory(recurso.descripcion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{recurso.descripcion}}</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </form>
+          <h3>Controles recomendados:</h3>
+          <form [formGroup]="formUpdateControlesInternosPlan">
+            <div class="row justify-content-center">
+              <div class="container-table-coImple">
+                <div>
+                  <div>
+                    <button *ngIf="matrizObtenida.periodo_abierto === 1" type="button"
+                      class="btn btn-success btn-sm mb-2" (click)="mostrarCamposControlesInternosPlan()"><i
+                        class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
+                    <button *ngIf="showInputsModalControlInternoPlan" type="button" class="btn btn-primary btn-sm mb-2"
+                      (click)="addControlInternoPlanMemory()"><i class="fa fa-plus" aria-hidden="true"></i>
+                      Agregar</button>
+                  </div>
+                </div>
+
+                <div *ngIf="showInputsModalControlInternoPlan" class="row mb-3">
+                  <div class="col-12">
+                    <form [formGroup]="formUpdateControlesInternosPlan">
+                      <div>
+                        <div class="mt-1">
+                          <label for="inputRecurso" class="form-label">Controles recomendados:<span
+                              class="obligatorio">*</span></label>
+                          <textarea id="inputRecurso" name="inputRecurso" class="form-control"
+                            formControlName="descripcion" rows="4"></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+
+
+
+
+                <div *ngIf="controlesInternosPlanObtenidos.length > 0" class="table-matriz-edit">
+                  <div class="table-header-matriz-edit">
+                    <div class="header-title-edit"><span *ngIf="matrizObtenida.periodo_abierto === 1">Opciones</span>
+                    </div>
+                    <div class="header-title-edit">Descripción</div>
+                  </div>
+                  <div class="table-body-matriz-edit" *ngFor="let control of controlesInternosPlanObtenidos">
+                    <div>
+                      <button *ngIf="matrizObtenida.periodo_abierto === 1" class="btn btn-sm btn-danger btn-size-card"
+                        (click)="deleteControlInternoPlanInMemoryTablaGet(control.id_plan_control_interno)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{control.descripcion}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="controlInternoPlanMemory.length > 0" class="table-matriz-edit">
+                  <div class="table-body-matriz-edit" *ngFor="let controlI of controlInternoPlanMemory">
+                    <div>
+                      <button class="btn btn-sm btn-danger btn-size-card"
+                        (click)="deleteControlInternoPlanInMemory(controlI.descripcion)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <span class="riesgo-descripcion-style">{{controlI.descripcion}}</span>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          </form>
+          <div class="btns-modal">
+            <div>
+              <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal"
+                (click)="resetVariables()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+              <button *ngIf="matrizObtenida.periodo_abierto === 1" (click)="updatePlanTrabajoControlesRecursos()"
+                type="button" class="btn btn-primary btn-size" data-bs-dismiss="modal"><i class="fa fa-pencil"
+                  aria-hidden="true"></i> Actualizar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <ng-template #ingresarPlanTrabajo>
+        <div class="alert fondo-alerta" role="alert">
+          Este riesgo no cuenta con un plan de trabajo actualmente, seleccione agregar para ingresar un nuevo plan!
+        </div>
+        <div class="btns-modal">
+          <div class="">
+            <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal" (click)="resetVariables()"><i
+                class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+            <button data-bs-dismiss="modal" [routerLink]="linkPlanTrabajo" class="btn btn-primary btn-size"><i
+                class="fa-solid fa-arrow-right"></i> Agregar</button>
+          </div>
+        </div>
+      </ng-template>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- <div class="modal-dialog modal-xl">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="exampleModalLabel">Matriz de continuidad</h2>
+      <button (click)="resetVariables()" type="button" class="btn-close" data-bs-dismiss="modal"
+        aria-label="Close"></button>
+    </div>
+    <div class="modal-body mb-5">
+      <div *ngIf="validarExistenciaMatrizContinuidad.id_riesgo_continuidad; else ingresarMatrizContinuidad">
+        <form [formGroup]="formMatrizContinuidad">
+          <div class="container-inputs-ingresoPlan">
+            <h2 class="matriz-form__title">Ingreso de matriz de continuidad</h2>
+
+
+            <div class="form-floating">
+              <textarea maxlength="500" class="form-control" formControlName="subtema" [ngClass]="{
+                  'is-invalid': subtemaInvalid,
+                  'is-valid': subtemaValid
+                }" placeholder="Ingresa un subtema aquí" id="subtemaTxt" style="height: 130px"></textarea>
+              <label for="subtemaTxt">Subtema matriz de continuidad</label>
+              <div *ngIf="subtemaInvalid" class="invalid-feed">
+                Por favor ingresa un tipo de severidad
+              </div>
+            </div>
+
+
+            <div class="prioridad-puesto">
+              <div class="form-floating">
+                <select class="form-select" id="inputseveridad" aria-label="inputseveridad" [ngClass]="{
+                    'is-invalid': severidadInvalid,
+                    'is-valid': severidadValid
+                  }" formControlName="id_severidad">
+                  <option *ngFor="let severidad of severidad" [value]="severidad.id_severidad">
+                    {{severidad.descripcion}}</option>
+                </select>
+                <label for="inputseveridad">Severidad</label>
+                <div *ngIf="severidadInvalid" class="invalid-feed">
+                  Por favor ingresa un tipo de severidad
+                </div>
+              </div>
+              <div class="form-floating">
+                <select class="form-select" id="inputPuesto" aria-label="inputPuesto" [ngClass]="{
+                    'is-invalid': puestoInvalid,
+                    'is-valid': puestoValid
+                  }" formControlName="id_puesto_responsable">
+                  <option *ngFor="let puesto of puestos" [value]="puesto.id_puesto_responsable">
+                    {{puesto.descripcion}}</option>
+                </select>
+                <label for="inputPuesto">Puesto responsable</label>
+                <div *ngIf="puestoInvalid" class="invalid-feed">
+                  Por favor ingresa un puesto
+                </div>
+              </div>
+            </div>
+
+            <div class="prioridad-puesto">
+              <div class="form-floating">
+                <select class="form-select" id="frecuenciaMonitoreo" aria-label="frecuenciaMonitoreo" [ngClass]="{
+                    'is-invalid': frecuenciaInvalid,
+                    'is-valid': frecuenciaValid
+                  }" formControlName="id_frecuencia_monitoreo">
+                  <option *ngFor="let frecuencia of frecuenciaMonitoreo" [value]="frecuencia.id_frecuencia_monitoreo">
+                    {{frecuencia.descripcion}}</option>
+                </select>
+                <label for="frecuenciaMonitoreo">Frecuencia de Monitoreo</label>
+                <div *ngIf="frecuenciaInvalid" class="invalid-feed">
+                  Por favor ingresa un tipo de severidad
+                </div>
+              </div>
+              <div class="form-floating">
+                <select class="form-select" id="inputNivelTolerancia" aria-label="inputNivelTolerancia" [ngClass]="{
+                    'is-invalid': toleranciaInvalid,
+                    'is-valid': toleranciaValid
+                  }" formControlName="id_nivel_tolerancia">
+                  <option *ngFor="let nivel of nivelTolerancia" [value]="nivel.id_nivel_tolerancia">
+                    {{nivel.descripcion}}</option>
+                </select>
+                <label for="inputNivelTolerancia">Nivel de tolerancia</label>
+                <div *ngIf="toleranciaInvalid" class="invalid-feed">
+                  Por favor ingresa un nivel de tolerancia
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <form [formGroup]="formMetodoMonitoreo" class="form-recursos">
+              <h3 class="">Ingreso de metodos de monitoreo</h3>
+              <div class="form-floating container-btn-recursos">
+                <button [disabled]="formMetodoMonitoreo.invalid" type="button"
+                  class="btn btn-success btn-float-recursos" (click)="createNewMetodoMonitoreoToMemory()">+</button>
+                <textarea maxlength="500" class="form-control" formControlName="descripcion_monitoreo" [ngClass]="{
+                        'is-invalid': descripcionMetodoMonitoreoInvalid,
+                        'is-valid': descripcionMetodoMonitoreoValid
+                      }" placeholder="Ingresa los metodos aquí" id="inputMetodoMonitoreo"
+                  style="height: 130px"></textarea>
+                <label for="inputMetodoMonitoreo">Metodos de monitoreo</label>
+                <div *ngIf="metodoMonitoreoMemory.length === 0 && descripcionMetodoMonitoreoInvalid"
+                  class="invalid-feed">
+                  Por favor ingresa al menos un metodo de monitoreo
+                </div>
+              </div>
+
+              <div *ngIf="showTableMetodoMonitoreo" class="table-matriz-edit">
+                <div class="table-body-matriz-edit" *ngFor="let metodo of metodoMonitoreoMemory">
+                  <div>
+                    <button class="btn btn-sm btn-danger" (click)="deleteMetodoMonitoreoFromMemory(metodo.descripcion)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  <div>
+                    <span class="riesgo-descripcion-style"> {{metodo.descripcion}}</span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </form>
+
+        <div class="btns-modal">
+          <div>
+            <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal" (click)="resetVariables()"><i
+                class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+            <button *ngIf="matrizObtenida.periodo_abierto === 1" (click)="updatePlanTrabajoControlesRecursos()"
+              type="button" class="btn btn-primary btn-size" data-bs-dismiss="modal"><i class="fa fa-pencil"
+                aria-hidden="true"></i> Actualizar</button>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+
+    <ng-template #ingresarMatrizContinuidad>
+      <div class="alert fondo-alerta" role="alert">
+        Este riesgo no cuenta con una matriz de continuidad, seleccione agregar para ingresar una nueva matriz!
+      </div>
+      <div class="btns-modal">
+        <div class="">
+          <button type="button" class="btn btn-danger btn-size" data-bs-dismiss="modal" (click)="resetVariables()"><i
+              class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+          <button data-bs-dismiss="modal" [routerLink]="linkPlanTrabajo" class="btn btn-primary btn-size"><i
+              class="fa-solid fa-arrow-right"></i> Agregar</button>
+        </div>
+      </div>
+    </ng-template>
+
+  </div>
+</div> -->

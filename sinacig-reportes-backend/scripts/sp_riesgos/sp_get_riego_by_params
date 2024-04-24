@@ -1,16 +1,15 @@
- select ttr.id_riesgo as 'Id_riesgo', tco.descripcion as 'Objetivo', ttr.codigo_referencia as 'Codigo_Referencia',
-  tca.descripcion as 'Area_Evaluada', tcu.nombre_unidad as 'Unidad', tcv.descripcion as 'Eventos', ttr.descripcion_riesgo as 'Descripcion_Riesgo',
-   CONVERT(varchar, ttr.fecha_encontrado) as 'Fecha_Encontrado', ttr.fecha_registro as 'Fecha_Registro', tcpo.nivel_probabilidad as 'Probabilidad', tcs.nivel_severidad as 'Severidad', 
-  ttr.riesgo_inherente as 'Riesgo_Inherente', ttr.valor_control_mitigador as 'Valor_Control_Mitigador', ttr.riesgo_residual as 'Riesgo_Residual',
-  tcm.descripcion as 'Medida_Riesgo', ttr.observaciones as 'Observaciones'
-
-   from tt_riesgo ttr
-   LEFT JOIN tc_tipo_objetivo tco ON tco.id_tipo_objetivo=ttr.id_tipo_objetivo
-   LEFT JOIN tc_area_evaluada tca ON tca.id_area_evaluada=ttr.id_area_evaluada
-   LEFT JOIN tc_unidad_ejecutora tcu ON tcu.id_unidad_ejecutora=ttr.id_unidad_ejecutora
-   LEFT JOIN tc_eventos_identificados tcv ON tcv.id_eventos_identificados=ttr.id_eventos_identificados
-   LEFT JOIN tc_probabilidad tcpo ON tcpo.id_probabilidad=ttr.id_probabilidad
-   LEFT JOIN tc_severidad tcs ON tcs.id_severidad=ttr.id_severidad
-   LEFT JOIN tc_medida_riesgo tcm ON tcm.id_medida_riesgo=ttr.id_medida_riesgo
-
-   where ttr.estado_registro=1 AND ttr.id_unidad_ejecutora=@Unidad_Ejecutora AND (ttr.fecha_encontrado BETWEEN @FechaI AND @FechaF) ORDER BY ttr.id_riesgo DESC
+SELECT
+ttv.fecha_viaje AS fecha_inicio_viaje,
+ttv.fecha_fin_viaje AS fecha_fin_viaje,
+dep.nombre AS departamento,
+mun.nombre AS municipio,
+lp.nombre AS lugar_poblado,
+ttv.pais AS lugar_viaje,
+ttv.id_ficha_epidemiologica,
+tfe.id_forme1 AS ID_FORME1
+FROM tt_viaje ttv
+JOIN tt_ficha_epidemiologica tfe ON tfe.id_ficha_epidemiologica=ttv.id_ficha_epidemiologica
+JOIN seguridad_mspas.departamento dep ON dep.iddep=ttv.iddep
+JOIN seguridad_mspas.municipio mun ON mun.idmun=ttv.idmun and mun.iddep=ttv.iddep
+JOIN seguridad_mspas.lugar_poblado lp ON lp.idlp=ttv.idlp and lp.idmun=mun.idmun and lp.iddep=dep.iddep
+where tfe.id_forme1=$P{ID_FORME1_SUB}

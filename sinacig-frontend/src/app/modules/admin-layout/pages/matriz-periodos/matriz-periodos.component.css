@@ -1,0 +1,129 @@
+.container-matriz {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.matriz-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  padding-top: 50px;
+}
+
+.matriz-form__title {
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;
+}
+
+.inputs-matriz-periodo {
+  display: grid;
+  grid-template-columns:  minmax(1fr);
+  gap: 20px;
+}
+
+.abierto {
+  background-color: rgba(0, 255, 34, 0.09);
+  color: black;
+}
+
+.cerrado {
+  color: black;
+  background-color: rgba(255, 0, 0, 0.09);
+}
+
+.container-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-size {
+  width: 245px;
+}
+
+.table-matriz {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0 40px;
+}
+
+.table-header-matriz {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.header-title {
+  color: #2b2b2b;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.table-body-matriz {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr)  minmax(120px, 5fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(90px, 1fr) minmax(90px, 1fr);
+  justify-items: center;
+  gap: 4px;
+}
+
+.table-body-matriz:hover {
+  color: black;
+  box-shadow: none;
+  background-color: rgba(172, 172, 172, 0.2);
+}
+
+.btn-plan-search {
+  color: white;
+}
+
+.table-header-matriz > div {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  background-color: rgba(0, 38, 255, 0.3);
+}
+
+.table-body-matriz > div {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+@media only screen and (max-width: 975px) {
+  .tabla-res {
+    overflow-x: scroll;
+  }
+  .table-matriz {
+    width: 900px;
+  }
+}
+@media only screen and (max-width: 840px) {
+  .inputs-select-styles {
+    width: 300px;
+  }
+  .container-btn {
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .container-btn > button {
+    margin: 0;
+    width: 300px;
+  }
+  .matriz-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

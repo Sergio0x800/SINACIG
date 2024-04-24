@@ -1,0 +1,28 @@
+<div class="login">
+  <div class="login-header">
+    <img class="login-header-logo" src="./assets/img/brand/LOGOMSPAS.png" alt="">
+  </div>
+
+  <h1 class="login-title">Sistema de Control Interno y Gestión de Riesgos.</h1>
+
+  <div class="login-container">
+    <div class="imgBack-container">
+      <img class="imgBack" src="./assets/img/brand/GESTIONIMG.svg" alt="">
+    </div>
+    <div class="login-credentials" (keyup.enter)="iniciarSesion()">
+      <h1 class="title">Iniciar Sesión</h1>
+      <div class="form-group">
+        <input [(ngModel)]="usuario" placeholder="Usuario" type="text" class="form-control" id="usuario">
+      </div>
+      <div class="form-group">
+        <input [(ngModel)]="password" placeholder="Contraseña" type="password" class="form-control" id="password">
+      </div>
+      <div class="form-group form-check">
+        <input [(ngModel)]="recordarme" type="checkbox" class="form-check-input" id="loginRecordarme">
+        <label class="form-check-label title-description" for="loginRecordarme">Recordarme</label>
+      </div>
+      <div class="text-center mt-2">
+        <button type="button" class="btn btn-primary" (click)="iniciarSesion()">Iniciar sesión</button>
+      </div>
+    </div>
+  </div>
